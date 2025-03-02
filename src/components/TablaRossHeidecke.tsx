@@ -189,13 +189,9 @@ export default function TablaRossHeidecke() {
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-lg overflow-x-auto">
-      <h2 className="text-xl font-bold mb-4 text-blue-800">
+      <h2 className="text-xl font-bold mb-2 text-blue-800 text-center">
         Tabla Ross-Heidecke
       </h2>
-      <p className="text-sm text-gray-600 mb-4">
-        Esta tabla muestra los porcentajes de depreciación según la edad y el
-        estado de conservación de la propiedad.
-      </p>
 
       <div className="flex justify-between items-center mb-4">
         <div className="flex items-center">
@@ -215,7 +211,7 @@ export default function TablaRossHeidecke() {
           />
         </div>
 
-        <div className="flex space-x-2">
+        {/* <div className="flex space-x-2">
           <button
             onClick={() => setCurrentPage((prev) => Math.max(0, prev - 1))}
             disabled={currentPage === 0}
@@ -235,7 +231,7 @@ export default function TablaRossHeidecke() {
           >
             Siguiente
           </button>
-        </div>
+        </div> */}
       </div>
 
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -297,29 +293,6 @@ export default function TablaRossHeidecke() {
             })}
           </tbody>
         </table>
-      </div>
-
-      <div className="mt-4 text-sm text-gray-600">
-        <p>
-          <strong>Nota:</strong> Para utilizar esta tabla, identifique la edad
-          de la propiedad en la primera columna y el estado de conservación en
-          la primera fila. El valor en la intersección es el porcentaje de
-          depreciación.
-        </p>
-        <p className="mt-2">
-          <strong>Leyenda:</strong>
-        </p>
-        <ul className="list-disc pl-5 mt-1">
-          <li>Estado 1: Nuevo, sin uso</li>
-          <li>Estado 2: Excelente, conservación óptima</li>
-          <li>Estado 3: Bueno, requiere mantenimiento normal</li>
-          <li>Estado 4: Regular, requiere algunas reparaciones simples</li>
-          <li>Estado 5: Requiere reparaciones sencillas</li>
-          <li>Estado 6: Requiere reparaciones importantes</li>
-          <li>Estado 7: Muy malo, requiere rehabilitación total</li>
-          <li>Estado 8: Sin posibilidad de recuperación (demolición)</li>
-          <li>Estado 9: Sin valor, ruina total</li>
-        </ul>
       </div>
     </div>
   );

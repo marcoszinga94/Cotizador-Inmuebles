@@ -88,7 +88,8 @@ export const DatosTerreno: React.FC<DatosTerrenoProps> = ({
               name="dolarHoy"
               value={formData.dolarHoy}
               onChange={handleInputChange}
-              className={`w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all ${
+              readOnly
+              className={`w-full p-2 border border-gray-300 rounded bg-gray-100 cursor-not-allowed ${
                 errors.dolarHoy ? "border-red-500" : "border-gray-300"
               }`}
               placeholder="Valor del dólar"

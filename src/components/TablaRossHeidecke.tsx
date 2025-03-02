@@ -7,6 +7,7 @@ export default function TablaRossHeidecke() {
   const [highlightedCells, setHighlightedCells] = useState<
     { row: number; col: number }[]
   >([]);
+  const [isTableVisible, setIsTableVisible] = useState(false);
 
   // Datos completos de la tabla Ross-Heidecke (100 filas x 9 columnas)
   const tablaData = [
@@ -187,113 +188,137 @@ export default function TablaRossHeidecke() {
     (currentPage + 1) * rowsPerPage
   );
 
+  const toggleTableVisibility = () => {
+    setIsTableVisible(!isTableVisible);
+  };
+
   return (
     <div className="bg-white p-6 rounded-lg shadow-lg overflow-x-auto">
-      <h2 className="text-xl font-bold mb-2 text-blue-800 text-center">
-        Tabla Ross-Heidecke
-      </h2>
-
       <div className="flex justify-between items-center mb-4">
-        <div className="flex items-center">
-          <label
-            htmlFor="search"
-            className="mr-2 text-sm font-medium text-gray-700"
-          >
-            Buscar valor:
-          </label>
-          <input
-            type="text"
-            id="search"
-            className="border border-gray-300 rounded-md px-3 py-1 text-sm focus:ring-blue-500 focus:border-blue-500"
-            placeholder="Ej: 25.5"
-            value={searchValue}
-            onChange={handleSearch}
-          />
-        </div>
-
-        {/* <div className="flex space-x-2">
-          <button
-            onClick={() => setCurrentPage((prev) => Math.max(0, prev - 1))}
-            disabled={currentPage === 0}
-            className="px-3 py-1 bg-blue-600 text-white rounded-md disabled:bg-gray-300 disabled:cursor-not-allowed text-sm"
-          >
-            Anterior
-          </button>
-          <span className="px-3 py-1 bg-gray-100 rounded-md text-sm">
-            {currentPage + 1} de {totalPages}
-          </span>
-          <button
-            onClick={() =>
-              setCurrentPage((prev) => Math.min(totalPages - 1, prev + 1))
-            }
-            disabled={currentPage === totalPages - 1}
-            className="px-3 py-1 bg-blue-600 text-white rounded-md disabled:bg-gray-300 disabled:cursor-not-allowed text-sm"
-          >
-            Siguiente
-          </button>
-        </div> */}
+        <h2 className="text-xl font-bold text-pink-800">Tabla Ross-Heidecke</h2>
+        <button
+          onClick={toggleTableVisibility}
+          className="px-4 py-2 bg-pink-600 text-white rounded-md hover:bg-pink-700 transition-colors flex items-center"
+        >
+          {isTableVisible ? (
+            <>
+              <span>Ocultar tabla</span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5 ml-2"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </>
+          ) : (
+            <>
+              <span>Mostrar tabla</span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5 ml-2"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </>
+          )}
+        </button>
       </div>
 
-      <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-        <table className="w-full text-sm text-left text-gray-700">
-          <thead className="text-xs text-white uppercase bg-blue-700">
-            <tr>
-              <th className="py-3 px-4 sticky left-0 bg-blue-700 z-10">
-                Edad (años)
-              </th>
-              {colLabels.map((label, index) => (
-                <th
-                  key={index}
-                  className={`py-3 px-4 text-center ${
-                    activeCol === index ? "bg-blue-800" : ""
-                  }`}
-                >
-                  {label}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {paginatedData.map((row, rowIndex) => {
-              const actualRowIndex = rowIndex + currentPage * rowsPerPage;
-              return (
-                <tr
-                  key={actualRowIndex}
-                  className={`border-b ${
-                    rowIndex % 2 === 0 ? "bg-gray-50" : "bg-white"
-                  } ${activeRow === actualRowIndex ? "bg-blue-50" : ""}`}
-                  onMouseEnter={() => setActiveRow(actualRowIndex)}
-                  onMouseLeave={handleMouseLeave}
-                >
-                  <td className="py-3 px-4 font-medium text-gray-900 sticky left-0 bg-gray-100 border-r">
-                    {paginatedLabels[rowIndex]}
-                  </td>
-                  {row.map((cell, cellIndex) => (
-                    <td
-                      key={cellIndex}
+      {isTableVisible && (
+        <>
+          <div className="flex justify-between items-center mb-4">
+            <div className="flex items-center">
+              <label
+                htmlFor="search"
+                className="mr-2 text-sm font-medium text-gray-700"
+              >
+                Buscar valor:
+              </label>
+              <input
+                type="text"
+                id="search"
+                className="border border-gray-300 rounded-md px-3 py-1 text-sm focus:ring-pink-500 focus:border-pink-500"
+                placeholder="Ej: 25.5"
+                value={searchValue}
+                onChange={handleSearch}
+              />
+            </div>
+          </div>
+
+          <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+            <table className="w-full text-sm text-left text-gray-700">
+              <thead className="text-xs text-white uppercase bg-pink-700">
+                <tr>
+                  <th className="py-3 px-4 sticky left-0 bg-pink-700 z-10">
+                    Edad (años)
+                  </th>
+                  {colLabels.map((label, index) => (
+                    <th
+                      key={index}
                       className={`py-3 px-4 text-center ${
-                        isCellHighlighted(actualRowIndex, cellIndex)
-                          ? "bg-yellow-200 font-bold"
-                          : activeRow === actualRowIndex &&
-                            activeCol === cellIndex
-                          ? "bg-blue-200 font-bold"
-                          : activeCol === cellIndex
-                          ? "bg-blue-50"
-                          : ""
+                        activeCol === index ? "bg-pink-800" : ""
                       }`}
-                      onMouseEnter={() =>
-                        handleCellHover(actualRowIndex, cellIndex)
-                      }
                     >
-                      {cell}%
-                    </td>
+                      {label}
+                    </th>
                   ))}
                 </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+              </thead>
+              <tbody>
+                {paginatedData.map((row, rowIndex) => {
+                  const actualRowIndex = rowIndex + currentPage * rowsPerPage;
+                  return (
+                    <tr
+                      key={actualRowIndex}
+                      className={`border-b ${
+                        rowIndex % 2 === 0 ? "bg-gray-50" : "bg-white"
+                      } ${activeRow === actualRowIndex ? "bg-pink-50" : ""}`}
+                      onMouseEnter={() => setActiveRow(actualRowIndex)}
+                      onMouseLeave={handleMouseLeave}
+                    >
+                      <td className="py-3 px-4 font-medium text-gray-900 sticky left-0 bg-gray-100 border-r">
+                        {paginatedLabels[rowIndex]}
+                      </td>
+                      {row.map((cell, cellIndex) => (
+                        <td
+                          key={cellIndex}
+                          className={`py-3 px-4 text-center ${
+                            isCellHighlighted(actualRowIndex, cellIndex)
+                              ? "bg-yellow-200 font-bold"
+                              : activeRow === actualRowIndex &&
+                                activeCol === cellIndex
+                              ? "bg-pink-200 font-bold"
+                              : activeCol === cellIndex
+                              ? "bg-pink-50"
+                              : ""
+                          }`}
+                          onMouseEnter={() =>
+                            handleCellHover(actualRowIndex, cellIndex)
+                          }
+                        >
+                          {cell}%
+                        </td>
+                      ))}
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </>
+      )}
     </div>
   );
 }

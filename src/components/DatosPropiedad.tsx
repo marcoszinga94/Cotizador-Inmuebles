@@ -20,7 +20,7 @@ export const DatosPropiedad: React.FC<DatosPropiedadProps> = ({
 }) => {
   return (
     <div className="space-y-4">
-      <h2 className="text-xl font-bold mb-4 text-blue-800 text-center">
+      <h2 className="text-xl font-bold mb-4 text-pink-800 text-center">
         Datos de la Propiedad
       </h2>
 
@@ -33,7 +33,7 @@ export const DatosPropiedad: React.FC<DatosPropiedadProps> = ({
           name="propiedad"
           value={formData.propiedad}
           onChange={handleInputChange}
-          className={`w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all ${
+          className={`w-full p-2 border rounded focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-all ${
             errors.propiedad ? "border-red-500" : "border-gray-300"
           }`}
           placeholder="Nombre y Apellido"
@@ -57,7 +57,7 @@ export const DatosPropiedad: React.FC<DatosPropiedadProps> = ({
           name="terreno"
           value={formData.terreno}
           onChange={handleInputChange}
-          className={`w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all ${
+          className={`w-full p-2 border rounded focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-all ${
             errors.terreno ? "border-red-500" : "border-gray-300"
           }`}
           placeholder="Calle y Altura"
@@ -82,7 +82,7 @@ export const DatosPropiedad: React.FC<DatosPropiedadProps> = ({
             name="valorResidual"
             value={formData.valorResidual}
             onChange={handleInputChange}
-            className={`w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all ${
+            className={`w-full p-2 border rounded focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-all ${
               errors.valorResidual ? "border-red-500" : "border-gray-300"
             }`}
             placeholder="Valor Residual"
@@ -114,7 +114,7 @@ export const DatosPropiedad: React.FC<DatosPropiedadProps> = ({
             name="valorReposicion"
             value={formData.valorReposicion}
             onChange={handleInputChange}
-            className={`w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all ${
+            className={`w-full p-2 border rounded focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-all ${
               errors.valorReposicion ? "border-red-500" : "border-gray-300"
             }`}
             placeholder="Valor de Reposición"
@@ -149,7 +149,7 @@ export const DatosPropiedad: React.FC<DatosPropiedadProps> = ({
             name="anosPropiedad"
             value={formData.anosPropiedad}
             onChange={handleInputChange}
-            className={`w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all ${
+            className={`w-full p-2 border rounded focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-all ${
               errors.anosPropiedad ? "border-red-500" : "border-gray-300"
             }`}
             min="0"
@@ -175,7 +175,7 @@ export const DatosPropiedad: React.FC<DatosPropiedadProps> = ({
             name="estadoPropiedad"
             value={formData.estadoPropiedad}
             onChange={handleInputChange}
-            className={`w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all ${
+            className={`w-full p-2 border rounded focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-all ${
               errors.estadoPropiedad ? "border-red-500" : "border-gray-300"
             }`}
             aria-label="Estado de la propiedad"

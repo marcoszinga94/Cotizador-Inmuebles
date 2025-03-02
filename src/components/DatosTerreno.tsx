@@ -21,7 +21,7 @@ export const DatosTerreno: React.FC<DatosTerrenoProps> = ({
 }) => {
   return (
     <div className="space-y-4">
-      <h2 className="text-xl font-bold mb-4 text-blue-800 text-center">
+      <h2 className="text-xl font-bold mb-4 text-pink-800 text-center">
         Datos del Terreno
       </h2>
 
@@ -35,7 +35,7 @@ export const DatosTerreno: React.FC<DatosTerrenoProps> = ({
             name="cantidadM2"
             value={formData.cantidadM2}
             onChange={handleInputChange}
-            className={`w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all ${
+            className={`w-full p-2 border rounded focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-all ${
               errors.cantidadM2 ? "border-red-500" : "border-gray-300"
             }`}
             placeholder="Metros cuadrados"
@@ -61,7 +61,7 @@ export const DatosTerreno: React.FC<DatosTerrenoProps> = ({
             name="valorM2"
             value={formData.valorM2}
             onChange={handleInputChange}
-            className={`w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all ${
+            className={`w-full p-2 border rounded focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-all ${
               errors.valorM2 ? "border-red-500" : "border-gray-300"
             }`}
             placeholder="Valor por metro cuadrado"
@@ -102,7 +102,7 @@ export const DatosTerreno: React.FC<DatosTerrenoProps> = ({
             type="button"
             onClick={onCargarDolar}
             disabled={dolarLoading}
-            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors disabled:bg-blue-300"
+            className="px-4 py-2 bg-pink-600 text-white rounded hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-opacity-50 transition-colors disabled:bg-pink-300"
             aria-label="Cargar valor del dólar automáticamente"
           >
             {dolarLoading ? (

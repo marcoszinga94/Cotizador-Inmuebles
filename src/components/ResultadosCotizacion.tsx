@@ -28,8 +28,8 @@ export const ResultadosCotizacion: React.FC<ResultadosCotizacionProps> = ({
   };
 
   return (
-    <div className="mt-6 p-6 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg shadow-sm">
-      <h3 className="font-bold text-lg mb-4 text-blue-800">Resultados</h3>
+    <div className="mt-6 p-6 bg-gradient-to-r from-pink-50 to-rose-50 rounded-lg shadow-sm">
+      <h3 className="font-bold text-lg mb-4 text-pink-800">Resultados</h3>
 
       <div className="grid grid-cols-2 gap-3">
         <div className="text-sm font-medium text-gray-700">Valor Actual:</div>
@@ -42,8 +42,8 @@ export const ResultadosCotizacion: React.FC<ResultadosCotizacionProps> = ({
           {formatCurrency(valorTerreno)}
         </div>
 
-        <div className="text-sm font-bold mt-2 text-blue-800">VALOR TOTAL:</div>
-        <div className="text-lg font-bold mt-2 text-blue-800">
+        <div className="text-sm font-bold mt-2 text-pink-800">VALOR TOTAL:</div>
+        <div className="text-lg font-bold mt-2 text-pink-800">
           {formatCurrency(valorTotal)}
         </div>
 

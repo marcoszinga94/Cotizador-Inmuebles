@@ -35,12 +35,12 @@ export const HistorialCotizaciones: React.FC<HistorialCotizacionesProps> = ({
 
   return (
     <div className="mt-8">
-      <h3 className="text-xl font-bold mb-4 text-blue-800">
+      <h3 className="text-xl font-bold mb-4 text-pink-800">
         Historial de Cotizaciones
       </h3>
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white rounded-lg overflow-hidden shadow-md">
-          <thead className="bg-blue-700 text-white">
+          <thead className="bg-pink-700 text-white">
             <tr>
               <th className="py-3 px-4 text-left">Fecha</th>
               <th className="py-3 px-4 text-left">Propiedad</th>
@@ -62,7 +62,7 @@ export const HistorialCotizaciones: React.FC<HistorialCotizacionesProps> = ({
                   <div className="flex justify-center space-x-2">
                     <button
                       onClick={() => onCargarCotizacion(item)}
-                      className="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors"
+                      className="px-3 py-1 bg-pink-600 text-white text-sm rounded hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-opacity-50 transition-colors"
                       aria-label={`Cargar cotización de ${item.propiedad}`}
                     >
                       Cargar

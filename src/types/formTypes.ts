@@ -21,3 +21,18 @@ export interface CalculationResults {
 export interface FormState extends FormData, CalculationResults {}
 
 export type FormErrors = Partial<Record<keyof FormData, string>>;
+
+export interface HistorialItem {
+  id: string;
+  fecha: string;
+  propiedad: string;
+  terreno: string;
+  valorResidual: number;
+  valorReposicion: number;
+  anosPropiedad: number;
+  estadoPropiedad: number;
+  cantidadM2: number;
+  valorM2: number;
+  dolarHoy: number;
+  resultados: CalculationResults;
+}

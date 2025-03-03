@@ -1,12 +1,10 @@
 import { useState, useEffect } from "react";
 import { useLocalStorage } from "./useLocalStorage";
-import type { FormData } from "../types/formTypes";
-import type { CalculationResults } from "../types/formTypes";
-
-interface HistorialItem extends FormData, CalculationResults {
-  id: string;
-  fecha: string;
-}
+import type {
+  FormData,
+  CalculationResults,
+  HistorialItem,
+} from "../types/formTypes";
 
 interface HistorialHookResult {
   historial: HistorialItem[];
@@ -14,7 +12,7 @@ interface HistorialHookResult {
     formData: FormData,
     resultados: CalculationResults
   ) => string;
-  cargarCotizacion: (id: string) => HistorialItem | null;
+  cargarCotizacion: (item: HistorialItem) => void;
   eliminarCotizacion: (id: string) => void;
 }
 
@@ -30,15 +28,9 @@ export const useHistorialCotizaciones = (): HistorialHookResult => {
   ): string => {
     const nuevaCotizacion: HistorialItem = {
       ...formData,
-      ...resultados,
       id: Date.now().toString(),
-      fecha: new Date().toLocaleDateString("es-ES", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-      }),
+      fecha: new Date().toISOString(),
+      resultados,
     };
 
     const nuevoHistorial = [nuevaCotizacion, ...historial];
@@ -47,9 +39,8 @@ export const useHistorialCotizaciones = (): HistorialHookResult => {
     return nuevaCotizacion.id;
   };
 
-  const cargarCotizacion = (id: string): HistorialItem | null => {
-    const cotizacion = historial.find((item) => item.id === id);
-    return cotizacion || null;
+  const cargarCotizacion = (item: HistorialItem): void => {
+    // Esta función ahora recibe directamente el item completo
   };
 
   const eliminarCotizacion = (id: string): void => {

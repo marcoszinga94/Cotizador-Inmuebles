@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import type { FormData } from "../types/formTypes";
 import type { CalculationResults } from "../types/formTypes";
 import PdfGenerator from "./PdfGenerator";
@@ -20,6 +20,16 @@ export const ResultadosCotizacion: React.FC<ResultadosCotizacionProps> = ({
     coeficienteK,
   } = resultados;
 
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    // Activar la animación cuando los resultados cambian
+    if (valorTotal > 0) {
+      setIsVisible(false);
+      setTimeout(() => setIsVisible(true), 100);
+    }
+  }, [valorTotal]);
+
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat("es-CL", {
       style: "currency",
@@ -28,9 +38,14 @@ export const ResultadosCotizacion: React.FC<ResultadosCotizacionProps> = ({
   };
 
   return (
-    <div className="mt-6 p-6 bg-rosaClaro rounded-lg shadow-sm">
-      <h3 className="font-bold text-lg mb-4 text-rosaOscuro text-center">
+    <div
+      className={`mt-6 p-6 bg-rosaClaro rounded-lg shadow-sm transition-all duration-500 ${
+        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+      }`}
+    >
+      <h3 className="font-bold text-lg mb-4 text-rosaOscuro text-center relative">
         Resultados
+        <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-16 h-0.5 bg-rosaOscuro"></span>
       </h3>
 
       <div className="grid grid-cols-2 gap-3">
@@ -64,7 +79,7 @@ export const ResultadosCotizacion: React.FC<ResultadosCotizacionProps> = ({
       </div>
 
       {valorTotal > 0 && (
-        <div className="mt-6">
+        <div className="mt-6 transition-all duration-300 transform hover:scale-105">
           <PdfGenerator
             propiedad={formData.propiedad}
             terreno={formData.terreno}

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Boton } from "./Boton";
 
 export default function TablaRossHeidecke() {
   const [activeRow, setActiveRow] = useState<number | null>(null);
@@ -199,9 +200,10 @@ export default function TablaRossHeidecke() {
           Tabla Ross-Heidecke
         </h2>
 
-        <button
+        <Boton
           onClick={toggleTableVisibility}
-          className="px-4 py-2 bg-primary text-secondary rounded-md hover:rosaOscuro transition-alls flex items-center"
+          variant="primary"
+          className="flex items-center"
         >
           {isTableVisible ? (
             <>
@@ -236,7 +238,7 @@ export default function TablaRossHeidecke() {
               </svg>
             </>
           )}
-        </button>
+        </Boton>
       </div>
 
       {isTableVisible && (

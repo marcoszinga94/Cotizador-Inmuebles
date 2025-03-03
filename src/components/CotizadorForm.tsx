@@ -6,12 +6,13 @@ import { DatosPropiedad } from "./DatosPropiedad";
 import { DatosTerreno } from "./DatosTerreno";
 import { ResultadosCotizacion } from "./ResultadosCotizacion";
 import { HistorialCotizaciones } from "./HistorialCotizaciones";
+import { Boton } from "./Boton";
 import { useFormValidation } from "../hooks/useFormValidation";
 import { useDolarApi } from "../hooks/useDolarApi";
 import { useCalculations } from "../hooks/useCalculations";
 import { useHistorialCotizaciones } from "../hooks/useHistorialCotizaciones";
 import { useLocalStorage } from "../hooks/useLocalStorage";
-import type { FormData } from "../types/formTypes";
+import type { FormData, HistorialItem } from "../types/formTypes";
 
 //peticion a la api para obtener el valor del dolar blue
 const valorDolar = async () => {
@@ -49,49 +50,67 @@ export default function CotizadorForm() {
   const { historial, guardarCotizacion, cargarCotizacion, eliminarCotizacion } =
     useHistorialCotizaciones();
 
-  // Actualizar el valor del dólar cuando cambia
-  useEffect(() => {
-    if (dolarValor > 0 && formData.dolarHoy === 0) {
-      setFormData({ ...formData, dolarHoy: dolarValor });
-    }
-  }, [dolarValor]);
+  // Estado para animaciones
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
 
-  // Manejar cambios en los inputs
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
-    const isNumeric = name !== "propiedad" && name !== "terreno";
-    const numericValue = isNumeric ? Number(value) : value;
+    let parsedValue: string | number = value;
 
-    // Validar el campo
-    const error = validateField(name as keyof FormData, numericValue);
+    // Convertir a número si es necesario
+    if (
+      name !== "propiedad" &&
+      name !== "terreno" &&
+      name !== "estadoPropiedad"
+    ) {
+      parsedValue = value === "" ? 0 : parseFloat(value);
+    }
 
-    // Actualizar formData
     setFormData({
       ...formData,
-      [name]: numericValue,
+      [name]: parsedValue,
     });
+
+    // Validar el campo
+    validateField(name as keyof FormData, parsedValue);
   };
 
-  // Manejar el envío del formulario
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
+    const isValid = validateAllFields(formData);
 
-    // Validar todos los campos
-    if (validateAllFields(formData)) {
-      // Guardar la cotización en el historial
-      guardarCotizacion(formData, resultados);
+    if (isValid) {
+      setIsSubmitting(true);
+
+      // Simular un tiempo de procesamiento
+      setTimeout(() => {
+        setIsSubmitting(false);
+        setShowSuccess(true);
+
+        // Ocultar el mensaje de éxito después de 2 segundos
+        setTimeout(() => setShowSuccess(false), 2000);
+
+        // Guardar la cotización en el historial
+        guardarCotizacion(formData, resultados);
+      }, 500);
     }
   };
 
-  // Cargar el valor del dólar
   const handleCargarDolar = async () => {
     await fetchDolar();
+    if (dolarValor) {
+      setFormData({
+        ...formData,
+        dolarHoy: dolarValor,
+      });
+    }
   };
 
-  // Cargar una cotización del historial
-  const handleCargarCotizacion = (item: any) => {
+  const handleCargarCotizacion = (item: HistorialItem) => {
+    cargarCotizacion(item);
     setFormData({
       propiedad: item.propiedad,
       terreno: item.terreno,
@@ -106,49 +125,61 @@ export default function CotizadorForm() {
   };
 
   return (
-    <div className="relative bg-secondary dark:bg-grisOscuro py-4 px-6 rounded-lg shadow-lg">
-      <h2 className="text-2xl font-bold text-rosaOscuro text-center">
-        Calculadora de Tasación
+    <div className="p-6">
+      <h2 className="text-4xl font-bold mb-6 text-center text-rosaOscuro relative">
+        Cotizador de Propiedades
       </h2>
-      <form onSubmit={handleSubmit} className="">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <DatosPropiedad
-            formData={formData}
-            errors={errors}
-            coeficienteK={resultados.coeficienteK}
-            handleInputChange={handleInputChange}
-          />
 
-          <div className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="space-y-4 p-4 rounded-lg bg-white/50 dark:bg-grisOscuro/10">
+            <DatosPropiedad
+              formData={formData}
+              handleInputChange={handleInputChange}
+              errors={errors}
+              coeficienteK={resultados.coeficienteK}
+            />
+          </div>
+
+          <div className="space-y-4 p-4 rounded-lg bg-white/50 dark:bg-grisOscuro/10">
             <DatosTerreno
               formData={formData}
-              errors={errors}
               handleInputChange={handleInputChange}
-              dolarLoading={dolarLoading}
+              errors={errors}
               onCargarDolar={handleCargarDolar}
+              dolarLoading={dolarLoading}
+              dolarError={dolarError}
             />
-
-            <ResultadosCotizacion formData={formData} resultados={resultados} />
+            <div className="slide-in">
+              <ResultadosCotizacion
+                formData={formData}
+                resultados={resultados}
+              />
+            </div>
           </div>
         </div>
 
-        <div className="mt-6 flex justify-center">
-          <button
-            type="submit"
-            className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-rosaOscuro focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 transition-all"
-          >
-            Guardar Cotización
-          </button>
+        <div className="flex justify-center mt-6 relative">
+          <Boton type="submit" isLoading={isSubmitting} disabled={isSubmitting}>
+            Guardar Tasación
+          </Boton>
+          {showSuccess && (
+            <div className="absolute top-0 bottom-0 p-2 bg-green-100 text-green-800 rounded-md text-center animate-fadeInOut">
+              ¡Cotización guardada con éxito!
+            </div>
+          )}
         </div>
       </form>
 
-      {historial.length > 0 && (
-        <HistorialCotizaciones
-          historial={historial}
-          onCargarCotizacion={handleCargarCotizacion}
-          onEliminarCotizacion={eliminarCotizacion}
-        />
-      )}
+      <div className="grid grid-cols-1 gap-6">
+        <div className="fade-in">
+          <HistorialCotizaciones
+            historial={historial}
+            onCargarCotizacion={handleCargarCotizacion}
+            onEliminarCotizacion={eliminarCotizacion}
+          />
+        </div>
+      </div>
     </div>
   );
 }

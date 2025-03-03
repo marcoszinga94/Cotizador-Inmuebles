@@ -6,12 +6,12 @@ import { ThemeToggle } from "./ThemeToggle";
   class="bg-primary text-secondary py-4 shadow-md dark:bg-negro dark:text-grisClaro transition-colors duration-300"
 >
   <div
-    class="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center"
+    class="container px-4 flex flex-col md:flex-row justify-between items-center"
   >
-    <div class="flex items-center gap-2 mx-auto">
+    <div class="flex items-center gap-3 mx-auto">
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        class="h-8 w-8"
+        class="size-8"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
@@ -22,7 +22,7 @@ import { ThemeToggle } from "./ThemeToggle";
         <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
         <polyline points="9 22 9 12 15 12 15 22"></polyline>
       </svg>
-      <h1 class="flex text-xl font-bold">Cotizador de Propiedades</h1>
+      <h1 class="text-xl font-bold relative">Cotizador de Propiedades</h1>
     </div>
   </div>
 
@@ -30,3 +30,35 @@ import { ThemeToggle } from "./ThemeToggle";
     <ThemeToggle client:load />
   </div>
 </header>
+
+<style>
+  h1 {
+    position: relative;
+    display: inline-block;
+  }
+
+  h1::after {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -2px;
+    left: 0;
+    background-color: currentColor;
+    transition: width 0.3s ease-in-out;
+  }
+
+  h1:hover::after {
+    width: 100%;
+  }
+
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-5px);
+    }
+  }
+</style>

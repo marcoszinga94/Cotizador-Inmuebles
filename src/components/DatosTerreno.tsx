@@ -1,6 +1,7 @@
 import React from "react";
 import type { ChangeEvent } from "react";
 import type { FormData } from "../types/formTypes";
+import { Boton } from "./Boton";
 
 interface DatosTerrenoProps {
   formData: FormData;
@@ -10,6 +11,7 @@ interface DatosTerrenoProps {
   ) => void;
   dolarLoading: boolean;
   onCargarDolar: () => void;
+  dolarError?: string | null;
 }
 
 export const DatosTerreno: React.FC<DatosTerrenoProps> = ({
@@ -18,6 +20,7 @@ export const DatosTerreno: React.FC<DatosTerrenoProps> = ({
   handleInputChange,
   dolarLoading,
   onCargarDolar,
+  dolarError,
 }) => {
   return (
     <div className="gap-4">
@@ -98,41 +101,16 @@ export const DatosTerreno: React.FC<DatosTerrenoProps> = ({
               aria-describedby={errors.dolarHoy ? "dolarHoy-error" : undefined}
             />
           </div>
-          <button
+          <Boton
             type="button"
             onClick={onCargarDolar}
+            isLoading={dolarLoading}
             disabled={dolarLoading}
-            className="px-4 py-2 bg-primary text-secondary rounded hover:bg-rosaOscuro focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 transition-alls disabled:bg-pink-300"
+            variant="primary"
             aria-label="Cargar valor del dólar automáticamente"
           >
-            {dolarLoading ? (
-              <span className="flex items-center">
-                <svg
-                  className="animate-spin -ml-1 mr-2 h-4 w-4 text-secondary"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                  ></circle>
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                  ></path>
-                </svg>
-                Cargando...
-              </span>
-            ) : (
-              "Cargar Dólar"
-            )}
-          </button>
+            Cargar Dólar
+          </Boton>
         </div>
         {errors.dolarHoy && (
           <p id="dolarHoy-error" className="text-rosaOscuro text-xs mt-1">

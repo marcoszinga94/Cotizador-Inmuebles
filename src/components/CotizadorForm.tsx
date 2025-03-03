@@ -106,7 +106,10 @@ export default function CotizadorForm() {
   };
 
   return (
-    <div className="relative bg-secondary dark:bg-grisOscuro p-6 rounded-lg shadow-lg">
+    <div className="relative bg-secondary dark:bg-grisOscuro py-4 px-6 rounded-lg shadow-lg">
+      <h2 className="text-2xl font-bold text-rosaOscuro text-center">
+        Calculadora de Tasación
+      </h2>
       <form onSubmit={handleSubmit} className="">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <DatosPropiedad

@@ -30,10 +30,24 @@ const { showSocialLinks = true, showContactInfo = true } = Astro.props;
           </svg>
           <span class="font-bold">Cotizador de Propiedades</span>
         </div>
-        <p class="text-sm text-textoSuave text-center md:text-left">
-          Herramienta profesional para la valoración de propiedades
-          inmobiliarias utilizando métodos precisos y actualizados.
-        </p>
+        <div class="flex flex-col items-center md:items-start gap-4">
+          <p class="text-sm text-grisSuave text-center md:text-left">
+            Herramienta profesional para la valoración de propiedades
+            inmobiliarias utilizando métodos precisos y actualizados.
+          </p>
+          <p class="text-sm text-grisSuave text-center md:text-left">
+            Brindado por Bottos Servicios Inmobiliarios.
+          </p>
+          <p class="text-sm text-grisSuave text-center md:text-left">
+            Desarrollado por <a
+              href="https://marcoszinga.vercel.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-secondary hover:text-secondary transition-alls"
+              >Marcos Zingaretti</a
+            >
+          </p>
+        </div>
       </div>
 
       <!-- Enlaces rápidos -->
@@ -44,8 +58,13 @@ const { showSocialLinks = true, showContactInfo = true } = Astro.props;
         showContactInfo && (
           <div class="flex flex-col items-center md:items-start">
             <h3 class="text-lg font-semibold mb-4">Contacto</h3>
-            <ul class="space-y-2 text-sm text-text">
-              <li class="flex items-center">
+            <ul class="space-y-2 text-sm text-grisSuave gap-2">
+              <a
+                class="flex items-center"
+                href="mailto:yulianabottos96@gmail.com"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <svg
                   class="w-4 h-4 mr-2"
                   fill="none"
@@ -60,8 +79,13 @@ const { showSocialLinks = true, showContactInfo = true } = Astro.props;
                   />
                 </svg>
                 yulianabottos96@gmail.com
-              </li>
-              <li class="flex items-center">
+              </a>
+              <a
+                class="flex items-center"
+                href="tel:+5493584407187"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <svg
                   class="w-4 h-4 mr-2"
                   fill="none"
@@ -76,8 +100,13 @@ const { showSocialLinks = true, showContactInfo = true } = Astro.props;
                   />
                 </svg>
                 +54 9 3584 407187
-              </li>
-              <li class="flex items-center">
+              </a>
+              <a
+                class="flex items-center"
+                href="https://maps.app.goo.gl/6Cb8cCxkK4CZpmhL7"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <svg
                   class="w-4 h-4 mr-2"
                   fill="none"
@@ -98,7 +127,7 @@ const { showSocialLinks = true, showContactInfo = true } = Astro.props;
                   />
                 </svg>
                 La Carlota, Cordoba, Argentina
-              </li>
+              </a>
             </ul>
           </div>
         )
@@ -108,7 +137,7 @@ const { showSocialLinks = true, showContactInfo = true } = Astro.props;
     <div
       class="border-t border-gray-700 mt-8 pt-6 flex flex-col md:flex-row justify-between items-center"
     >
-      <p class="text-sm text-text mb-4 md:mb-0">
+      <p class="text-sm text-grisSuave mb-4 md:mb-0">
         &copy; {currentYear} Cotizador de Propiedades. Bottos Servicios Inmobiliarios.
       </p>
 
@@ -118,7 +147,7 @@ const { showSocialLinks = true, showContactInfo = true } = Astro.props;
             <a
               href="https://github.com/marcoszinga94/Propiedades-Cotizador"
               target="_blank"
-              class="text-text hover:text-secondary transition-alls"
+              class="text-grisSuave hover:text-secondary transition-alls"
             >
               <span class="sr-only">GitHub</span>
               <svg

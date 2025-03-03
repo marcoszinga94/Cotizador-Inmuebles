@@ -20,15 +20,15 @@ export const DatosTerreno: React.FC<DatosTerrenoProps> = ({
   onCargarDolar,
 }) => {
   return (
-    <div className="space-y-4">
-      <h2 className="text-xl font-bold mb-4 text-rosaOscuro text-center">
+    <div className="gap-4">
+      <h2 className="text-xl font-bold text-rosaOscuro text-center">
         Datos del Terreno
       </h2>
 
       <div className="grid grid-cols-2 gap-4">
         <div className="mb-4">
           <label className="block text-sm font-medium mb-1 text-grisOscuro">
-            Cantidad m²
+            Cantidad de m²
           </label>
           <input
             type="number"
@@ -54,7 +54,7 @@ export const DatosTerreno: React.FC<DatosTerrenoProps> = ({
 
         <div className="mb-4">
           <label className="block text-sm font-medium mb-1 text-grisOscuro">
-            Valor m² ($)
+            Valor del m² en ARS
           </label>
           <input
             type="number"

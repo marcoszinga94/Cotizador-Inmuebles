@@ -19,13 +19,13 @@ export const DatosPropiedad: React.FC<DatosPropiedadProps> = ({
   handleInputChange,
 }) => {
   return (
-    <div className="space-y-4">
-      <h2 className="text-xl font-bold mb-4 text-rosaOscuro text-center">
+    <div className="gap-4">
+      <h2 className="text-xl font-bold text-rosaOscuro text-center">
         Datos de la Propiedad
       </h2>
 
       <div className="mb-4">
-        <label className="block text-sm font-medium mb-1 text-grisOscuro">
+        <label className="block text-sm font-medium mb-1 text-rosaOscuro">
           Propietario
         </label>
         <input
@@ -49,7 +49,7 @@ export const DatosPropiedad: React.FC<DatosPropiedadProps> = ({
       </div>
 
       <div className="mb-4">
-        <label className="block text-sm font-medium mb-1 text-grisOscuro">
+        <label className="block text-sm font-medium mb-1 text-rosaOscuro">
           Ubicación
         </label>
         <input
@@ -74,7 +74,7 @@ export const DatosPropiedad: React.FC<DatosPropiedadProps> = ({
 
       <div className="grid grid-cols-2 gap-4">
         <div className="mb-4">
-          <label className="block text-sm font-medium mb-1 text-grisOscuro">
+          <label className="block text-sm font-medium mb-1 text-rosaOscuro">
             Valor Residual ($)
           </label>
           <input
@@ -102,14 +102,14 @@ export const DatosPropiedad: React.FC<DatosPropiedadProps> = ({
               {errors.valorResidual}
             </p>
           ) : (
-            <p id="valorResidual-desc" className="text-xs text-grisOscuro mt-1">
+            <p id="valorResidual-desc" className="text-xs text-rosaOscuro mt-1">
               Valor que tiene un activo al final de su vida útil
             </p>
           )}
         </div>
 
         <div className="mb-4">
-          <label className="block text-sm font-medium mb-1 text-grisOscuro">
+          <label className="block text-sm font-medium mb-1 text-rosaOscuro">
             Valor Reposición ($)
           </label>
           <input
@@ -139,7 +139,7 @@ export const DatosPropiedad: React.FC<DatosPropiedadProps> = ({
           ) : (
             <p
               id="valorReposicion-desc"
-              className="text-xs text-grisOscuro mt-1"
+              className="text-xs text-rosaOscuro mt-1"
             >
               Costo de reemplazar un activo con otro de características
               similares
@@ -150,7 +150,7 @@ export const DatosPropiedad: React.FC<DatosPropiedadProps> = ({
 
       <div className="grid grid-cols-2 gap-4">
         <div className="mb-4">
-          <label className="block text-sm font-medium mb-1 text-grisOscuro">
+          <label className="block text-sm font-medium mb-1 text-rosaOscuro">
             Años de Propiedad
           </label>
           <input
@@ -180,7 +180,7 @@ export const DatosPropiedad: React.FC<DatosPropiedadProps> = ({
         </div>
 
         <div className="mb-4">
-          <label className="block text-sm font-medium mb-1 text-grisOscuro">
+          <label className="block text-sm font-medium mb-1 text-rosaOscuro">
             Estado de Propiedad
           </label>
           <select
@@ -215,7 +215,7 @@ export const DatosPropiedad: React.FC<DatosPropiedadProps> = ({
       </div>
 
       <div className="mb-4">
-        <label className="block text-sm font-medium mb-1 text-grisOscuro">
+        <label className="block text-sm font-medium mb-1 text-rosaOscuro">
           Coeficiente K (%)
         </label>
         <input
@@ -226,7 +226,7 @@ export const DatosPropiedad: React.FC<DatosPropiedadProps> = ({
           className="w-full p-2 border border-grisSuave rounded bg-grisSuave cursor-not-allowed"
           aria-label="Coeficiente K"
         />
-        <p className="text-xs text-grisOscuro mt-1">
+        <p className="text-xs text-rosaOscuro mt-1">
           Valor obtenido de la tabla Ross-Heidecke según la edad y estado de la
           propiedad
         </p>

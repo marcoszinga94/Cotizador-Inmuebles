@@ -193,131 +193,135 @@ export default function TablaRossHeidecke() {
   };
 
   return (
-    <div className="bg-secondary p-6 rounded-lg shadow-lg overflow-x-auto">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-bold text-rosaOscuro">
-          Tabla Ross-Heidecke
-        </h2>
-        <button
-          onClick={toggleTableVisibility}
-          className="px-4 py-2 bg-primary text-secondary rounded-md hover:rosaOscuro transition-alls flex items-center"
-        >
-          {isTableVisible ? (
-            <>
-              <span>Ocultar tabla</span>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5 ml-2"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </>
-          ) : (
-            <>
-              <span>Mostrar tabla</span>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5 ml-2"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </>
-          )}
-        </button>
+    <div className="flex flex-col bg-secondary p-4 rounded-lg shadow-lg overflow-x-auto gap-4">
+      <div className="flex flex-col md:flex-row justify-between">
+        <div className="flex flex-col md:flex-row justify-between items-center">
+          <h2 className="text-xl font-bold text-rosaOscuro">
+            Tabla Ross-Heidecke
+          </h2>
+          <button
+            onClick={toggleTableVisibility}
+            className="px-4 py-2 bg-primary text-secondary rounded-md hover:rosaOscuro transition-alls flex items-center"
+          >
+            {isTableVisible ? (
+              <>
+                <span>Ocultar tabla</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5 ml-2"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </>
+            ) : (
+              <>
+                <span>Mostrar tabla</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5 ml-2"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </>
+            )}
+          </button>
+        </div>
       </div>
 
       {isTableVisible && (
         <>
-          <div className="flex justify-between items-center mb-4">
-            <div className="flex items-center">
-              <label
-                htmlFor="search"
-                className="mr-2 text-sm font-medium text-grisOscuro"
-              >
-                Buscar valor:
-              </label>
-              <input
-                type="text"
-                id="search"
-                className="border border-grisSuave rounded-md px-3 py-1 text-sm focus:ring-primary focus:border-primary"
-                placeholder="Ej: 25.5"
-                value={searchValue}
-                onChange={handleSearch}
-              />
+          <div className="flex flex-col md:flex-row justify-between">
+            <div className="flex justify-between items-center mb-4">
+              <div className="flex items-center">
+                <label
+                  htmlFor="search"
+                  className="mr-2 text-sm font-medium text-grisOscuro"
+                >
+                  Buscar valor:
+                </label>
+                <input
+                  type="text"
+                  id="search"
+                  className="border border-grisSuave rounded-md px-3 py-1 text-sm focus:ring-primary focus:border-primary"
+                  placeholder="Ej: 25.5"
+                  value={searchValue}
+                  onChange={handleSearch}
+                />
+              </div>
             </div>
-          </div>
 
-          <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-            <table className="w-full text-sm text-left text-grisOscuro">
-              <thead className="text-xs text-secondary uppercase bg-rosaOscuro">
-                <tr>
-                  <th className="py-3 px-4 sticky left-0 bg-rosaOscuro z-10">
-                    Edad (años)
-                  </th>
-                  {colLabels.map((label, index) => (
-                    <th
-                      key={index}
-                      className={`py-3 px-4 text-center ${
-                        activeCol === index ? "bg-rosaOscuro" : ""
-                      }`}
-                    >
-                      {label}
+            <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+              <table className="w-full text-sm text-left text-grisOscuro">
+                <thead className="text-xs text-secondary uppercase bg-rosaOscuro">
+                  <tr>
+                    <th className="py-3 px-4 sticky left-0 bg-rosaOscuro z-10">
+                      Edad (años)
                     </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {paginatedData.map((row, rowIndex) => {
-                  const actualRowIndex = rowIndex + currentPage * rowsPerPage;
-                  return (
-                    <tr
-                      key={actualRowIndex}
-                      className={`border-b bg-secondary ${
-                        activeRow === actualRowIndex ? "bg-rosaSuave" : ""
-                      }`}
-                      onMouseEnter={() => setActiveRow(actualRowIndex)}
-                      onMouseLeave={handleMouseLeave}
-                    >
-                      <td className="py-3 px-4 font-medium text-gray-900 sticky left-0 bg-gray-100 border-r">
-                        {paginatedLabels[rowIndex]}
-                      </td>
-                      {row.map((cell, cellIndex) => (
-                        <td
-                          key={cellIndex}
-                          className={`py-3 px-4 text-center ${
-                            isCellHighlighted(actualRowIndex, cellIndex)
-                              ? "bg-rosaSuave font-bold"
-                              : activeRow === actualRowIndex &&
-                                activeCol === cellIndex
-                              ? "bg-pink-200 font-bold"
-                              : activeCol === cellIndex
-                              ? "bg-pink-50"
-                              : ""
-                          }`}
-                          onMouseEnter={() =>
-                            handleCellHover(actualRowIndex, cellIndex)
-                          }
-                        >
-                          {cell}%
+                    {colLabels.map((label, index) => (
+                      <th
+                        key={index}
+                        className={`py-3 px-4 text-center ${
+                          activeCol === index ? "bg-rosaOscuro" : ""
+                        }`}
+                      >
+                        {label}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {paginatedData.map((row, rowIndex) => {
+                    const actualRowIndex = rowIndex + currentPage * rowsPerPage;
+                    return (
+                      <tr
+                        key={actualRowIndex}
+                        className={`border-b bg-secondary ${
+                          activeRow === actualRowIndex ? "bg-rosaSuave" : ""
+                        }`}
+                        onMouseEnter={() => setActiveRow(actualRowIndex)}
+                        onMouseLeave={handleMouseLeave}
+                      >
+                        <td className="py-3 px-4 font-medium text-gray-900 sticky left-0 bg-gray-100 border-r">
+                          {paginatedLabels[rowIndex]}
                         </td>
-                      ))}
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+                        {row.map((cell, cellIndex) => (
+                          <td
+                            key={cellIndex}
+                            className={`py-3 px-4 text-center ${
+                              isCellHighlighted(actualRowIndex, cellIndex)
+                                ? "bg-rosaSuave font-bold"
+                                : activeRow === actualRowIndex &&
+                                  activeCol === cellIndex
+                                ? "bg-pink-200 font-bold"
+                                : activeCol === cellIndex
+                                ? "bg-pink-50"
+                                : ""
+                            }`}
+                            onMouseEnter={() =>
+                              handleCellHover(actualRowIndex, cellIndex)
+                            }
+                          >
+                            {cell}%
+                          </td>
+                        ))}
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
           </div>
         </>
       )}

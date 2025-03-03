@@ -106,7 +106,7 @@ export default function CotizadorForm() {
   };
 
   return (
-    <div className="relative bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+    <div className="relative bg-secondary dark:bg-grisOscuro p-6 rounded-lg shadow-lg">
       <form onSubmit={handleSubmit} className="">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <DatosPropiedad
@@ -132,7 +132,7 @@ export default function CotizadorForm() {
         <div className="mt-6 flex justify-center">
           <button
             type="submit"
-            className="px-6 py-3 bg-pink-600 text-white rounded-lg hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-opacity-50 transition-colors"
+            className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-rosaOscuro focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 transition-colors"
           >
             Guardar Cotización
           </button>

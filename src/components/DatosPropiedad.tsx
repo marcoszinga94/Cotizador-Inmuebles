@@ -20,12 +20,12 @@ export const DatosPropiedad: React.FC<DatosPropiedadProps> = ({
 }) => {
   return (
     <div className="space-y-4">
-      <h2 className="text-xl font-bold mb-4 text-pink-800 text-center">
+      <h2 className="text-xl font-bold mb-4 text-rosaOscuro text-center">
         Datos de la Propiedad
       </h2>
 
       <div className="mb-4">
-        <label className="block text-sm font-medium mb-1 text-gray-700">
+        <label className="block text-sm font-medium mb-1 text-grisOscuro">
           Propietario
         </label>
         <input
@@ -33,8 +33,8 @@ export const DatosPropiedad: React.FC<DatosPropiedadProps> = ({
           name="propiedad"
           value={formData.propiedad}
           onChange={handleInputChange}
-          className={`w-full p-2 border rounded focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-all ${
-            errors.propiedad ? "border-red-500" : "border-gray-300"
+          className={`w-full p-2 border rounded focus:ring-2 focus:ring-rosaSuave focus:border-rosaSuave transition-all ${
+            errors.propiedad ? "border-rosaOscuro" : "border-grisSuave"
           }`}
           placeholder="Nombre y Apellido"
           aria-label="Nombre del propietario"
@@ -42,14 +42,14 @@ export const DatosPropiedad: React.FC<DatosPropiedadProps> = ({
           aria-describedby={errors.propiedad ? "propiedad-error" : undefined}
         />
         {errors.propiedad && (
-          <p id="propiedad-error" className="text-red-500 text-xs mt-1">
+          <p id="propiedad-error" className="text-rosaOscuro text-xs mt-1">
             {errors.propiedad}
           </p>
         )}
       </div>
 
       <div className="mb-4">
-        <label className="block text-sm font-medium mb-1 text-gray-700">
+        <label className="block text-sm font-medium mb-1 text-grisOscuro">
           Ubicación
         </label>
         <input
@@ -57,8 +57,8 @@ export const DatosPropiedad: React.FC<DatosPropiedadProps> = ({
           name="terreno"
           value={formData.terreno}
           onChange={handleInputChange}
-          className={`w-full p-2 border rounded focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-all ${
-            errors.terreno ? "border-red-500" : "border-gray-300"
+          className={`w-full p-2 border rounded focus:ring-2 focus:ring-rosaSuave focus:border-rosaSuave transition-all ${
+            errors.terreno ? "border-rosaOscuro" : "border-grisSuave"
           }`}
           placeholder="Calle y Altura"
           aria-label="Ubicación del terreno"
@@ -66,7 +66,7 @@ export const DatosPropiedad: React.FC<DatosPropiedadProps> = ({
           aria-describedby={errors.terreno ? "terreno-error" : undefined}
         />
         {errors.terreno && (
-          <p id="terreno-error" className="text-red-500 text-xs mt-1">
+          <p id="terreno-error" className="text-rosaOscuro text-xs mt-1">
             {errors.terreno}
           </p>
         )}
@@ -74,7 +74,7 @@ export const DatosPropiedad: React.FC<DatosPropiedadProps> = ({
 
       <div className="grid grid-cols-2 gap-4">
         <div className="mb-4">
-          <label className="block text-sm font-medium mb-1 text-gray-700">
+          <label className="block text-sm font-medium mb-1 text-grisOscuro">
             Valor Residual ($)
           </label>
           <input
@@ -82,8 +82,8 @@ export const DatosPropiedad: React.FC<DatosPropiedadProps> = ({
             name="valorResidual"
             value={formData.valorResidual}
             onChange={handleInputChange}
-            className={`w-full p-2 border rounded focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-all ${
-              errors.valorResidual ? "border-red-500" : "border-gray-300"
+            className={`w-full p-2 border rounded focus:ring-2 focus:ring-rosaSuave focus:border-rosaSuave transition-all ${
+              errors.valorResidual ? "border-rosaOscuro" : "border-grisSuave"
             }`}
             placeholder="Valor Residual"
             aria-label="Valor residual de la propiedad"
@@ -95,18 +95,21 @@ export const DatosPropiedad: React.FC<DatosPropiedadProps> = ({
             }
           />
           {errors.valorResidual ? (
-            <p id="valorResidual-error" className="text-red-500 text-xs mt-1">
+            <p
+              id="valorResidual-error"
+              className="text-rosaOscuro text-xs mt-1"
+            >
               {errors.valorResidual}
             </p>
           ) : (
-            <p id="valorResidual-desc" className="text-xs text-gray-500 mt-1">
+            <p id="valorResidual-desc" className="text-xs text-grisOscuro mt-1">
               Valor que tiene un activo al final de su vida útil
             </p>
           )}
         </div>
 
         <div className="mb-4">
-          <label className="block text-sm font-medium mb-1 text-gray-700">
+          <label className="block text-sm font-medium mb-1 text-grisOscuro">
             Valor Reposición ($)
           </label>
           <input
@@ -114,8 +117,8 @@ export const DatosPropiedad: React.FC<DatosPropiedadProps> = ({
             name="valorReposicion"
             value={formData.valorReposicion}
             onChange={handleInputChange}
-            className={`w-full p-2 border rounded focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-all ${
-              errors.valorReposicion ? "border-red-500" : "border-gray-300"
+            className={`w-full p-2 border rounded focus:ring-2 focus:ring-rosaSuave focus:border-rosaSuave transition-all ${
+              errors.valorReposicion ? "border-rosaOscuro" : "border-grisSuave"
             }`}
             placeholder="Valor de Reposición"
             aria-label="Valor de reposición de la propiedad"
@@ -127,11 +130,17 @@ export const DatosPropiedad: React.FC<DatosPropiedadProps> = ({
             }
           />
           {errors.valorReposicion ? (
-            <p id="valorReposicion-error" className="text-red-500 text-xs mt-1">
+            <p
+              id="valorReposicion-error"
+              className="text-rosaOscuro text-xs mt-1"
+            >
               {errors.valorReposicion}
             </p>
           ) : (
-            <p id="valorReposicion-desc" className="text-xs text-gray-500 mt-1">
+            <p
+              id="valorReposicion-desc"
+              className="text-xs text-grisOscuro mt-1"
+            >
               Costo de reemplazar un activo con otro de características
               similares
             </p>
@@ -141,7 +150,7 @@ export const DatosPropiedad: React.FC<DatosPropiedadProps> = ({
 
       <div className="grid grid-cols-2 gap-4">
         <div className="mb-4">
-          <label className="block text-sm font-medium mb-1 text-gray-700">
+          <label className="block text-sm font-medium mb-1 text-grisOscuro">
             Años de Propiedad
           </label>
           <input
@@ -149,8 +158,8 @@ export const DatosPropiedad: React.FC<DatosPropiedadProps> = ({
             name="anosPropiedad"
             value={formData.anosPropiedad}
             onChange={handleInputChange}
-            className={`w-full p-2 border rounded focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-all ${
-              errors.anosPropiedad ? "border-red-500" : "border-gray-300"
+            className={`w-full p-2 border rounded focus:ring-2 focus:ring-rosaSuave focus:border-rosaSuave transition-all ${
+              errors.anosPropiedad ? "border-rosaOscuro" : "border-grisSuave"
             }`}
             min="0"
             max="99"
@@ -161,22 +170,25 @@ export const DatosPropiedad: React.FC<DatosPropiedadProps> = ({
             }
           />
           {errors.anosPropiedad && (
-            <p id="anosPropiedad-error" className="text-red-500 text-xs mt-1">
+            <p
+              id="anosPropiedad-error"
+              className="text-rosaOscuro text-xs mt-1"
+            >
               {errors.anosPropiedad}
             </p>
           )}
         </div>
 
         <div className="mb-4">
-          <label className="block text-sm font-medium mb-1 text-gray-700">
+          <label className="block text-sm font-medium mb-1 text-grisOscuro">
             Estado de Propiedad
           </label>
           <select
             name="estadoPropiedad"
             value={formData.estadoPropiedad}
             onChange={handleInputChange}
-            className={`w-full p-2 border rounded focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-all ${
-              errors.estadoPropiedad ? "border-red-500" : "border-gray-300"
+            className={`w-full p-2 border rounded focus:ring-2 focus:ring-rosaSuave focus:border-rosaSuave transition-all ${
+              errors.estadoPropiedad ? "border-rosaOscuro" : "border-grisSuave"
             }`}
             aria-label="Estado de la propiedad"
             aria-invalid={!!errors.estadoPropiedad}
@@ -192,7 +204,10 @@ export const DatosPropiedad: React.FC<DatosPropiedadProps> = ({
             ))}
           </select>
           {errors.estadoPropiedad && (
-            <p id="estadoPropiedad-error" className="text-red-500 text-xs mt-1">
+            <p
+              id="estadoPropiedad-error"
+              className="text-rosaOscuro text-xs mt-1"
+            >
               {errors.estadoPropiedad}
             </p>
           )}
@@ -200,7 +215,7 @@ export const DatosPropiedad: React.FC<DatosPropiedadProps> = ({
       </div>
 
       <div className="mb-4">
-        <label className="block text-sm font-medium mb-1 text-gray-700">
+        <label className="block text-sm font-medium mb-1 text-grisOscuro">
           Coeficiente K (%)
         </label>
         <input
@@ -208,10 +223,10 @@ export const DatosPropiedad: React.FC<DatosPropiedadProps> = ({
           name="coeficienteK"
           value={coeficienteK.toFixed(3) + "%"}
           readOnly
-          className="w-full p-2 border border-gray-300 rounded bg-gray-100 cursor-not-allowed"
+          className="w-full p-2 border border-grisSuave rounded bg-grisSuave cursor-not-allowed"
           aria-label="Coeficiente K"
         />
-        <p className="text-xs text-gray-500 mt-1">
+        <p className="text-xs text-grisOscuro mt-1">
           Valor obtenido de la tabla Ross-Heidecke según la edad y estado de la
           propiedad
         </p>

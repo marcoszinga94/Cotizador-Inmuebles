@@ -193,12 +193,14 @@ export default function TablaRossHeidecke() {
   };
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-lg overflow-x-auto">
+    <div className="bg-secondary p-6 rounded-lg shadow-lg overflow-x-auto">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-bold text-pink-800">Tabla Ross-Heidecke</h2>
+        <h2 className="text-xl font-bold text-rosaOscuro">
+          Tabla Ross-Heidecke
+        </h2>
         <button
           onClick={toggleTableVisibility}
-          className="px-4 py-2 bg-pink-600 text-white rounded-md hover:bg-pink-700 transition-colors flex items-center"
+          className="px-4 py-2 bg-primary text-secondary rounded-md hover:rosaOscuro transition-colors flex items-center"
         >
           {isTableVisible ? (
             <>
@@ -242,14 +244,14 @@ export default function TablaRossHeidecke() {
             <div className="flex items-center">
               <label
                 htmlFor="search"
-                className="mr-2 text-sm font-medium text-gray-700"
+                className="mr-2 text-sm font-medium text-grisOscuro"
               >
                 Buscar valor:
               </label>
               <input
                 type="text"
                 id="search"
-                className="border border-gray-300 rounded-md px-3 py-1 text-sm focus:ring-pink-500 focus:border-pink-500"
+                className="border border-grisSuave rounded-md px-3 py-1 text-sm focus:ring-primary focus:border-primary"
                 placeholder="Ej: 25.5"
                 value={searchValue}
                 onChange={handleSearch}
@@ -258,17 +260,17 @@ export default function TablaRossHeidecke() {
           </div>
 
           <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-            <table className="w-full text-sm text-left text-gray-700">
-              <thead className="text-xs text-white uppercase bg-pink-700">
+            <table className="w-full text-sm text-left text-grisOscuro">
+              <thead className="text-xs text-secondary uppercase bg-rosaOscuro">
                 <tr>
-                  <th className="py-3 px-4 sticky left-0 bg-pink-700 z-10">
+                  <th className="py-3 px-4 sticky left-0 bg-rosaOscuro z-10">
                     Edad (años)
                   </th>
                   {colLabels.map((label, index) => (
                     <th
                       key={index}
                       className={`py-3 px-4 text-center ${
-                        activeCol === index ? "bg-pink-800" : ""
+                        activeCol === index ? "bg-rosaOscuro" : ""
                       }`}
                     >
                       {label}
@@ -282,9 +284,9 @@ export default function TablaRossHeidecke() {
                   return (
                     <tr
                       key={actualRowIndex}
-                      className={`border-b ${
-                        rowIndex % 2 === 0 ? "bg-gray-50" : "bg-white"
-                      } ${activeRow === actualRowIndex ? "bg-pink-50" : ""}`}
+                      className={`border-b bg-secondary ${
+                        activeRow === actualRowIndex ? "bg-rosaSuave" : ""
+                      }`}
                       onMouseEnter={() => setActiveRow(actualRowIndex)}
                       onMouseLeave={handleMouseLeave}
                     >
@@ -296,7 +298,7 @@ export default function TablaRossHeidecke() {
                           key={cellIndex}
                           className={`py-3 px-4 text-center ${
                             isCellHighlighted(actualRowIndex, cellIndex)
-                              ? "bg-yellow-200 font-bold"
+                              ? "bg-rosaSuave font-bold"
                               : activeRow === actualRowIndex &&
                                 activeCol === cellIndex
                               ? "bg-pink-200 font-bold"

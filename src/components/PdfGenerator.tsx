@@ -477,7 +477,7 @@ export default function PdfGenerator(props: PdfGeneratorProps) {
     return (
       <button
         disabled
-        className="w-full bg-gray-400 text-white font-bold py-2 px-4 rounded cursor-not-allowed flex items-center justify-center"
+        className="w-full bg-grisSuave text-secondary font-bold py-2 px-4 rounded cursor-not-allowed flex items-center justify-center"
       >
         <svg
           className="w-5 h-5 mr-2"
@@ -502,14 +502,14 @@ export default function PdfGenerator(props: PdfGeneratorProps) {
     <PDFDownloadLink
       document={<TasacionPDF {...props} />}
       fileName={fileName}
-      className="w-full bg-pink-600 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded transition-colors duration-300 flex items-center justify-center"
+      className="w-full bg-primary hover:bg-rosaOscuro text-secondary font-bold py-2 px-4 rounded transition-colors duration-300 flex items-center justify-center"
       style={{ textDecoration: "none" }}
     >
       {({ loading }) =>
         loading ? (
           <>
             <svg
-              className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+              className="animate-spin -ml-1 mr-3 h-5 w-5 text-secondary"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"

@@ -5,32 +5,12 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: {
-          50: '#fdf2f8',
-          100: '#fce7f3',
-          200: '#fbcfe8',
-          300: '#f9a8d4',
-          400: '#f472b6',
-          500: '#ec4899',
-          600: '#db2777',
-          700: '#be185d',
-          800: '#9d174d',
-          900: '#831843',
-          950: '#500724',
-        },
-        blue: {
-          50: '#fdf2f8',
-          100: '#fce7f3',
-          200: '#fbcfe8',
-          300: '#f9a8d4',
-          400: '#f472b6',
-          500: '#ec4899',
-          600: '#db2777',
-          700: '#be185d',
-          800: '#9d174d',
-          900: '#831843',
-          950: '#500724',
-        },
+        primary: '#db2777',   //rosado
+        secondary: '#ffffff', //blanco
+        grisSuave: '#d1d5db',//gris claro
+        grisOscuro: '#1f2937',//gris oscuro
+        rosaSuave: '#fce7f3', //rosa suave
+        rosaOscuro: '#be185d', //rosa oscura
       },
       animation: {
         'spin-slow': 'spin 3s linear infinite',

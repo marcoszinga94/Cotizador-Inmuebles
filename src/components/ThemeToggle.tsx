@@ -44,14 +44,14 @@ export const ThemeToggle: React.FC = () => {
   return (
     <button
       onClick={toggleTheme}
-      className="p-2 rounded-full focus:outline-none focus:ring-2 focus:ring-pink-500 transition-colors"
+      className="p-2 rounded-full focus:outline-none focus:ring-2 focus:ring-primary transition-colors"
       aria-label={darkMode ? "Cambiar a modo claro" : "Cambiar a modo oscuro"}
     >
       {darkMode ? (
         // Icono de sol para modo claro
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="h-6 w-6 text-yellow-300"
+          className="h-6 w-6 text-rosaSuave"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -67,7 +67,7 @@ export const ThemeToggle: React.FC = () => {
         // Icono de luna para modo oscuro
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="h-6 w-6 text-pink-800"
+          className="h-6 w-6 text-rosaSuave"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"

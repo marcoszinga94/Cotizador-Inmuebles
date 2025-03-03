@@ -9,7 +9,7 @@ interface Props {
 const { showSocialLinks = true, showContactInfo = true } = Astro.props;
 ---
 
-<footer class="bg-pink-600 text-white py-8 mt-12">
+<footer class="bg-primary text-secondary py-8 mt-12">
   <div class="container mx-auto px-4">
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
       <!-- Logo y descripción -->
@@ -30,7 +30,7 @@ const { showSocialLinks = true, showContactInfo = true } = Astro.props;
           </svg>
           <span class="font-bold">Cotizador de Propiedades</span>
         </div>
-        <p class="text-sm text-gray-300 text-center md:text-left">
+        <p class="text-sm text-textoSuave text-center md:text-left">
           Herramienta profesional para la valoración de propiedades
           inmobiliarias utilizando métodos precisos y actualizados.
         </p>
@@ -44,7 +44,7 @@ const { showSocialLinks = true, showContactInfo = true } = Astro.props;
         showContactInfo && (
           <div class="flex flex-col items-center md:items-start">
             <h3 class="text-lg font-semibold mb-4">Contacto</h3>
-            <ul class="space-y-2 text-sm text-gray-300">
+            <ul class="space-y-2 text-sm text-text">
               <li class="flex items-center">
                 <svg
                   class="w-4 h-4 mr-2"
@@ -108,7 +108,7 @@ const { showSocialLinks = true, showContactInfo = true } = Astro.props;
     <div
       class="border-t border-gray-700 mt-8 pt-6 flex flex-col md:flex-row justify-between items-center"
     >
-      <p class="text-sm text-gray-300 mb-4 md:mb-0">
+      <p class="text-sm text-text mb-4 md:mb-0">
         &copy; {currentYear} Cotizador de Propiedades. Bottos Servicios Inmobiliarios.
       </p>
 
@@ -118,7 +118,7 @@ const { showSocialLinks = true, showContactInfo = true } = Astro.props;
             <a
               href="https://github.com/marcoszinga94/Propiedades-Cotizador"
               target="_blank"
-              class="text-gray-300 hover:text-white transition-colors"
+              class="text-text hover:text-secondary transition-colors"
             >
               <span class="sr-only">GitHub</span>
               <svg

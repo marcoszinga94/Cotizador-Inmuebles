@@ -13,13 +13,13 @@
         }
 
         path {
-            stroke: #2563EB;
+            stroke: #db2777;
             fill: #EFF6FF;
         }
 
         @media (prefers-color-scheme: dark) {
             path {
-                stroke: #60A5FA;
+                stroke: #db2777;
                 fill: #1E3A8A;
             }
         }

@@ -1,4 +1,6 @@
 ---
+import Logo from "./Logo.astro";
+
 const currentYear = new Date().getFullYear();
 
 interface Props {
@@ -16,22 +18,8 @@ const { showSocialLinks = true, showContactInfo = true } = Astro.props;
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
       <!-- Logo y descripción -->
       <div class="flex flex-col items-center md:items-start">
-        <div class="flex items-center gap-2 mb-3">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-6 w-6"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-            <polyline points="9 22 9 12 15 12 15 22"></polyline>
-          </svg>
-          <span class="font-bold">Cotizador de Propiedades</span>
-        </div>
+        <Logo />
+
         <div class="flex flex-col items-center md:items-start gap-4">
           <p
             class="text-sm text-grisClaro dark:text-secondary text-center md:text-left"
@@ -51,22 +39,35 @@ const { showSocialLinks = true, showContactInfo = true } = Astro.props;
               href="https://marcoszinga.vercel.app/"
               target="_blank"
               rel="noopener noreferrer"
-              class="text-secondary hover:text-secondary transition-all"
-              >Marcos Zingaretti</a
+              class="text-secondary">Marcos Zingaretti</a
             >
           </p>
         </div>
       </div>
 
       <!-- Enlaces rápidos -->
-      <div class="flex flex-col items-center md:items-start"></div>
+      <div class="flex flex-col items-center md:items-start">
+        <h3 class="text-lg font-semibold mb-3">Enlaces Útiles</h3>
+        <ul class="flex flex-col">
+          <a
+            href="https://visualizadorcatastral.cba.gov.ar/"
+            target="_blank"
+            rel="noopener noreferrer">Catastro</a
+          >
+          <a
+            href="https://www.rentascordoba.gob.ar/emision/ver-y-pagar/inmobiliario"
+            target="_blank"
+            rel="noopener noreferrer">Rentas</a
+          >
+        </ul>
+      </div>
 
       <!-- Información de contacto -->
       {
         showContactInfo && (
           <div class="flex flex-col items-center md:items-start">
-            <h3 class="text-lg font-semibold mb-4">Contacto</h3>
-            <ul class="text-sm text-grisClaro dark:text-secondary gap-2">
+            <h3 class="text-lg font-semibold mb-3">Contacto</h3>
+            <ul class="text-sm text-secondary dark:text-secondary gap-2">
               <a
                 class="flex items-center"
                 href="mailto:yulianabottos96@gmail.com"
@@ -74,7 +75,7 @@ const { showSocialLinks = true, showContactInfo = true } = Astro.props;
                 rel="noopener noreferrer"
               >
                 <svg
-                  class="w-4 h-4 mr-2"
+                  class="size-4 mr-2"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -95,7 +96,7 @@ const { showSocialLinks = true, showContactInfo = true } = Astro.props;
                 rel="noopener noreferrer"
               >
                 <svg
-                  class="w-4 h-4 mr-2"
+                  class="size-4 mr-2"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -116,7 +117,7 @@ const { showSocialLinks = true, showContactInfo = true } = Astro.props;
                 rel="noopener noreferrer"
               >
                 <svg
-                  class="w-4 h-4 mr-2"
+                  class="size-4 mr-2"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"

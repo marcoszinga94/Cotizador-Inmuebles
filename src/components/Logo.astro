@@ -1,0 +1,48 @@
+<div class="flex gap-3">
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    class="size-8"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+  </svg>
+  <h1 class="text-xl font-bold relative">Cotizador de Propiedades</h1>
+</div>
+
+<style>
+  h1 {
+    position: relative;
+    display: inline-block;
+  }
+
+  h1::after {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0px;
+    left: 0;
+    background-color: currentColor;
+    transition: width 0.3s ease-in-out;
+  }
+
+  h1:hover::after {
+    width: 100%;
+  }
+
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-5px);
+    }
+  }
+</style>

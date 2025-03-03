@@ -9,12 +9,14 @@ interface Props {
 const { showSocialLinks = true, showContactInfo = true } = Astro.props;
 ---
 
-<footer class="bg-primary text-secondary py-8 mt-12">
-  <div class="container mx-auto px-4">
+<footer
+  class="bg-primary text-secondary py-8 mt-12 dark:bg-negro dark:text-grisClaro"
+>
+  <div class="container mx-auto px-6">
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
       <!-- Logo y descripción -->
       <div class="flex flex-col items-center md:items-start">
-        <div class="flex items-center space-x-2 mb-3">
+        <div class="flex items-center gap-2 mb-3">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             class="h-6 w-6"
@@ -31,19 +33,25 @@ const { showSocialLinks = true, showContactInfo = true } = Astro.props;
           <span class="font-bold">Cotizador de Propiedades</span>
         </div>
         <div class="flex flex-col items-center md:items-start gap-4">
-          <p class="text-sm text-grisSuave text-center md:text-left">
+          <p
+            class="text-sm text-grisClaro dark:text-secondary text-center md:text-left"
+          >
             Herramienta profesional para la valoración de propiedades
             inmobiliarias utilizando métodos precisos y actualizados.
           </p>
-          <p class="text-sm text-grisSuave text-center md:text-left">
+          <p
+            class="text-sm text-grisClaro dark:text-secondary text-center md:text-left"
+          >
             Brindado por Bottos Servicios Inmobiliarios.
           </p>
-          <p class="text-sm text-grisSuave text-center md:text-left">
+          <p
+            class="text-sm text-grisClaro dark:text-secondary text-center md:text-left"
+          >
             Desarrollado por <a
               href="https://marcoszinga.vercel.app/"
               target="_blank"
               rel="noopener noreferrer"
-              class="text-secondary hover:text-secondary transition-alls"
+              class="text-secondary hover:text-secondary transition-all"
               >Marcos Zingaretti</a
             >
           </p>
@@ -58,7 +66,7 @@ const { showSocialLinks = true, showContactInfo = true } = Astro.props;
         showContactInfo && (
           <div class="flex flex-col items-center md:items-start">
             <h3 class="text-lg font-semibold mb-4">Contacto</h3>
-            <ul class="space-y-2 text-sm text-grisSuave gap-2">
+            <ul class="text-sm text-grisClaro dark:text-secondary gap-2">
               <a
                 class="flex items-center"
                 href="mailto:yulianabottos96@gmail.com"
@@ -135,19 +143,19 @@ const { showSocialLinks = true, showContactInfo = true } = Astro.props;
     </div>
 
     <div
-      class="border-t border-gray-700 mt-8 pt-6 flex flex-col md:flex-row justify-between items-center"
+      class="border-t border-secondary0 mt-8 pt-6 flex flex-col md:flex-row justify-between items-center"
     >
-      <p class="text-sm text-grisSuave mb-4 md:mb-0">
+      <p class="text-sm text-grisClaro dark:text-secondary mb-4 md:mb-0">
         &copy; {currentYear} Cotizador de Propiedades. Bottos Servicios Inmobiliarios.
       </p>
 
       {
         showSocialLinks && (
-          <div class="flex space-x-4">
+          <div class="flex gap-4">
             <a
               href="https://github.com/marcoszinga94/Propiedades-Cotizador"
               target="_blank"
-              class="text-grisSuave hover:text-secondary transition-alls"
+              class="text-grisClaro hover:text-secondary dark:text-secondary dark:hover:text-grisClaro transition-all"
             >
               <span class="sr-only">GitHub</span>
               <svg

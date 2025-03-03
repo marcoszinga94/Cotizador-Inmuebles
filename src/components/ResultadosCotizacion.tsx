@@ -28,31 +28,37 @@ export const ResultadosCotizacion: React.FC<ResultadosCotizacionProps> = ({
   };
 
   return (
-    <div className="mt-6 p-6 bg-rosaSuave rounded-lg shadow-sm">
-      <h3 className="font-bold text-lg mb-4 text-rosaOscuro">Resultados</h3>
+    <div className="mt-6 p-6 bg-rosaClaro rounded-lg shadow-sm">
+      <h3 className="font-bold text-lg mb-4 text-rosaOscuro text-center">
+        Resultados
+      </h3>
 
       <div className="grid grid-cols-2 gap-3">
-        <div className="text-sm font-medium text-grisOscuro">Valor Actual:</div>
-        <div className="text-sm font-semibold text-grisOscuro">
+        <div className="text-sm font-medium text-grisOscuro text-start">
+          Valor Actual:
+        </div>
+        <div className="text-sm font-semibold text-grisOscuro text-end">
           {formatCurrency(valorActual)}
         </div>
 
-        <div className="text-sm font-medium text-grisOscuro">
+        <div className="text-sm font-medium text-grisOscuro text-start">
           Valor Terreno:
         </div>
-        <div className="text-sm font-semibold text-grisOscuro">
+        <div className="text-sm font-semibold text-grisOscuro text-end">
           {formatCurrency(valorTerreno)}
         </div>
 
-        <div className="text-sm font-bold mt-2 text-rosaOscuro">
+        <div className="text-lg font-bold text-rosaOscuro text-start">
           VALOR TOTAL:
         </div>
-        <div className="text-lg font-bold mt-2 text-rosaOscuro">
+        <div className="text-lg font-bold text-rosaOscuro text-end">
           {formatCurrency(valorTotal)}
         </div>
 
-        <div className="text-sm font-medium text-grisOscuro">Dólares:</div>
-        <div className="text-sm font-semibold text-grisOscuro">
+        <div className="text-lg font-bold text-verdeDolar text-start">
+          En dólares:
+        </div>
+        <div className="text-lg font-bold text-verdeDolar text-end">
           US$ {valorTotalDolares.toFixed(2)}
         </div>
       </div>

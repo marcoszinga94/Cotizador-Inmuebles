@@ -23,35 +23,39 @@ export const ThemeToggle: React.FC = () => {
 
       if (prefersDark) {
         document.documentElement.classList.add("dark");
+        localStorage.setItem("theme", "dark");
+      } else {
+        localStorage.setItem("theme", "light");
       }
     }
   }, []);
 
   const toggleTheme = () => {
-    setDarkMode(!darkMode);
+    const newDarkMode = !darkMode;
+    setDarkMode(newDarkMode);
 
-    if (darkMode) {
-      // Cambiar a modo claro
-      document.documentElement.classList.remove("dark");
-      localStorage.setItem("theme", "light");
-    } else {
+    if (newDarkMode) {
       // Cambiar a modo oscuro
       document.documentElement.classList.add("dark");
       localStorage.setItem("theme", "dark");
+    } else {
+      // Cambiar a modo claro
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem("theme", "light");
     }
   };
 
   return (
     <button
       onClick={toggleTheme}
-      className="p-2 rounded-full focus:outline-none focus:ring-2 focus:ring-primary transition-alls"
+      className="p-2 rounded-full focus:outline-none focus:ring-2 focus:ring-primary transition-all"
       aria-label={darkMode ? "Cambiar a modo claro" : "Cambiar a modo oscuro"}
     >
       {darkMode ? (
         // Icono de sol para modo claro
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="h-6 w-6 text-rosaSuave"
+          className="h-6 w-6 text-rosaClaro"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -67,7 +71,7 @@ export const ThemeToggle: React.FC = () => {
         // Icono de luna para modo oscuro
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="h-6 w-6 text-rosaSuave"
+          className="h-6 w-6 text-rosaClaro"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"

@@ -477,7 +477,7 @@ export default function PdfGenerator(props: PdfGeneratorProps) {
     return (
       <button
         disabled
-        className="w-full bg-grisSuave text-secondary font-bold py-2 px-4 rounded cursor-not-allowed flex items-center justify-center"
+        className="w-full bg-grisClaro text-secondary font-bold py-2 px-4 rounded cursor-not-allowed flex items-center justify-center"
       >
         <svg
           className="w-5 h-5 mr-2"

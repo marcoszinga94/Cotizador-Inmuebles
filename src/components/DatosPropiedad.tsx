@@ -33,8 +33,8 @@ export const DatosPropiedad: React.FC<DatosPropiedadProps> = ({
           name="propiedad"
           value={formData.propiedad}
           onChange={handleInputChange}
-          className={`w-full p-2 border rounded focus:ring-2 focus:ring-rosaSuave focus:border-rosaSuave transition-all ${
-            errors.propiedad ? "border-rosaOscuro" : "border-grisSuave"
+          className={`w-full p-2 border rounded focus:ring-2 focus:ring-rosaClaro focus:border-rosaClaro transition-all ${
+            errors.propiedad ? "border-rosaOscuro" : "border-grisClaro"
           }`}
           placeholder="Nombre y Apellido"
           aria-label="Nombre del propietario"
@@ -57,8 +57,8 @@ export const DatosPropiedad: React.FC<DatosPropiedadProps> = ({
           name="terreno"
           value={formData.terreno}
           onChange={handleInputChange}
-          className={`w-full p-2 border rounded focus:ring-2 focus:ring-rosaSuave focus:border-rosaSuave transition-all ${
-            errors.terreno ? "border-rosaOscuro" : "border-grisSuave"
+          className={`w-full p-2 border rounded focus:ring-2 focus:ring-rosaClaro focus:border-rosaClaro transition-all ${
+            errors.terreno ? "border-rosaOscuro" : "border-grisClaro"
           }`}
           placeholder="Calle y Altura"
           aria-label="Ubicación del terreno"
@@ -75,15 +75,15 @@ export const DatosPropiedad: React.FC<DatosPropiedadProps> = ({
       <div className="grid grid-cols-2 gap-4">
         <div className="mb-4">
           <label className="block text-sm font-medium mb-1 text-rosaOscuro">
-            Valor Residual ($)
+            Valor Residual en ARS
           </label>
           <input
             type="number"
             name="valorResidual"
             value={formData.valorResidual}
             onChange={handleInputChange}
-            className={`w-full p-2 border rounded focus:ring-2 focus:ring-rosaSuave focus:border-rosaSuave transition-all ${
-              errors.valorResidual ? "border-rosaOscuro" : "border-grisSuave"
+            className={`w-full p-2 border rounded focus:ring-2 focus:ring-rosaClaro focus:border-rosaClaro transition-all ${
+              errors.valorResidual ? "border-rosaOscuro" : "border-grisClaro"
             }`}
             placeholder="Valor Residual"
             aria-label="Valor residual de la propiedad"
@@ -110,15 +110,15 @@ export const DatosPropiedad: React.FC<DatosPropiedadProps> = ({
 
         <div className="mb-4">
           <label className="block text-sm font-medium mb-1 text-rosaOscuro">
-            Valor Reposición ($)
+            Valor Reposición en ARS
           </label>
           <input
             type="number"
             name="valorReposicion"
             value={formData.valorReposicion}
             onChange={handleInputChange}
-            className={`w-full p-2 border rounded focus:ring-2 focus:ring-rosaSuave focus:border-rosaSuave transition-all ${
-              errors.valorReposicion ? "border-rosaOscuro" : "border-grisSuave"
+            className={`w-full p-2 border rounded focus:ring-2 focus:ring-rosaClaro focus:border-rosaClaro transition-all ${
+              errors.valorReposicion ? "border-rosaOscuro" : "border-grisClaro"
             }`}
             placeholder="Valor de Reposición"
             aria-label="Valor de reposición de la propiedad"
@@ -158,8 +158,8 @@ export const DatosPropiedad: React.FC<DatosPropiedadProps> = ({
             name="anosPropiedad"
             value={formData.anosPropiedad}
             onChange={handleInputChange}
-            className={`w-full p-2 border rounded focus:ring-2 focus:ring-rosaSuave focus:border-rosaSuave transition-all ${
-              errors.anosPropiedad ? "border-rosaOscuro" : "border-grisSuave"
+            className={`w-full p-2 border rounded focus:ring-2 focus:ring-rosaClaro focus:border-rosaClaro transition-all ${
+              errors.anosPropiedad ? "border-rosaOscuro" : "border-grisClaro"
             }`}
             min="0"
             max="99"
@@ -187,8 +187,8 @@ export const DatosPropiedad: React.FC<DatosPropiedadProps> = ({
             name="estadoPropiedad"
             value={formData.estadoPropiedad}
             onChange={handleInputChange}
-            className={`w-full p-2 border rounded focus:ring-2 focus:ring-rosaSuave focus:border-rosaSuave transition-all ${
-              errors.estadoPropiedad ? "border-rosaOscuro" : "border-grisSuave"
+            className={`w-full p-2 border rounded focus:ring-2 focus:ring-rosaClaro focus:border-rosaClaro transition-all ${
+              errors.estadoPropiedad ? "border-rosaOscuro" : "border-grisClaro"
             }`}
             aria-label="Estado de la propiedad"
             aria-invalid={!!errors.estadoPropiedad}
@@ -223,7 +223,7 @@ export const DatosPropiedad: React.FC<DatosPropiedadProps> = ({
           name="coeficienteK"
           value={coeficienteK.toFixed(3) + "%"}
           readOnly
-          className="w-full p-2 border border-grisSuave rounded bg-grisSuave cursor-not-allowed"
+          className="w-full p-2 border border-grisClaro rounded bg-grisClaro cursor-not-allowed"
           aria-label="Coeficiente K"
         />
         <p className="text-xs text-rosaOscuro mt-1">

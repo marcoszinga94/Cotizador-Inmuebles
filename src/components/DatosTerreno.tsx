@@ -27,7 +27,7 @@ export const DatosTerreno: React.FC<DatosTerrenoProps> = ({
 
       <div className="grid grid-cols-2 gap-4">
         <div className="mb-4">
-          <label className="block text-sm font-medium mb-1 text-grisOscuro">
+          <label className="block text-sm font-medium mb-1 text-primary">
             Cantidad de m²
           </label>
           <input
@@ -36,7 +36,7 @@ export const DatosTerreno: React.FC<DatosTerrenoProps> = ({
             value={formData.cantidadM2}
             onChange={handleInputChange}
             className={`w-full p-2 border rounded focus:ring-2 focus:ring-primary focus:border-primary transition-all ${
-              errors.cantidadM2 ? "border-rosaOscuro" : "border-grisSuave"
+              errors.cantidadM2 ? "border-rosaOscuro" : "border-grisClaro"
             }`}
             placeholder="Metros cuadrados"
             aria-label="Cantidad de metros cuadrados"
@@ -53,7 +53,7 @@ export const DatosTerreno: React.FC<DatosTerrenoProps> = ({
         </div>
 
         <div className="mb-4">
-          <label className="block text-sm font-medium mb-1 text-grisOscuro">
+          <label className="block text-sm font-medium mb-1 text-primary">
             Valor del m² en ARS
           </label>
           <input
@@ -62,7 +62,7 @@ export const DatosTerreno: React.FC<DatosTerrenoProps> = ({
             value={formData.valorM2}
             onChange={handleInputChange}
             className={`w-full p-2 border rounded focus:ring-2 focus:ring-primary focus:border-primary transition-all ${
-              errors.valorM2 ? "border-rosaOscuro" : "border-grisSuave"
+              errors.valorM2 ? "border-rosaOscuro" : "border-grisClaro"
             }`}
             placeholder="Valor por metro cuadrado"
             aria-label="Valor por metro cuadrado"
@@ -80,7 +80,7 @@ export const DatosTerreno: React.FC<DatosTerrenoProps> = ({
       <div className="mb-4">
         <div className="flex items-end gap-2">
           <div className="flex-grow">
-            <label className="block text-sm font-medium mb-1 text-grisOscuro">
+            <label className="block text-sm font-medium mb-1 text-primary">
               Dólar Hoy ($)
             </label>
             <input
@@ -89,8 +89,8 @@ export const DatosTerreno: React.FC<DatosTerrenoProps> = ({
               value={formData.dolarHoy}
               onChange={handleInputChange}
               readOnly
-              className={`w-full p-2 border border-grisSuave rounded bg-grisSuave cursor-not-allowed ${
-                errors.dolarHoy ? "border-rosaOscuro" : "border-grisSuave"
+              className={`w-full p-2 border border-grisClaro rounded bg-grisClaro cursor-not-allowed ${
+                errors.dolarHoy ? "border-rosaOscuro" : "border-grisClaro"
               }`}
               placeholder="Valor del dólar"
               aria-label="Valor del dólar hoy"

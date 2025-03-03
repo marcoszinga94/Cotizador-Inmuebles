@@ -27,7 +27,7 @@ export const HistorialCotizaciones: React.FC<HistorialCotizacionesProps> = ({
 
   if (historial.length === 0) {
     return (
-      <div className="mt-8 p-4 bg-grisSuave rounded-lg text-center text-grisOscuro">
+      <div className="mt-8 p-4 bg-grisClaro rounded-lg text-center text-grisOscuro">
         No hay cotizaciones guardadas en el historial.
       </div>
     );
@@ -51,7 +51,7 @@ export const HistorialCotizaciones: React.FC<HistorialCotizacionesProps> = ({
           </thead>
           <tbody className="divide-y divide-gray-200">
             {historial.map((item) => (
-              <tr key={item.id} className="hover:bg-grisSuave transition-alls">
+              <tr key={item.id} className="hover:bg-grisClaro transition-alls">
                 <td className="py-3 px-4">{item.fecha}</td>
                 <td className="py-3 px-4">{item.propiedad}</td>
                 <td className="py-3 px-4">{item.terreno}</td>

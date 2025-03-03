@@ -5,12 +5,14 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: '#db2777',   //rosado
-        secondary: '#ffffff', //blanco
-        grisSuave: '#d1d5db',//gris claro
-        grisOscuro: '#1f2937',//gris oscuro
-        rosaSuave: '#fce7f3', //rosa suave
-        rosaOscuro: '#be185d', //rosa oscura
+        primary: '#db2777',     //rosado
+        secondary: '#ffffff',   //blanco
+        grisClaro: '#d1d5db',   //gris claro
+        grisOscuro: '#1f2937',  //gris oscuro
+        rosaClaro: '#fce7f3',   //rosa suave
+        rosaOscuro: '#be185d',  //rosa oscura
+        negro: '#000000',       //negro
+        verdeDolar: '#278664',  //verde
       },
       animation: {
         'spin-slow': 'spin 3s linear infinite',

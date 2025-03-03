@@ -254,7 +254,7 @@ export default function TablaRossHeidecke() {
                 <input
                   type="text"
                   id="search"
-                  className="border border-grisSuave rounded-md px-3 py-1 text-sm focus:ring-primary focus:border-primary"
+                  className="border border-grisClaro rounded-md px-3 py-1 text-sm focus:ring-primary focus:border-primary"
                   placeholder="Ej: 25.5"
                   value={searchValue}
                   onChange={handleSearch}
@@ -288,7 +288,7 @@ export default function TablaRossHeidecke() {
                       <tr
                         key={actualRowIndex}
                         className={`border-b bg-secondary ${
-                          activeRow === actualRowIndex ? "bg-rosaSuave" : ""
+                          activeRow === actualRowIndex ? "bg-rosaClaro" : ""
                         }`}
                         onMouseEnter={() => setActiveRow(actualRowIndex)}
                         onMouseLeave={handleMouseLeave}
@@ -301,7 +301,7 @@ export default function TablaRossHeidecke() {
                             key={cellIndex}
                             className={`py-3 px-4 text-center ${
                               isCellHighlighted(actualRowIndex, cellIndex)
-                                ? "bg-rosaSuave font-bold"
+                                ? "bg-rosaClaro font-bold"
                                 : activeRow === actualRowIndex &&
                                   activeCol === cellIndex
                                 ? "bg-pink-200 font-bold"

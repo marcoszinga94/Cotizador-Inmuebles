@@ -102,7 +102,7 @@ export const DatosTerreno: React.FC<DatosTerrenoProps> = ({
             type="button"
             onClick={onCargarDolar}
             disabled={dolarLoading}
-            className="px-4 py-2 bg-primary text-secondary rounded hover:bg-rosaOscuro focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 transition-colors disabled:bg-pink-300"
+            className="px-4 py-2 bg-primary text-secondary rounded hover:bg-rosaOscuro focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 transition-alls disabled:bg-pink-300"
             aria-label="Cargar valor del dólar automáticamente"
           >
             {dolarLoading ? (

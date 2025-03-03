@@ -132,7 +132,7 @@ export default function CotizadorForm() {
         <div className="mt-6 flex justify-center">
           <button
             type="submit"
-            className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-rosaOscuro focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 transition-colors"
+            className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-rosaOscuro focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 transition-all"
           >
             Guardar Cotización
           </button>

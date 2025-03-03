@@ -51,10 +51,7 @@ export const HistorialCotizaciones: React.FC<HistorialCotizacionesProps> = ({
           </thead>
           <tbody className="divide-y divide-gray-200">
             {historial.map((item) => (
-              <tr
-                key={item.id}
-                className="hover:bg-grisSuave transition-colors"
-              >
+              <tr key={item.id} className="hover:bg-grisSuave transition-alls">
                 <td className="py-3 px-4">{item.fecha}</td>
                 <td className="py-3 px-4">{item.propiedad}</td>
                 <td className="py-3 px-4">{item.terreno}</td>
@@ -65,14 +62,14 @@ export const HistorialCotizaciones: React.FC<HistorialCotizacionesProps> = ({
                   <div className="flex justify-center space-x-2">
                     <button
                       onClick={() => onCargarCotizacion(item)}
-                      className="px-3 py-1 bg-primary text-secondary text-sm rounded hover:bg-rosaOscuro focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 transition-colors"
+                      className="px-3 py-1 bg-primary text-secondary text-sm rounded hover:bg-rosaOscuro focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 transition-alls"
                       aria-label={`Cargar cotización de ${item.propiedad}`}
                     >
                       Cargar
                     </button>
                     <button
                       onClick={() => onEliminarCotizacion(item.id)}
-                      className="px-3 py-1 bg-rosaOscuro text-secondary text-sm rounded hover:bg-rosaOscuro focus:outline-none focus:ring-2 focus:ring-rosaOscuro focus:ring-opacity-50 transition-colors"
+                      className="px-3 py-1 bg-rosaOscuro text-secondary text-sm rounded hover:bg-rosaOscuro focus:outline-none focus:ring-2 focus:ring-rosaOscuro focus:ring-opacity-50 transition-alls"
                       aria-label={`Eliminar cotización de ${item.propiedad}`}
                     >
                       Eliminar

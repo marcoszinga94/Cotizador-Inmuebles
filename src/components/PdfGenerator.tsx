@@ -502,7 +502,7 @@ export default function PdfGenerator(props: PdfGeneratorProps) {
     <PDFDownloadLink
       document={<TasacionPDF {...props} />}
       fileName={fileName}
-      className="w-full bg-primary hover:bg-rosaOscuro text-secondary font-bold py-2 px-4 rounded transition-colors duration-300 flex items-center justify-center"
+      className="w-full bg-primary hover:bg-rosaOscuro text-secondary font-bold py-2 px-4 rounded transition-alls duration-300 flex items-center justify-center"
       style={{ textDecoration: "none" }}
     >
       {({ loading }) =>

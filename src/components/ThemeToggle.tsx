@@ -44,7 +44,7 @@ export const ThemeToggle: React.FC = () => {
   return (
     <button
       onClick={toggleTheme}
-      className="p-2 rounded-full focus:outline-none focus:ring-2 focus:ring-primary transition-colors"
+      className="p-2 rounded-full focus:outline-none focus:ring-2 focus:ring-primary transition-alls"
       aria-label={darkMode ? "Cambiar a modo claro" : "Cambiar a modo oscuro"}
     >
       {darkMode ? (

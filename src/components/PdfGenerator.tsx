@@ -276,7 +276,7 @@ const TasacionPDF = ({
         <View style={styles.section}>
           <View style={styles.propertyLine}>
             <Text style={styles.propertyLabel}>Valuación de casa sobre</Text>
-            <Text style={styles.propertyValue}>{propiedad}</Text>
+            <Text style={styles.propertyValue}>{terreno}</Text>
           </View>
           <Text style={styles.propertyLocation}>
             de la localidad de La Carlota, provincia de Córdoba.

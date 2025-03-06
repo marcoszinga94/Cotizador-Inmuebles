@@ -35,7 +35,7 @@ interface PdfGeneratorProps {
 const styles = StyleSheet.create({
   page: {
     paddingVertical: 30,
-    paddingHorizontal: 50,
+    paddingHorizontal: 68,
     fontFamily: "Helvetica",
     fontSize: 12,
     lineHeight: 1.5,
@@ -169,9 +169,7 @@ const styles = StyleSheet.create({
   propertyValue: {
     fontSize: 11,
     flex: 1,
-    borderBottom: "1 solid black",
-    marginLeft: 5,
-    marginRight: 5,
+    marginHorizontal: 5,
   },
   propertyLocation: {
     fontSize: 11,
@@ -404,9 +402,12 @@ const TasacionPDF = ({
             - La valuación en pesos ($) de la construcción es la siguiente:
           </Text>
           <Text style={styles.formula}>
-            {formatCurrency(valorActual)} = {formatCurrency(valorReposicion)} -
-            ({formatCurrency(valorReposicion)} - {formatCurrency(valorResidual)}
-            ) x {(coeficienteK / 100).toFixed(4)}
+            Valor Actual = {formatCurrency(valorReposicion)} - (
+            {formatCurrency(valorReposicion)} - {formatCurrency(valorResidual)})
+            x {(coeficienteK / 100).toFixed(4)}
+          </Text>
+          <Text style={styles.formula}>
+            Valor Actual = {formatCurrency(valorActual)}
           </Text>
         </View>
 

@@ -201,6 +201,7 @@ const styles = StyleSheet.create({
 // Componente del documento PDF
 const TasacionPDF = ({
   propiedad,
+  terreno,
   valorResidual,
   valorReposicion,
   cantidadM2,
@@ -276,7 +277,7 @@ const TasacionPDF = ({
         <View style={styles.section}>
           <View style={styles.propertyLine}>
             <Text style={styles.propertyLabel}>Valuación de casa sobre</Text>
-            <Text style={styles.propertyValue}>{propiedad}</Text>
+            <Text style={styles.propertyValue}>{terreno}</Text>
           </View>
           <Text style={styles.propertyLocation}>
             de la localidad de La Carlota, provincia de Córdoba.

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import type { ChangeEvent, FormEvent } from "react";
 import { DatosPropiedad } from "./DatosPropiedad";
 import { DatosTerreno } from "./DatosTerreno";
@@ -14,17 +14,15 @@ import { useHistorialCotizaciones } from "../hooks/useHistorialCotizaciones";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import type { FormData, HistorialItem } from "../types/formTypes";
 
-//peticion a la api para obtener el valor del dolar blue
 const valorDolar = async () => {
   const response = await fetch("https://dolarapi.com/v1/dolares/blue");
   const data = await response.json();
   return data.blue.toFixed(2);
 };
 
-export default function CotizadorForm() {
-  // Estado inicial del formulario
+export default function TasadorForm() {
   const [formData, setFormData] = useLocalStorage<FormData>(
-    "cotizador_form_data",
+    "tasador_form_data",
     {
       propiedad: "",
       terreno: "",
@@ -126,9 +124,12 @@ export default function CotizadorForm() {
 
   return (
     <div className="p-6">
-      <h2 className="text-4xl font-bold mb-6 text-center text-rosaOscuro relative">
-        Cotizador de Propiedades
+      <h2 className="text-4xl font-bold text-center text-rosaOscuro relative">
+        ARGENSADOR
       </h2>
+      <p className="text-2xl font-bold mb-6 text-center text-rosaOscuro relative">
+        Tasador de Propiedades
+      </p>
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

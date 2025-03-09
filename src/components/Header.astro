@@ -1,14 +1,9 @@
 ---
 import Logo from "./Logo.astro";
-import { ThemeToggle } from "./ThemeToggle";
 ---
 
 <header
   class="bg-primary text-secondary py-4 shadow-md dark:bg-negro dark:text-grisClaro transition-colors duration-300 flex justify-center"
 >
   <Logo />
-
-  <div class="absolute top-0 right-0 p-2">
-    <ThemeToggle client:load />
-  </div>
 </header>

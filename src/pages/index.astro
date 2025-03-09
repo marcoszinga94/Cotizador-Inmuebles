@@ -1,14 +1,14 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import CotizadorForm from "../components/CotizadorForm";
+import TasadorForm from "../components/TasadorForm";
 import TablaRossHeidecke from "../components/TablaRossHeidecke";
 ---
 
-<Layout title="Cotizador de Propiedades">
+<Layout title="Argensador | Tasador de Propiedades">
   <div class="max-w-6xl mx-auto px-4 py-8 gap-4">
     <div class="grid grid-cols-1 gap-10">
       <section class="bg-secondary rounded-lg shadow-lg">
-        <CotizadorForm client:load />
+        <TasadorForm client:load />
       </section>
 
       <section>

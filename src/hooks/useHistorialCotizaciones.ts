@@ -18,7 +18,7 @@ interface HistorialHookResult {
 
 export const useHistorialCotizaciones = (): HistorialHookResult => {
   const [historial, setHistorial] = useLocalStorage<HistorialItem[]>(
-    "cotizador_historial",
+    "tasador_historial",
     []
   );
 

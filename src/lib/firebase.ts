@@ -1,6 +1,6 @@
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import { getAuth, GoogleAuthProvider } from "firebase/auth";
+import { initializeApp, getApps, type FirebaseApp } from "firebase/app";
+import { getAnalytics, type Analytics } from "firebase/analytics";
+import { getAuth, GoogleAuthProvider, type Auth } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: import.meta.env.PUBLIC_FIREBASE_API_KEY,
@@ -12,15 +12,23 @@ const firebaseConfig = {
   measurementId: import.meta.env.PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
+// Initialize Firebase only if it hasn't been initialized
+let app: FirebaseApp | undefined;
+let analytics: Analytics | null = null;
+let auth: Auth | undefined;
+let googleProvider: GoogleAuthProvider | undefined;
 
-// Initialize Analytics only in the browser
-let analytics = null;
 if (typeof window !== "undefined") {
-  analytics = getAnalytics(app);
+  try {
+    if (!getApps().length) {
+      app = initializeApp(firebaseConfig);
+    }
+    analytics = getAnalytics(app);
+    auth = getAuth(app);
+    googleProvider = new GoogleAuthProvider();
+  } catch (error) {
+    console.error("Error initializing Firebase:", error);
+  }
 }
 
-export const auth = getAuth(app);
-export const googleProvider = new GoogleAuthProvider();
-export { analytics };
+export { app, analytics, auth, googleProvider };

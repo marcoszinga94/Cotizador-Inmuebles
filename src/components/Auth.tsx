@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { signInWithPopup, signOut } from "firebase/auth";
-import type { User } from "firebase/auth";
+import { signInWithPopup, signOut, type User } from "firebase/auth";
 import { auth, googleProvider } from "../lib/firebase";
 
 export default function Auth() {
@@ -9,17 +8,21 @@ export default function Auth() {
 
   useEffect(() => {
     setMounted(true);
+    if (!auth) return;
+
     const unsubscribe = auth.onAuthStateChanged((user: User | null) => {
       setUser(user);
     });
     return () => unsubscribe();
   }, []);
 
-  if (!mounted) return null;
+  if (!mounted || !auth || !googleProvider) return null;
 
   const signInWithGoogle = async () => {
     try {
-      await signInWithPopup(auth, googleProvider);
+      if (auth && googleProvider) {
+        await signInWithPopup(auth, googleProvider);
+      }
     } catch (error) {
       console.error("Error al iniciar sesión:", error);
     }
@@ -27,7 +30,9 @@ export default function Auth() {
 
   const handleSignOut = async () => {
     try {
-      await signOut(auth);
+      if (auth) {
+        await signOut(auth);
+      }
     } catch (error) {
       console.error("Error al cerrar sesión:", error);
     }

@@ -1,9 +1,11 @@
 ---
 import Logo from "./Logo.astro";
+import Auth from "../components/Auth";
 ---
 
 <header
-  class="bg-primary text-secondary py-4 shadow-md dark:bg-negro dark:text-grisClaro transition-colors duration-300 flex justify-center"
+  class="bg-primary text-secondary py-4 shadow-md dark:bg-negro dark:text-grisClaro transition-colors duration-300 flex justify-around"
 >
   <Logo />
+  <Auth client:load />
 </header>

@@ -8,6 +8,7 @@ import {
   where,
 } from "firebase/firestore";
 import { db, auth } from "./firebase";
+import { signOut } from "firebase/auth";
 import type { User } from "firebase/auth";
 
 // Función para obtener el ID del usuario actual
@@ -23,20 +24,49 @@ export const isUserAuthenticated = () => {
   return !!auth?.currentUser;
 };
 
+// Función para cerrar sesión
+export const signOutUser = async (): Promise<void> => {
+  if (!auth) {
+    throw new Error("Auth no está inicializado");
+  }
+  try {
+    await signOut(auth);
+  } catch (error) {
+    console.error("Error al cerrar sesión:", error);
+    throw error;
+  }
+};
+
 // Función para observar cambios en el estado de autenticación
 export const onAuthStateChange = (
   callback: (isAuthenticated: boolean) => void
 ) => {
   if (!auth) {
     console.error("Auth no está inicializado");
-    callback(false);
     return () => {};
   }
 
-  // Usar la instancia existente de auth
-  return auth.onAuthStateChanged((user: User | null) => {
-    callback(!!user);
+  // Verificar el estado actual antes de suscribirse
+  const currentUser = auth.currentUser;
+  if (currentUser) {
+    // Si ya hay un usuario, notificamos inmediatamente
+    callback(true);
+  }
+
+  // Usar la instancia existente de auth y solo notificar cambios reales
+  const unsubscribe = auth.onAuthStateChanged((user: User | null) => {
+    const isAuthenticated = !!user;
+    callback(isAuthenticated);
   });
+
+  // Retornar función de limpieza
+  return () => {
+    try {
+      unsubscribe();
+    } catch (error) {
+      console.error("Error al desuscribirse:", error);
+    }
+  };
 };
 
 // Add a new document with a generated ID

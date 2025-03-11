@@ -40,10 +40,12 @@ export default function TasadorForm() {
   );
 
   // Estado para controlar la autenticación y errores
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [initError, setInitError] = useState<Error | null>(null);
+  const [authState, setAuthState] = useState({
+    isAuthenticated: false,
+    isLoading: true,
+    error: null as string | null,
+    initError: null as Error | null,
+  });
 
   // Hooks personalizados
   const { errors, validateField, validateAllFields } = useFormValidation();
@@ -70,18 +72,19 @@ export default function TasadorForm() {
       try {
         if (!isMounted) return;
 
-        setIsLoading(true);
-        setError(null);
-        setInitError(null);
-
-        // Suscribirse a los cambios de autenticación
         unsubscribe = onAuthStateChange((authenticated) => {
           if (!isMounted) return;
 
-          setIsAuthenticated(authenticated);
-          setIsLoading(false);
+          setAuthState((prev) => ({
+            ...prev,
+            isAuthenticated: authenticated,
+            isLoading: false,
+            error: null,
+            initError: null,
+          }));
 
-          if (!authenticated) {
+          // Solo limpiar datos si el usuario no está autenticado y había estado autenticado previamente
+          if (!authenticated && authState.isAuthenticated) {
             setFormData(initialFormData);
             localStorage.removeItem("historial_cotizaciones");
           }
@@ -91,13 +94,16 @@ export default function TasadorForm() {
 
         console.error("Error en la inicialización:", err);
 
-        if (err instanceof Error) {
-          setInitError(err);
-          setError(err.message);
-        } else {
-          setError("Error desconocido al inicializar la autenticación");
-        }
-        setIsLoading(false);
+        setAuthState((prev) => ({
+          ...prev,
+          initError:
+            err instanceof Error ? err : new Error("Error desconocido"),
+          error:
+            err instanceof Error
+              ? err.message
+              : "Error desconocido al inicializar la autenticación",
+          isLoading: false,
+        }));
       }
     };
 
@@ -105,11 +111,15 @@ export default function TasadorForm() {
 
     return () => {
       isMounted = false;
-      if (unsubscribe) {
-        unsubscribe();
+      if (typeof unsubscribe === "function") {
+        try {
+          unsubscribe();
+        } catch (error) {
+          console.error("Error al limpiar suscripción:", error);
+        }
       }
     };
-  }, [setFormData]);
+  }, []); // Solo se ejecuta una vez al montar el componente
 
   // Componente de error
   const ErrorDisplay = ({ error }: { error: string }) => (
@@ -128,21 +138,22 @@ export default function TasadorForm() {
     </div>
   );
 
-  // Mostrar estado de carga
-  if (isLoading) {
+  // Mostrar estado de carga inicial con un retraso mínimo para evitar parpadeos
+  if (authState.isLoading) {
     return (
-      <div className="flex flex-col justify-center items-center min-h-[200px] space-y-4">
+      <div className="min-h-[200px] flex items-center justify-center opacity-0 animate-fadeIn">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
-        <p className="text-gray-600">Cargando aplicación...</p>
       </div>
     );
   }
 
   // Mostrar error si existe
-  if (error || initError) {
+  if (authState.error || authState.initError) {
     return (
       <ErrorDisplay
-        error={error || initError?.message || "Error desconocido"}
+        error={
+          authState.error || authState.initError?.message || "Error desconocido"
+        }
       />
     );
   }
@@ -223,7 +234,7 @@ export default function TasadorForm() {
         Tasador de Propiedades
       </p>
 
-      {!isAuthenticated ? (
+      {!authState.isAuthenticated ? (
         <div className="text-center p-4 bg-yellow-100 rounded-lg">
           <p className="text-yellow-800">
             Debes iniciar sesión para usar el tasador

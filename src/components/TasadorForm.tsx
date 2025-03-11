@@ -39,8 +39,10 @@ export default function TasadorForm() {
     initialFormData
   );
 
-  // Estado para controlar la autenticación
+  // Estado para controlar la autenticación y errores
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   // Hooks personalizados
   const { errors, validateField, validateAllFields } = useFormValidation();
@@ -60,19 +62,53 @@ export default function TasadorForm() {
 
   // Efecto para observar cambios en la autenticación
   useEffect(() => {
-    const unsubscribe = onAuthStateChange((authenticated) => {
-      setIsAuthenticated(authenticated);
-      if (!authenticated) {
-        // Limpiar el formulario cuando el usuario no está autenticado
-        setFormData(initialFormData);
-        // También podríamos limpiar el historial si es necesario
-        localStorage.removeItem("historial_cotizaciones");
-      }
-    });
+    try {
+      setIsLoading(true);
+      setError(null);
 
-    // Limpiar el observer cuando el componente se desmonte
-    return () => unsubscribe();
+      const unsubscribe = onAuthStateChange((authenticated) => {
+        setIsAuthenticated(authenticated);
+        if (!authenticated) {
+          setFormData(initialFormData);
+          localStorage.removeItem("historial_cotizaciones");
+        }
+        setIsLoading(false);
+      });
+
+      return () => {
+        unsubscribe();
+      };
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Error al inicializar la autenticación"
+      );
+      setIsLoading(false);
+    }
   }, [setFormData]);
+
+  // Mostrar estado de carga
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center min-h-[200px]">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
+
+  // Mostrar error si existe
+  if (error) {
+    return (
+      <div
+        className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
+        role="alert"
+      >
+        <strong className="font-bold">Error: </strong>
+        <span className="block sm:inline">{error}</span>
+      </div>
+    );
+  }
 
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>

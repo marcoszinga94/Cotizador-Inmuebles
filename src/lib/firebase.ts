@@ -3,6 +3,8 @@ import { getAnalytics, type Analytics } from "firebase/analytics";
 import { getAuth, GoogleAuthProvider, type Auth } from "firebase/auth";
 import { getFirestore, type Firestore } from "firebase/firestore";
 
+type FirebaseConfigKeys = keyof typeof firebaseConfig;
+
 const firebaseConfig = {
   apiKey: import.meta.env.PUBLIC_FIREBASE_API_KEY,
   authDomain: import.meta.env.PUBLIC_FIREBASE_AUTH_DOMAIN,
@@ -33,61 +35,48 @@ let auth: Auth | null = null;
 let db: Firestore | null = null;
 let googleProvider: GoogleAuthProvider | null = null;
 
+function validateConfig() {
+  const requiredKeys: FirebaseConfigKeys[] = [
+    "apiKey",
+    "authDomain",
+    "projectId",
+    "storageBucket",
+    "messagingSenderId",
+    "appId",
+  ];
+  const missingKeys = requiredKeys.filter((key) => !firebaseConfig[key]);
+
+  if (missingKeys.length > 0) {
+    throw new Error(
+      `Faltan las siguientes variables de entorno: ${missingKeys.join(", ")}`
+    );
+  }
+}
+
 // Solo inicializar Firebase en el cliente
 if (typeof window !== "undefined") {
   try {
-    console.log("Intentando inicializar Firebase...");
+    validateConfig();
 
-    // Verificar que todas las variables de entorno necesarias estén presentes
-    if (
-      !firebaseConfig.apiKey ||
-      !firebaseConfig.authDomain ||
-      !firebaseConfig.projectId
-    ) {
-      throw new Error("Faltan variables de entorno críticas para Firebase");
-    }
+    // Prevenir múltiples inicializaciones
+    if (!app) {
+      app = initializeApp(firebaseConfig);
+      auth = getAuth(app);
+      db = getFirestore(app);
+      googleProvider = new GoogleAuthProvider();
+      googleProvider.setCustomParameters({
+        prompt: "select_account",
+      });
 
-    app = initializeApp(firebaseConfig);
-    console.log("App de Firebase inicializada correctamente");
-
-    auth = getAuth(app);
-    console.log("Auth de Firebase inicializado correctamente");
-
-    db = getFirestore(app);
-    console.log("Firestore inicializado correctamente");
-
-    googleProvider = new GoogleAuthProvider();
-    googleProvider.setCustomParameters({
-      prompt: "select_account",
-    });
-    console.log("GoogleAuthProvider configurado correctamente");
-
-    // Solo inicializar analytics si estamos en el navegador y tenemos el ID de medición
-    if (firebaseConfig.measurementId) {
-      try {
+      // Solo inicializar analytics si estamos en el navegador y tenemos el ID de medición
+      if (firebaseConfig.measurementId && typeof window !== "undefined") {
         analytics = getAnalytics(app);
-        console.log("Analytics de Firebase inicializado correctamente");
-      } catch (analyticsError) {
-        console.error("Error al inicializar Analytics:", analyticsError);
-        // No bloqueamos la ejecución si Analytics falla
       }
     }
-
-    console.log("Firebase inicializado completamente con éxito");
   } catch (error) {
     console.error("Error al inicializar Firebase:", error);
-    if (error instanceof Error) {
-      console.error("Detalles del error:", error.message);
-      console.error("Estado de la configuración de Firebase:", {
-        apiKeyPresent: !!firebaseConfig.apiKey,
-        authDomainPresent: !!firebaseConfig.authDomain,
-        projectIdPresent: !!firebaseConfig.projectId,
-        storageBucketPresent: !!firebaseConfig.storageBucket,
-        messagingSenderIdPresent: !!firebaseConfig.messagingSenderId,
-        appIdPresent: !!firebaseConfig.appId,
-        measurementIdPresent: !!firebaseConfig.measurementId,
-      });
-    }
+    // No lanzar el error, solo registrarlo
+    // Esto evita que la aplicación se rompa si hay un problema con Firebase
   }
 }
 

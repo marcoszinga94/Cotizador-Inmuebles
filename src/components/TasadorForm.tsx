@@ -43,6 +43,7 @@ export default function TasadorForm() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [initError, setInitError] = useState<Error | null>(null);
 
   // Hooks personalizados
   const { errors, validateField, validateAllFields } = useFormValidation();
@@ -62,51 +63,87 @@ export default function TasadorForm() {
 
   // Efecto para observar cambios en la autenticación
   useEffect(() => {
-    try {
-      setIsLoading(true);
-      setError(null);
+    let isMounted = true;
+    let unsubscribe: (() => void) | undefined;
 
-      const unsubscribe = onAuthStateChange((authenticated) => {
-        setIsAuthenticated(authenticated);
-        if (!authenticated) {
-          setFormData(initialFormData);
-          localStorage.removeItem("historial_cotizaciones");
+    const initializeAuth = async () => {
+      try {
+        if (!isMounted) return;
+
+        setIsLoading(true);
+        setError(null);
+        setInitError(null);
+
+        // Suscribirse a los cambios de autenticación
+        unsubscribe = onAuthStateChange((authenticated) => {
+          if (!isMounted) return;
+
+          setIsAuthenticated(authenticated);
+          setIsLoading(false);
+
+          if (!authenticated) {
+            setFormData(initialFormData);
+            localStorage.removeItem("historial_cotizaciones");
+          }
+        });
+      } catch (err) {
+        if (!isMounted) return;
+
+        console.error("Error en la inicialización:", err);
+
+        if (err instanceof Error) {
+          setInitError(err);
+          setError(err.message);
+        } else {
+          setError("Error desconocido al inicializar la autenticación");
         }
         setIsLoading(false);
-      });
+      }
+    };
 
-      return () => {
+    initializeAuth();
+
+    return () => {
+      isMounted = false;
+      if (unsubscribe) {
         unsubscribe();
-      };
-    } catch (err) {
-      setError(
-        err instanceof Error
-          ? err.message
-          : "Error al inicializar la autenticación"
-      );
-      setIsLoading(false);
-    }
+      }
+    };
   }, [setFormData]);
+
+  // Componente de error
+  const ErrorDisplay = ({ error }: { error: string }) => (
+    <div
+      className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 my-4"
+      role="alert"
+    >
+      <p className="font-bold">Error</p>
+      <p>{error}</p>
+      <button
+        onClick={() => window.location.reload()}
+        className="mt-2 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors"
+      >
+        Recargar página
+      </button>
+    </div>
+  );
 
   // Mostrar estado de carga
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center min-h-[200px]">
+      <div className="flex flex-col justify-center items-center min-h-[200px] space-y-4">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+        <p className="text-gray-600">Cargando aplicación...</p>
       </div>
     );
   }
 
   // Mostrar error si existe
-  if (error) {
+  if (error || initError) {
     return (
-      <div
-        className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
-        role="alert"
-      >
-        <strong className="font-bold">Error: </strong>
-        <span className="block sm:inline">{error}</span>
-      </div>
+      <ErrorDisplay
+        error={error || initError?.message || "Error desconocido"}
+      />
     );
   }
 

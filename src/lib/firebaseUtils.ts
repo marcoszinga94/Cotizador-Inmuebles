@@ -9,8 +9,6 @@ import {
 } from "firebase/firestore";
 import { db, auth } from "./firebase";
 import type { User } from "firebase/auth";
-import { getAuth } from "firebase/auth";
-import { useAuthState } from "react-firebase-hooks/auth";
 
 // Función para obtener el ID del usuario actual
 const getCurrentUserId = () => {
@@ -29,8 +27,13 @@ export const isUserAuthenticated = () => {
 export const onAuthStateChange = (
   callback: (isAuthenticated: boolean) => void
 ) => {
-  const auth = getAuth();
-  // Usar el evento nativo de auth
+  if (!auth) {
+    console.error("Auth no está inicializado");
+    callback(false);
+    return () => {};
+  }
+
+  // Usar la instancia existente de auth
   return auth.onAuthStateChanged((user: User | null) => {
     callback(!!user);
   });

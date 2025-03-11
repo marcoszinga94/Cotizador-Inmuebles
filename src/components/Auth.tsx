@@ -1,22 +1,43 @@
 import { useEffect, useState } from "react";
-import { signInWithPopup, signOut, type User } from "firebase/auth";
+import {
+  signInWithPopup,
+  signOut,
+  type User,
+  type Auth,
+  type ErrorFn,
+  GoogleAuthProvider,
+} from "firebase/auth";
 import { auth, googleProvider } from "../lib/firebase";
 
 export default function Auth() {
   const [user, setUser] = useState<User | null>(null);
   const [mounted, setMounted] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     setMounted(true);
-    if (!auth) return;
+    if (!auth) {
+      setError("Error de autenticación: Firebase no está inicializado");
+      return;
+    }
 
-    const unsubscribe = auth.onAuthStateChanged((user: User | null) => {
-      setUser(user);
-    });
+    const unsubscribe = auth.onAuthStateChanged(
+      (user: User | null) => {
+        setUser(user);
+        setError(null);
+      },
+      (error) => {
+        console.error("Error en auth state:", error);
+        setError("Error al verificar el estado de autenticación");
+      }
+    );
+
     return () => unsubscribe();
   }, []);
 
-  if (!mounted || !auth || !googleProvider) return null;
+  if (!mounted) return null;
+  if (error) return <div className="text-red-500 text-sm">{error}</div>;
+  if (!auth || !googleProvider) return null;
 
   const signInWithGoogle = async () => {
     try {
@@ -25,6 +46,7 @@ export default function Auth() {
       }
     } catch (error) {
       console.error("Error al iniciar sesión:", error);
+      setError("Error al iniciar sesión con Google");
     }
   };
 
@@ -35,6 +57,7 @@ export default function Auth() {
       }
     } catch (error) {
       console.error("Error al cerrar sesión:", error);
+      setError("Error al cerrar sesión");
     }
   };
 

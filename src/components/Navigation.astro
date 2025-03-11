@@ -1,0 +1,25 @@
+---
+const pathname = new URL(Astro.request.url).pathname;
+---
+
+<nav class="flex items-center">
+  <ul class="flex space-x-6">
+    <li>
+      <a
+        href="/"
+        class={`text-lg hover:underline ${pathname === "/" ? "font-bold" : "font-medium"}`}
+      >
+        Inicio
+      </a>
+    </li>
+    <li>
+      <a
+        href="/propiedades-alquiler"
+        class={`text-lg hover:underline ${pathname === "/propiedades-alquiler" ? "font-bold" : "font-medium"}`}
+      >
+        Propiedades
+      </a>
+    </li>
+  </ul>
+</nav>
+

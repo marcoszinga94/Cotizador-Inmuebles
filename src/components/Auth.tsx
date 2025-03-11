@@ -101,7 +101,6 @@ export default function Auth() {
         const result = await signInWithPopup(auth, googleProvider);
         console.log("Login exitoso:", result.user.displayName);
 
-        // Guardar datos del usuario en Firestore
         await saveUserData({
           uid: result.user.uid,
           email: result.user.email || "",
@@ -173,7 +172,7 @@ export default function Auth() {
     <div className="flex items-center gap-4">
       {user ? (
         <div className="flex items-center gap-4">
-          <span className="text-sm">Bienvenido, {user.displayName}</span>
+          <span className="text-sm">{user.displayName}</span>
           <button
             onClick={handleSignOut}
             disabled={isLoading}

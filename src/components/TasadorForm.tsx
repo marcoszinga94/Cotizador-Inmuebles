@@ -230,12 +230,8 @@ export default function TasadorForm() {
 
   return (
     <div className="p-6">
-      <p className="text-2xl font-bold mb-6 text-center text-rosaOscuro relative">
-        Tasador de Propiedades
-      </p>
-
       {!authState.isAuthenticated ? (
-        <div className="text-center p-4 bg-yellow-100 rounded-lg">
+        <div className="text-center p-4 bg-rosaClaro rounded-lg">
           <p className="text-yellow-800">
             Debes iniciar sesión para usar el tasador
           </p>

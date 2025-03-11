@@ -12,22 +12,29 @@
     "@astrojs/react": "^4.2.1",
     "@astrojs/tailwind": "^5.1.0",
     "@astrojs/vercel": "^8.1.2",
+    "@firebase/firestore": "^4.7.9",
+    "@parse/react": "^0.0.1-alpha.18",
     "@react-pdf/image": "^3.0.2",
     "@react-pdf/renderer": "^4.2.2",
+    "@types/gapi": "^0.0.47",
+    "@types/gapi.auth2": "^0.0.61",
     "@types/react": "^18.2.48",
     "@types/react-dom": "^18.2.18",
     "@vercel/kv": "^1.0.1",
     "astro": "^5.4.1",
     "firebase": "^11.4.0",
     "jspdf": "^3.0.0",
+    "parse": "^6.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-firebase-hooks": "^5.1.1",
-    "tailwindcss": "^3.4.1"
+    "tailwindcss": "^3.4.1",
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "@firebase/app-types": "^0.9.3",
     "@firebase/auth-types": "^0.13.0",
-    "@types/firebase": "^2.4.32"
+    "@types/firebase": "^2.4.32",
+    "@types/parse": "^3.0.9"
   }
 }

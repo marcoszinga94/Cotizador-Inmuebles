@@ -1,6 +1,7 @@
 import { initializeApp, type FirebaseApp } from "firebase/app";
 import { getAnalytics, type Analytics } from "firebase/analytics";
 import { getAuth, GoogleAuthProvider, type Auth } from "firebase/auth";
+import { getFirestore, type Firestore } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: import.meta.env.PUBLIC_FIREBASE_API_KEY,
@@ -12,7 +13,6 @@ const firebaseConfig = {
   measurementId: import.meta.env.PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
-// Verificar que las variables de entorno estén definidas y mostrar su estado
 console.log("Environment Variables Check:", {
   hasApiKey: !!import.meta.env.PUBLIC_FIREBASE_API_KEY,
   hasAuthDomain: !!import.meta.env.PUBLIC_FIREBASE_AUTH_DOMAIN,
@@ -30,6 +30,7 @@ console.log(`Entorno: ${isProduction ? "Producción" : "Desarrollo"}`);
 let app: FirebaseApp | null = null;
 let analytics: Analytics | null = null;
 let auth: Auth | null = null;
+let db: Firestore | null = null;
 let googleProvider: GoogleAuthProvider | null = null;
 
 // Solo inicializar Firebase en el cliente
@@ -51,6 +52,9 @@ if (typeof window !== "undefined") {
 
     auth = getAuth(app);
     console.log("Auth de Firebase inicializado correctamente");
+
+    db = getFirestore(app);
+    console.log("Firestore inicializado correctamente");
 
     googleProvider = new GoogleAuthProvider();
     googleProvider.setCustomParameters({
@@ -87,4 +91,4 @@ if (typeof window !== "undefined") {
   }
 }
 
-export { app, analytics, auth, googleProvider };
+export { app, analytics, auth, db, googleProvider };

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { ChangeEvent, FormEvent } from "react";
 import { DatosPropiedad } from "./DatosPropiedad";
 import { DatosTerreno } from "./DatosTerreno";
@@ -13,6 +13,19 @@ import { useCalculations } from "../hooks/useCalculations";
 import { useHistorialCotizaciones } from "../hooks/useHistorialCotizaciones";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import type { FormData, HistorialItem } from "../types/formTypes";
+import { onAuthStateChange } from "../lib/firebaseUtils";
+
+const initialFormData: FormData = {
+  propiedad: "",
+  terreno: "",
+  valorResidual: 0,
+  valorReposicion: 0,
+  anosPropiedad: 0,
+  estadoPropiedad: 1,
+  cantidadM2: 0,
+  valorM2: 0,
+  dolarHoy: 0,
+};
 
 const valorDolar = async () => {
   const response = await fetch("https://dolarapi.com/v1/dolares/blue");
@@ -23,18 +36,11 @@ const valorDolar = async () => {
 export default function TasadorForm() {
   const [formData, setFormData] = useLocalStorage<FormData>(
     "tasador_form_data",
-    {
-      propiedad: "",
-      terreno: "",
-      valorResidual: 0,
-      valorReposicion: 0,
-      anosPropiedad: 0,
-      estadoPropiedad: 1,
-      cantidadM2: 0,
-      valorM2: 0,
-      dolarHoy: 0,
-    }
+    initialFormData
   );
+
+  // Estado para controlar la autenticación
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   // Hooks personalizados
   const { errors, validateField, validateAllFields } = useFormValidation();
@@ -51,6 +57,22 @@ export default function TasadorForm() {
   // Estado para animaciones
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+
+  // Efecto para observar cambios en la autenticación
+  useEffect(() => {
+    const unsubscribe = onAuthStateChange((authenticated) => {
+      setIsAuthenticated(authenticated);
+      if (!authenticated) {
+        // Limpiar el formulario cuando el usuario no está autenticado
+        setFormData(initialFormData);
+        // También podríamos limpiar el historial si es necesario
+        localStorage.removeItem("historial_cotizaciones");
+      }
+    });
+
+    // Limpiar el observer cuando el componente se desmonte
+    return () => unsubscribe();
+  }, [setFormData]);
 
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -124,63 +146,74 @@ export default function TasadorForm() {
 
   return (
     <div className="p-6">
-      <h2 className="text-4xl font-bold text-center text-rosaOscuro relative">
-        ARGENSADOR
-      </h2>
       <p className="text-2xl font-bold mb-6 text-center text-rosaOscuro relative">
         Tasador de Propiedades
       </p>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="space-y-4 p-4 rounded-lg bg-white/50 dark:bg-grisOscuro/10">
-            <DatosPropiedad
-              formData={formData}
-              handleInputChange={handleInputChange}
-              errors={errors}
-              coeficienteK={resultados.coeficienteK}
-            />
-          </div>
+      {!isAuthenticated ? (
+        <div className="text-center p-4 bg-yellow-100 rounded-lg">
+          <p className="text-yellow-800">
+            Debes iniciar sesión para usar el tasador
+          </p>
+        </div>
+      ) : (
+        <>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-4 p-4 rounded-lg bg-white/50 dark:bg-grisOscuro/10">
+                <DatosPropiedad
+                  formData={formData}
+                  handleInputChange={handleInputChange}
+                  errors={errors}
+                  coeficienteK={resultados.coeficienteK}
+                />
+              </div>
 
-          <div className="space-y-4 p-4 rounded-lg bg-white/50 dark:bg-grisOscuro/10">
-            <DatosTerreno
-              formData={formData}
-              handleInputChange={handleInputChange}
-              errors={errors}
-              onCargarDolar={handleCargarDolar}
-              dolarLoading={dolarLoading}
-              dolarError={dolarError}
-            />
-            <div className="slide-in">
-              <ResultadosCotizacion
-                formData={formData}
-                resultados={resultados}
+              <div className="space-y-4 p-4 rounded-lg bg-white/50 dark:bg-grisOscuro/10">
+                <DatosTerreno
+                  formData={formData}
+                  handleInputChange={handleInputChange}
+                  errors={errors}
+                  onCargarDolar={handleCargarDolar}
+                  dolarLoading={dolarLoading}
+                  dolarError={dolarError}
+                />
+                <div className="slide-in">
+                  <ResultadosCotizacion
+                    formData={formData}
+                    resultados={resultados}
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="flex justify-center mt-6 relative">
+              <Boton
+                type="submit"
+                isLoading={isSubmitting}
+                disabled={isSubmitting}
+              >
+                Guardar Tasación
+              </Boton>
+              {showSuccess && (
+                <div className="absolute top-0 bottom-0 p-2 bg-green-100 text-green-800 rounded-md text-center animate-fadeInOut">
+                  ¡Cotización guardada con éxito!
+                </div>
+              )}
+            </div>
+          </form>
+
+          <div className="grid grid-cols-1 gap-6">
+            <div className="fade-in">
+              <HistorialCotizaciones
+                historial={historial}
+                onCargarCotizacion={handleCargarCotizacion}
+                onEliminarCotizacion={eliminarCotizacion}
               />
             </div>
           </div>
-        </div>
-
-        <div className="flex justify-center mt-6 relative">
-          <Boton type="submit" isLoading={isSubmitting} disabled={isSubmitting}>
-            Guardar Tasación
-          </Boton>
-          {showSuccess && (
-            <div className="absolute top-0 bottom-0 p-2 bg-green-100 text-green-800 rounded-md text-center animate-fadeInOut">
-              ¡Cotización guardada con éxito!
-            </div>
-          )}
-        </div>
-      </form>
-
-      <div className="grid grid-cols-1 gap-6">
-        <div className="fade-in">
-          <HistorialCotizaciones
-            historial={historial}
-            onCargarCotizacion={handleCargarCotizacion}
-            onEliminarCotizacion={eliminarCotizacion}
-          />
-        </div>
-      </div>
+        </>
+      )}
     </div>
   );
 }

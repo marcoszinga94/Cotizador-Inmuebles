@@ -10,6 +10,7 @@ import {
 } from "firebase/auth";
 import { FirebaseError } from "firebase/app";
 import { auth, googleProvider } from "../lib/firebase";
+import { saveUserData, updateUserData } from "../lib/firestore";
 
 export default function Auth() {
   const [user, setUser] = useState<User | null>(null);
@@ -33,12 +34,24 @@ export default function Auth() {
     console.log("Firebase Auth está inicializado correctamente");
 
     const unsubscribe = auth.onAuthStateChanged(
-      (user: User | null) => {
+      async (user: User | null) => {
         console.log(
           "Estado de autenticación cambiado:",
           user ? "Usuario autenticado" : "No autenticado"
         );
         setUser(user);
+
+        // Actualizar última fecha de login si el usuario está autenticado
+        if (user) {
+          try {
+            await updateUserData(user.uid, {
+              lastLogin: new Date(),
+            });
+          } catch (error) {
+            console.error("Error al actualizar última fecha de login:", error);
+          }
+        }
+
         setError(null);
       },
       (error: FirebaseError | Error) => {
@@ -87,6 +100,16 @@ export default function Auth() {
         console.log("Llamando a signInWithPopup");
         const result = await signInWithPopup(auth, googleProvider);
         console.log("Login exitoso:", result.user.displayName);
+
+        // Guardar datos del usuario en Firestore
+        await saveUserData({
+          uid: result.user.uid,
+          email: result.user.email || "",
+          displayName: result.user.displayName || "",
+          photoURL: result.user.photoURL || undefined,
+          createdAt: new Date(),
+          lastLogin: new Date(),
+        });
       } else {
         throw new Error("Auth o GoogleProvider no están disponibles");
       }

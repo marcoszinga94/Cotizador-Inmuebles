@@ -41,7 +41,7 @@ export default function Auth() {
         setUser(user);
         setError(null);
       },
-      (error) => {
+      (error: FirebaseError | Error) => {
         console.error("Error en auth state:", error);
         if (error instanceof FirebaseError) {
           console.error("Código de error:", error.code);

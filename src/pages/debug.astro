@@ -111,8 +111,9 @@ import Layout from "../layouts/Layout.astro";
       const firebaseApp = await import("firebase/app");
       const firebaseAuth = await import("firebase/auth");
 
-      const { initializeApp } = firebaseApp;
-      const { getAuth } = firebaseAuth;
+      const initializeApp =
+        firebaseApp.default.initializeApp || firebaseApp.initializeApp;
+      const getAuth = firebaseAuth.default.getAuth || firebaseAuth.getAuth;
 
       // Configuración de Firebase
       const firebaseConfig = {
@@ -172,8 +173,14 @@ import Layout from "../layouts/Layout.astro";
         const firebaseApp = await import("firebase/app");
         const firebaseAuth = await import("firebase/auth");
 
-        const { initializeApp } = firebaseApp;
-        const { getAuth, signInWithPopup, GoogleAuthProvider } = firebaseAuth;
+        const initializeApp =
+          firebaseApp.default.initializeApp || firebaseApp.initializeApp;
+        const getAuth = firebaseAuth.default.getAuth || firebaseAuth.getAuth;
+        const signInWithPopup =
+          firebaseAuth.default.signInWithPopup || firebaseAuth.signInWithPopup;
+        const GoogleAuthProvider =
+          firebaseAuth.default.GoogleAuthProvider ||
+          firebaseAuth.GoogleAuthProvider;
 
         // Configuración de Firebase
         const firebaseConfig = {

@@ -31,11 +31,6 @@ try {
   console.error("Error initializing Firebase:", error);
   if (error instanceof Error) {
     console.error("Error details:", error.message);
-    console.error("Firebase config state:", {
-      apiKeyPresent: !!firebaseConfig.apiKey,
-      authDomainPresent: !!firebaseConfig.authDomain,
-      projectIdPresent: !!firebaseConfig.projectId,
-    });
   }
 }
 

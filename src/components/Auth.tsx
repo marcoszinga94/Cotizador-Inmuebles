@@ -36,7 +36,7 @@ export default function Auth() {
   }, []);
 
   if (!mounted) return null;
-  if (error) return <div className="text-red-500 text-sm">{error}</div>;
+  if (error) return <div className="text-white text-sm">{error}</div>;
   if (!auth || !googleProvider) return null;
 
   const signInWithGoogle = async () => {
@@ -65,10 +65,10 @@ export default function Auth() {
     <div className="flex items-center gap-4">
       {user ? (
         <div className="flex items-center gap-4">
-          <span className="text-sm">Bienvenido, {user.email}</span>
+          <span className="text-sm">Bienvenido, {user.displayName}</span>
           <button
             onClick={handleSignOut}
-            className="px-4 py-2 text-sm text-white bg-red-500 rounded hover:bg-red-600"
+            className="px-4 py-2 text-sm text-primary bg-white rounded"
           >
             Cerrar Sesión
           </button>
@@ -81,9 +81,9 @@ export default function Auth() {
           <img
             src="https://www.google.com/favicon.ico"
             alt="Google"
-            className="w-4 h-4"
+            className="size-4"
           />
-          Iniciar sesión con Google
+          Iniciar sesión
         </button>
       )}
     </div>

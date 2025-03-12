@@ -240,7 +240,7 @@ export default function TasadorForm() {
         <>
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-4 p-4 rounded-lg bg-white/50 dark:bg-grisOscuro/10">
+              <div className="space-y-4 p-4 rounded-lg bg-white/50">
                 <DatosPropiedad
                   formData={formData}
                   handleInputChange={handleInputChange}
@@ -249,7 +249,7 @@ export default function TasadorForm() {
                 />
               </div>
 
-              <div className="space-y-4 p-4 rounded-lg bg-white/50 dark:bg-grisOscuro/10">
+              <div className="space-y-4 p-4 rounded-lg bg-white/50">
                 <DatosTerreno
                   formData={formData}
                   handleInputChange={handleInputChange}

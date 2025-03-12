@@ -5,11 +5,15 @@ import Auth from "../components/Auth";
 ---
 
 <header
-  class="bg-primary text-secondary py-4 shadow-md dark:bg-negro dark:text-grisClaro transition-colors duration-300 flex justify-between items-center px-6"
+  class="flex flex-row justify-between items-center bg-primary text-secondary min-h-16 px-4 md:px-6 lg:px-8 py-3 shadow-md w-full"
 >
-  <div class="flex items-center space-x-8">
+  <div class="flex items-center">
     <Logo />
-    <Navigation />
   </div>
-  <Auth client:only="react" />
+
+  <Navigation />
+
+  <div class="flex items-center">
+    <Auth client:only="react" />
+  </div>
 </header>

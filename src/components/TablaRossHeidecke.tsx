@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Boton } from "./Boton";
+import { Boton } from "./Boton.tsx";
 
 export default function TablaRossHeidecke() {
   const [activeRow, setActiveRow] = useState<number | null>(null);

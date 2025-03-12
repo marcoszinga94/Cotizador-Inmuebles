@@ -4,13 +4,11 @@ import {
   signOut,
   type User,
   type Auth,
-  type ErrorFn,
-  GoogleAuthProvider,
   AuthErrorCodes,
 } from "firebase/auth";
 import { FirebaseError } from "firebase/app";
-import { auth, googleProvider } from "../lib/firebase";
-import { saveUserData, updateUserData } from "../lib/firestore";
+import { auth, googleProvider } from "../lib/firebase.js";
+import { saveUserData, updateUserData } from "../lib/firestore.js";
 
 export default function Auth() {
   const [user, setUser] = useState<User | null>(null);
@@ -70,23 +68,20 @@ export default function Auth() {
     };
   }, []);
 
-  if (!mounted) {
-    console.log("Componente no montado aún");
-    return null;
+  // Renderizar un esqueleto de carga con las mismas dimensiones que el componente final
+  if (!mounted || !isInitialized || !auth || !googleProvider) {
+    return (
+      <div className="flex items-center gap-4 animate-pulse">
+        <div className="w-[120px] h-[36px] bg-gray-300 rounded"></div>
+      </div>
+    );
   }
 
   if (error) {
     console.log("Mostrando error:", error);
     return (
-      <div className="text-white text-sm bg-red-500 p-2 rounded">{error}</div>
-    );
-  }
-
-  if (!isInitialized || !auth || !googleProvider) {
-    console.log("Firebase no está completamente inicializado");
-    return (
-      <div className="text-white text-sm bg-yellow-500 p-2 rounded">
-        Inicializando autenticación...
+      <div className="text-white text-xs sm:text-sm bg-red-500 p-1.5 rounded max-w-[200px] truncate">
+        {error}
       </div>
     );
   }
@@ -169,30 +164,27 @@ export default function Auth() {
   };
 
   return (
-    <div className="flex items-center gap-4">
+    <div className="flex items-center justify-end">
       {user ? (
-        <div className="flex items-center gap-4">
-          <span className="text-sm">{user.displayName}</span>
-          <button
-            onClick={handleSignOut}
-            disabled={isLoading}
-            className="px-4 py-2 text-sm text-primary bg-white rounded disabled:opacity-50"
-          >
-            {isLoading ? "Procesando..." : "Cerrar Sesión"}
-          </button>
-        </div>
+        <button
+          onClick={handleSignOut}
+          disabled={isLoading}
+          className="px-3 py-1.5 text-xs sm:text-sm text-primary bg-white rounded-md shadow-sm hover:bg-gray-100 disabled:opacity-50 transition-colors whitespace-nowrap"
+        >
+          {isLoading ? "..." : "Cerrar Sesión"}
+        </button>
       ) : (
         <button
           onClick={signInWithGoogle}
           disabled={isLoading}
-          className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 bg-white border rounded hover:bg-gray-50 disabled:opacity-50"
+          className="flex items-center gap-2 px-3 py-1.5 text-xs sm:text-sm text-gray-700 bg-white rounded-md shadow-sm hover:bg-gray-100 disabled:opacity-50 transition-colors whitespace-nowrap"
         >
           <img
             src="https://www.google.com/favicon.ico"
             alt="Google"
-            className="size-4"
+            className="size-4 sm:size-5"
           />
-          {isLoading ? "Procesando..." : "Iniciar sesión"}
+          {isLoading ? "..." : "Iniciar sesión"}
         </button>
       )}
     </div>

@@ -1,11 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import PropiedadAlquilerForm from "./PropiedadAlquilerForm";
-import ListaPropiedadesAlquiler from "./ListaPropiedadesAlquiler";
-import { usePropiedadesAlquiler } from "../hooks/usePropiedadesAlquiler";
-import { onAuthStateChange } from "../lib/firebaseUtils";
-import type { PropiedadAlquiler } from "../types/propiedadesTypes";
+import PropiedadAlquilerForm from "./PropiedadAlquilerForm.tsx";
+import ListaPropiedadesAlquiler from "./ListaPropiedadesAlquiler.tsx";
+import { usePropiedadesAlquiler } from "../hooks/usePropiedadesAlquiler.js";
+import { onAuthStateChange } from "../lib/firebaseUtils.js";
+import type { PropiedadAlquiler } from "../types/propiedadesTypes.js";
 
 export default function PropiedadesAlquilerApp() {
   const {

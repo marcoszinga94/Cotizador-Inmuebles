@@ -2,9 +2,9 @@
 
 import { useState, useEffect } from "react";
 import type { ChangeEvent, FormEvent } from "react";
-import { usePropiedadAlquilerValidation } from "../hooks/usePropiedadAlquilerValidation";
-import { Boton } from "./Boton";
-import type { PropiedadAlquiler } from "../types/propiedadesTypes";
+import { usePropiedadAlquilerValidation } from "../hooks/usePropiedadAlquilerValidation.js";
+import { Boton } from "./Boton.tsx";
+import type { PropiedadAlquiler } from "../types/propiedadesTypes.js";
 
 const initialFormData: PropiedadAlquiler = {
   propietario: "",

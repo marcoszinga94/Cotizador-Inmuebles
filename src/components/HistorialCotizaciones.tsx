@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import type { HistorialItem } from "../types/formTypes";
-import { Boton } from "./Boton";
+import type { HistorialItem } from "../types/formTypes.js";
+import { Boton } from "./Boton.tsx";
 
 interface HistorialCotizacionesProps {
   historial: HistorialItem[];
@@ -48,7 +48,7 @@ export const HistorialCotizaciones: React.FC<HistorialCotizacionesProps> = ({
         {historial.map((item) => (
           <div
             key={item.id}
-            className={`bg-white dark:bg-grisOscuro/20 p-3 rounded-md shadow-sm 
+            className={`bg-white p-3 rounded-md shadow-sm 
                       transition-all duration-300 card-hover
                       ${
                         deleteAnimation === item.id
@@ -142,7 +142,7 @@ export const HistorialCotizaciones: React.FC<HistorialCotizacionesProps> = ({
             </div>
 
             {expandedItem === item.id && (
-              <div className="mt-3 text-sm text-gray-600 dark:text-gray-300 animate-[fadeIn_0.3s_ease-in-out]">
+              <div className="mt-3 text-sm text-gray-600 animate-[fadeIn_0.3s_ease-in-out]">
                 <div className="grid grid-cols-2 gap-2">
                   <span>Terreno:</span>
                   <span className="font-medium">{item.terreno}</span>

@@ -1,7 +1,7 @@
 import React from "react";
 import type { ChangeEvent } from "react";
-import type { FormData } from "../types/formTypes";
-import { Boton } from "./Boton";
+import type { FormData } from "../types/formTypes.js";
+import { Boton } from "./Boton.js";
 
 interface DatosTerrenoProps {
   formData: FormData;

@@ -11,9 +11,7 @@ interface Props {
 const { showSocialLinks = true, showContactInfo = true } = Astro.props;
 ---
 
-<footer
-  class="bg-primary text-secondary py-8 mt-12 dark:bg-negro dark:text-grisClaro"
->
+<footer class="bg-primary text-secondary py-8 mt-12">
   <div class="container mx-auto px-6">
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
       <!-- Logo y descripción -->
@@ -21,20 +19,14 @@ const { showSocialLinks = true, showContactInfo = true } = Astro.props;
         <Logo />
 
         <div class="flex flex-col items-center md:items-start gap-4">
-          <p
-            class="text-sm text-grisClaro dark:text-secondary text-center md:text-left"
-          >
+          <p class="text-sm text-grisClaro text-center md:text-left">
             Herramienta profesional para la valoración de propiedades
             inmobiliarias utilizando métodos precisos y actualizados.
           </p>
-          <p
-            class="text-sm text-grisClaro dark:text-secondary text-center md:text-left"
-          >
+          <p class="text-sm text-grisClaro text-center md:text-left">
             Brindado por Bottos Servicios Inmobiliarios.
           </p>
-          <p
-            class="text-sm text-grisClaro dark:text-secondary text-center md:text-left"
-          >
+          <p class="text-sm text-grisClaro text-center md:text-left">
             Desarrollado por <a
               href="https://marcoszinga.vercel.app/"
               target="_blank"
@@ -67,7 +59,7 @@ const { showSocialLinks = true, showContactInfo = true } = Astro.props;
         showContactInfo && (
           <div class="flex flex-col items-center md:items-start">
             <h3 class="text-lg font-semibold mb-3">Contacto</h3>
-            <ul class="text-sm text-secondary dark:text-secondary gap-2">
+            <ul class="text-sm text-secondary gap-2">
               <a
                 class="flex items-center"
                 href="mailto:yulianabottos96@gmail.com"
@@ -146,7 +138,7 @@ const { showSocialLinks = true, showContactInfo = true } = Astro.props;
     <div
       class="border-t border-secondary0 mt-8 pt-6 flex flex-col md:flex-row justify-between items-center"
     >
-      <p class="text-sm text-grisClaro dark:text-secondary mb-4 md:mb-0">
+      <p class="text-sm text-grisClaro mb-4 md:mb-0">
         &copy; {currentYear} Tasador de Propiedades. Bottos Servicios Inmobiliarios.
       </p>
 
@@ -156,7 +148,7 @@ const { showSocialLinks = true, showContactInfo = true } = Astro.props;
             <a
               href="https://github.com/marcoszinga94/Propiedades-Tasador"
               target="_blank"
-              class="text-grisClaro hover:text-secondary dark:text-secondary dark:hover:text-grisClaro transition-all"
+              class="text-grisClaro hover:text-secondary transition-all"
             >
               <span class="sr-only">GitHub</span>
               <svg

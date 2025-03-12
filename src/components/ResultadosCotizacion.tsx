@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import type { FormData } from "../types/formTypes";
-import type { CalculationResults } from "../types/formTypes";
-import PdfGenerator from "./PdfGenerator";
+import type { FormData } from "../types/formTypes.js";
+import type { CalculationResults } from "../types/formTypes.js";
+import PdfGenerator from "./PdfGenerator.tsx";
 
 interface ResultadosCotizacionProps {
   formData: FormData;

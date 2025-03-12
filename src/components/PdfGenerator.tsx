@@ -12,7 +12,6 @@ import {
   Path,
   G,
 } from "@react-pdf/renderer";
-import { Boton } from "./Boton";
 
 interface PdfGeneratorProps {
   propiedad: string;

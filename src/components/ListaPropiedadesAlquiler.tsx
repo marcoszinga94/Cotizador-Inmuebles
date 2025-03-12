@@ -6,6 +6,8 @@ import { usePropiedades } from "../context/PropiedadesContext.js";
 import PropiedadAlquilerForm from "./PropiedadAlquilerForm.tsx";
 import type { PropiedadAlquiler } from "../types/propiedadesTypes.js";
 
+type Ordenamiento = "propietario" | "inquilino" | "precio" | "fechaInicio";
+
 export default function ListaPropiedadesAlquiler() {
   const {
     propiedades,
@@ -23,6 +25,37 @@ export default function ListaPropiedadesAlquiler() {
   const [propiedadEditando, setPropiedadEditando] =
     useState<PropiedadAlquiler | null>(null);
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
+  const [busqueda, setBusqueda] = useState("");
+  const [ordenamiento, setOrdenamiento] = useState<Ordenamiento>("propietario");
+
+  // Filtrar propiedades basado en la búsqueda
+  const propiedadesFiltradas = propiedades.filter((propiedad) => {
+    const terminoBusqueda = busqueda.toLowerCase();
+    return (
+      propiedad.propietario.toLowerCase().includes(terminoBusqueda) ||
+      (propiedad.inquilino?.toLowerCase().includes(terminoBusqueda) ?? false) ||
+      propiedad.direccion.toLowerCase().includes(terminoBusqueda)
+    );
+  });
+
+  // Ordenar propiedades
+  const propiedadesOrdenadas = [...propiedadesFiltradas].sort((a, b) => {
+    switch (ordenamiento) {
+      case "propietario":
+        return a.propietario.localeCompare(b.propietario);
+      case "inquilino":
+        return (a.inquilino || "").localeCompare(b.inquilino || "");
+      case "precio":
+        return b.precioAlquiler - a.precioAlquiler;
+      case "fechaInicio":
+        return (
+          new Date(b.fechaInicioContrato || "").getTime() -
+          new Date(a.fechaInicioContrato || "").getTime()
+        );
+      default:
+        return 0;
+    }
+  });
 
   const toggleExpansion = (propiedadId: string) => {
     setPropiedadesExpandidas((prev) =>
@@ -106,7 +139,26 @@ export default function ListaPropiedadesAlquiler() {
 
   return (
     <div className="p-6 bg-rosaClaro rounded-lg shadow-sm">
-      <div className="flex justify-end mb-4">
+      <div className="flex justify-between items-center mb-4 gap-4">
+        <div className="flex gap-4 flex-1">
+          <input
+            type="text"
+            placeholder="Buscar por propietario, inquilino o dirección..."
+            value={busqueda}
+            onChange={(e) => setBusqueda(e.target.value)}
+            className="flex-1 px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-rosaOscuro"
+          />
+          <select
+            value={ordenamiento}
+            onChange={(e) => setOrdenamiento(e.target.value as Ordenamiento)}
+            className="px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-rosaOscuro"
+          >
+            <option value="propietario">Propietario</option>
+            <option value="inquilino">Inquilino</option>
+            <option value="precio">Precio</option>
+            <option value="fechaInicio">Fecha de Inicio</option>
+          </select>
+        </div>
         <Boton
           onClick={() => setMostrarFormulario(true)}
           className="bg-primary hover:bg-rosaOscuro text-white text-sm px-4 py-2"
@@ -134,12 +186,14 @@ export default function ListaPropiedadesAlquiler() {
       )}
 
       <div className="space-y-3 max-h-[calc(100vh-300px)] overflow-y-auto pr-2">
-        {propiedades.length === 0 ? (
+        {propiedadesOrdenadas.length === 0 ? (
           <div className="bg-white p-4 text-center rounded-md shadow-sm">
-            <p className="text-gray-500">No hay propiedades registradas</p>
+            <p className="text-gray-500">
+              No hay propiedades que coincidan con la búsqueda
+            </p>
           </div>
         ) : (
-          propiedades.map((propiedad) => (
+          propiedadesOrdenadas.map((propiedad) => (
             <div
               key={propiedad.id}
               className="bg-white p-3 rounded-md shadow-sm transition-all duration-300 hover:shadow-md"

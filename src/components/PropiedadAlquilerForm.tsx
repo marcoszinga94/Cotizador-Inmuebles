@@ -108,7 +108,6 @@ export default function PropiedadAlquilerForm({
               placeholder="Teléfono"
               value={formData.contactoPropietario}
               onChange={handleChange}
-              required
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-rosaOscuro focus:ring-rosaOscuro"
             />
           </div>

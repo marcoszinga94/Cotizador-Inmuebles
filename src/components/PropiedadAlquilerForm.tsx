@@ -23,8 +23,10 @@ export default function PropiedadAlquilerForm({
     inquilino: propiedadInicial?.inquilino || "",
     contactoInquilino: propiedadInicial?.contactoInquilino || "",
     precioAlquiler: propiedadInicial?.precioAlquiler || 0,
-    fechaInicioContrato: propiedadInicial?.fechaInicioContrato || "",
-    duracionContrato: propiedadInicial?.duracionContrato || 24,
+    fechaInicioContrato:
+      propiedadInicial?.fechaInicioContrato ||
+      new Date().toISOString().split("T")[0],
+    duracionContrato: propiedadInicial?.duracionContrato || 36,
     intervaloAumento: propiedadInicial?.intervaloAumento || 6,
     descripcion: propiedadInicial?.descripcion || "",
     direccion: propiedadInicial?.direccion || "",
@@ -63,7 +65,7 @@ export default function PropiedadAlquilerForm({
           contactoInquilino: "",
           precioAlquiler: 0,
           fechaInicioContrato: "",
-          duracionContrato: 24,
+          duracionContrato: 36,
           intervaloAumento: 6,
           descripcion: "",
           direccion: "",

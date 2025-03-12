@@ -105,34 +105,21 @@ export default function ListaPropiedadesAlquiler() {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold text-rosaOscuro">
-          Propiedades en Alquiler
-        </h2>
+    <div className="p-6 bg-rosaClaro rounded-lg shadow-sm">
+      <div className="flex justify-end mb-4">
         <Boton
           onClick={() => setMostrarFormulario(true)}
-          className="bg-primary hover:bg-rosaOscuro text-white"
+          className="bg-primary hover:bg-rosaOscuro text-white text-sm px-4 py-2"
         >
           Agregar Propiedad
         </Boton>
       </div>
 
       {mostrarFormulario && (
-        <div className="bg-white p-6 rounded-lg shadow-md">
-          <div className="flex justify-between items-center mb-4">
-            <h3 className="text-xl font-bold text-rosaOscuro">
-              {propiedadEditando
-                ? "Editar Propiedad"
-                : "Agregar Nueva Propiedad"}
-            </h3>
-            <Boton
-              onClick={handleCancelarEdicion}
-              className="bg-gray-300 hover:bg-gray-400 text-gray-800"
-            >
-              Cancelar
-            </Boton>
-          </div>
+        <div className="bg-white p-4 rounded-md shadow-sm mb-4">
+          <h3 className="flex text-2xl justify-center font-semibold text-rosaOscuro mb-4">
+            {propiedadEditando ? "Editar Propiedad" : "Agregar Nueva Propiedad"}
+          </h3>
           <PropiedadAlquilerForm
             propiedadInicial={propiedadEditando}
             onSubmit={
@@ -146,118 +133,168 @@ export default function ListaPropiedadesAlquiler() {
         </div>
       )}
 
-      {propiedades.length === 0 ? (
-        <div className="bg-gray-50 p-8 text-center rounded-lg border border-gray-200">
-          <p className="text-gray-600">No hay propiedades registradas</p>
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 gap-6">
-          {propiedades.map((propiedad) => (
+      <div className="space-y-3 max-h-[calc(100vh-300px)] overflow-y-auto pr-2">
+        {propiedades.length === 0 ? (
+          <div className="bg-white p-4 text-center rounded-md shadow-sm">
+            <p className="text-gray-500">No hay propiedades registradas</p>
+          </div>
+        ) : (
+          propiedades.map((propiedad) => (
             <div
               key={propiedad.id}
-              className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200"
+              className="bg-white p-3 rounded-md shadow-sm transition-all duration-300 hover:shadow-md"
             >
-              <div
-                className="bg-gray-50 px-6 py-4 border-b border-gray-200 cursor-pointer"
-                onClick={() => toggleExpansion(propiedad.id!)}
-              >
-                <div className="flex justify-between items-start">
-                  <div className="flex items-center">
-                    <div className="mr-2">
-                      {estaExpandida(propiedad.id!) ? (
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-5 w-5 text-rosaOscuro"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                      ) : (
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-5 w-5 text-rosaOscuro"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                      )}
-                    </div>
-                    <div>
-                      <h3 className="text-xl font-semibold text-rosaOscuro">
-                        {propiedad.propietario}
-                      </h3>
-                      <p className="text-gray-600 mt-1">
-                        {propiedad.inquilino
-                          ? `Alquilada a ${propiedad.inquilino}`
-                          : "Disponible para alquilar"}
-                      </p>
-                    </div>
-                  </div>
-                  <div
-                    className="flex space-x-2"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <Boton
-                      onClick={() => handleEditar(propiedad)}
-                      className="bg-primary hover:bg-rosaOscuro text-white"
-                    >
-                      Editar
-                    </Boton>
+              <div className="flex justify-between items-start">
+                <div className="flex-1">
+                  <h3 className="font-semibold text-rosaOscuro">
+                    {propiedad.propietario}
+                  </h3>
+                  <p className="text-xs text-gray-500">
+                    {propiedad.inquilino
+                      ? `Alquilada a ${propiedad.inquilino}`
+                      : "Disponible"}
+                  </p>
+                </div>
 
-                    {confirmandoEliminacion === propiedad.id ? (
-                      <div className="flex space-x-2">
-                        <Boton
-                          onClick={handleCancelarEliminacion}
-                          className="bg-gray-300 hover:bg-grisOscuro hover:text-negro text-white"
-                        >
-                          Cancelar
-                        </Boton>
-                        <Boton
-                          onClick={() => handleEliminar(propiedad.id!)}
-                          className="bg-rosaOscuro hover:bg-rosaOscuro text-white"
-                        >
-                          Confirmar
-                        </Boton>
-                      </div>
-                    ) : (
+                <div className="flex space-x-2">
+                  <Boton
+                    onClick={() => handleEditar(propiedad)}
+                    variant="primary"
+                    className="p-1"
+                    aria-label="Editar propiedad"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                      />
+                    </svg>
+                  </Boton>
+
+                  {confirmandoEliminacion === propiedad.id ? (
+                    <div className="flex space-x-1">
                       <Boton
-                        onClick={() =>
-                          handleConfirmarEliminacion(propiedad.id!)
-                        }
-                        className="bg-rosaOscuro hover:bg-rosaOscuro text-white"
+                        onClick={handleCancelarEliminacion}
+                        variant="secondary"
+                        className="p-1"
+                        aria-label="Cancelar eliminación"
                       >
-                        Eliminar
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-5 w-5"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M6 18L18 6M6 6l12 12"
+                          />
+                        </svg>
                       </Boton>
-                    )}
-                  </div>
+                      <Boton
+                        onClick={() => handleEliminar(propiedad.id!)}
+                        variant="danger"
+                        className="p-1"
+                        aria-label="Confirmar eliminación"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-5 w-5"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M5 13l4 4L19 7"
+                          />
+                        </svg>
+                      </Boton>
+                    </div>
+                  ) : (
+                    <Boton
+                      onClick={() => handleConfirmarEliminacion(propiedad.id!)}
+                      variant="danger"
+                      className="p-1"
+                      aria-label="Eliminar propiedad"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                        />
+                      </svg>
+                    </Boton>
+                  )}
+
+                  <Boton
+                    onClick={() => toggleExpansion(propiedad.id!)}
+                    variant="secondary"
+                    className="p-1"
+                    aria-label={
+                      estaExpandida(propiedad.id!)
+                        ? "Colapsar detalles"
+                        : "Expandir detalles"
+                    }
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className={`h-5 w-5 transform transition-transform duration-300 ${
+                        estaExpandida(propiedad.id!) ? "rotate-180" : ""
+                      }`}
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 9l-7 7-7-7"
+                      />
+                    </svg>
+                  </Boton>
                 </div>
               </div>
 
               {estaExpandida(propiedad.id!) && (
-                <div className="px-6 py-4 text-primary">
+                <div className="mt-3 text-sm text-gray-600 animate-[fadeIn_0.3s_ease-in-out]">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <h4 className="font-semibold text-rosaOscuro mb-2">
                         Datos del Propietario
                       </h4>
-                      <p>
-                        <span className="font-medium">Nombre:</span>{" "}
-                        {propiedad.propietario}
-                      </p>
-                      <p>
-                        <span className="font-medium">Contacto:</span>{" "}
-                        {propiedad.contactoPropietario}
-                      </p>
+                      <div className="grid grid-cols-2 gap-2">
+                        <span>Nombre:</span>
+                        <span className="font-medium">
+                          {propiedad.propietario}
+                        </span>
+                        <span>Contacto:</span>
+                        <span className="font-medium">
+                          {propiedad.contactoPropietario}
+                        </span>
+                      </div>
                     </div>
 
                     <div>
@@ -265,16 +302,16 @@ export default function ListaPropiedadesAlquiler() {
                         Datos del Inquilino
                       </h4>
                       {propiedad.inquilino ? (
-                        <>
-                          <p>
-                            <span className="font-medium">Nombre:</span>{" "}
+                        <div className="grid grid-cols-2 gap-2">
+                          <span>Nombre:</span>
+                          <span className="font-medium">
                             {propiedad.inquilino}
-                          </p>
-                          <p>
-                            <span className="font-medium">Contacto:</span>{" "}
+                          </span>
+                          <span>Contacto:</span>
+                          <span className="font-medium">
                             {propiedad.contactoInquilino || "No especificado"}
-                          </p>
-                        </>
+                          </span>
+                        </div>
                       ) : (
                         <p className="text-gray-500 italic">
                           Sin inquilino actualmente
@@ -286,55 +323,59 @@ export default function ListaPropiedadesAlquiler() {
                       <h4 className="font-semibold text-rosaOscuro mb-2">
                         Datos del Contrato
                       </h4>
-                      <p>
-                        <span className="font-medium">Precio:</span> $
-                        {propiedad.precioAlquiler.toLocaleString("es-AR")}
-                      </p>
-                      {propiedad.inquilino && (
-                        <>
-                          <p>
-                            <span className="font-medium">Inicio:</span>{" "}
-                            {formatearFecha(propiedad.fechaInicioContrato)}
-                          </p>
-                          <p>
-                            <span className="font-medium">Duración:</span>{" "}
-                            {propiedad.duracionContrato} meses
-                          </p>
-                          <p>
-                            <span className="font-medium">Finalización:</span>{" "}
-                            {calcularFechaFinContrato(
-                              propiedad.fechaInicioContrato,
-                              propiedad.duracionContrato
-                            )}
-                          </p>
-                          <p>
-                            <span className="font-medium">Aumento cada:</span>{" "}
-                            {propiedad.intervaloAumento} meses
-                          </p>
-                        </>
-                      )}
+                      <div className="grid grid-cols-2 gap-2">
+                        <span>Precio:</span>
+                        <span className="font-medium">
+                          ${propiedad.precioAlquiler.toLocaleString("es-AR")}
+                        </span>
+                        {propiedad.inquilino && (
+                          <>
+                            <span>Inicio:</span>
+                            <span className="font-medium">
+                              {formatearFecha(propiedad.fechaInicioContrato)}
+                            </span>
+                            <span>Duración:</span>
+                            <span className="font-medium">
+                              {propiedad.duracionContrato} meses
+                            </span>
+                            <span>Finalización:</span>
+                            <span className="font-medium">
+                              {calcularFechaFinContrato(
+                                propiedad.fechaInicioContrato,
+                                propiedad.duracionContrato
+                              )}
+                            </span>
+                            <span>Aumento cada:</span>
+                            <span className="font-medium">
+                              {propiedad.intervaloAumento} meses
+                            </span>
+                          </>
+                        )}
+                      </div>
                     </div>
 
                     <div>
                       <h4 className="font-semibold text-rosaOscuro mb-2">
                         Datos de la Propiedad
                       </h4>
-                      <p>
-                        <span className="font-medium">Dirección:</span>{" "}
-                        {propiedad.direccion}
-                      </p>
-                      <p>
-                        <span className="font-medium">Descripción:</span>{" "}
-                        {propiedad.descripcion || "Sin descripción"}
-                      </p>
+                      <div className="grid grid-cols-2 gap-2">
+                        <span>Dirección:</span>
+                        <span className="font-medium">
+                          {propiedad.direccion}
+                        </span>
+                        <span>Descripción:</span>
+                        <span className="font-medium">
+                          {propiedad.descripcion || "Sin descripción"}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>
               )}
             </div>
-          ))}
-        </div>
-      )}
+          ))
+        )}
+      </div>
     </div>
   );
 }

@@ -1,6 +1,5 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
-import { formatCurrency } from "../../../lib/payments.js";
 import RegistrarPago from "../../../components/RegistrarPago.astro";
 import type { PropiedadAlquiler } from "../../../types/propiedadesTypes.js";
 import { obtenerPropiedadesAlquiler } from "../../../lib/propiedadesFirestore.js";
@@ -91,7 +90,7 @@ const monthNames = [
     </div>
   </div>
 
-  <div id="modalRegistrarPago" class="hidden fixed inset-0 bg-black bg-opacity-50 items-center justify-center z-50">
+  <div id="modalRegistrarPago" class="hidden fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
     <div class="bg-white rounded-lg shadow-xl max-w-md w-full p-6 relative">
       <button class="absolute top-4 right-4 text-gray-500 hover:text-gray-700" id="cerrarModal">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -99,9 +98,8 @@ const monthNames = [
         </svg>
       </button>
       <RegistrarPago
-        propertyId={id || ""}
+        propertyId={id}
         date={`${currentYear}-${String(currentDate.getMonth() + 1).padStart(2, "0")}-${String(currentDate.getDate()).padStart(2, "0")}`}
-        montoDefault={propiedad?.precioAlquiler || 0}
       />
     </div>
   </div>
@@ -191,64 +189,45 @@ const monthNames = [
   document.addEventListener("click", async (e) => {
     const target = e.target;
     if (!(target instanceof Element)) return;
-    
+
     const actionButton = target.closest("[data-action]");
     const closeButton = target.closest("#cerrarModal");
     const modal = document.getElementById("modalRegistrarPago");
-    
+
     if (closeButton && modal) {
       modal.classList.add("hidden");
       return;
     }
-    
-    if (!actionButton) return;
-    if (!modal) return;
-    
-    const action = actionButton.getAttribute("data-action");
 
-    if (action === "registrar") {
-      const monthDate = actionButton.closest("[data-month]")?.getAttribute("data-month");
-      if (monthDate) {
-        const registrarPago = document.querySelector("astro-island[component-url*='RegistrarPago']");
-        if (registrarPago) {
-          registrarPago.setAttribute("propertyId", propiedadId || "");
-          registrarPago.setAttribute("date", `${monthDate}-01`);
-          registrarPago.removeAttribute("paymentId");
-          
-          const paymentIdInput = document.querySelector('input[name="paymentId"]');
-          if (paymentIdInput) {
-            paymentIdInput.value = "";
-          }
-        }
-        modal.classList.remove("hidden");
-      }
-    } else if (action === "editar") {
-      const paymentId = actionButton.closest("[data-payment-id]")?.getAttribute("data-payment-id");
-      if (paymentId) {
-        const registrarPago = document.querySelector("astro-island[component-url*='RegistrarPago']");
-        if (registrarPago) {
-          registrarPago.setAttribute("propertyId", propiedadId || "");
-          registrarPago.setAttribute("paymentId", paymentId);
-          
-          const paymentIdInput = document.querySelector('input[name="paymentId"]');
-          if (paymentIdInput) {
-            paymentIdInput.value = paymentId;
-          }
-        }
-        modal.classList.remove("hidden");
-      }
-    } else if (action === "eliminar") {
-      const paymentId = actionButton.closest("[data-payment-id]")?.getAttribute("data-payment-id");
-      if (paymentId) {
-        if (confirm("¿Está seguro de que desea eliminar este pago? Esta acción no se puede deshacer.")) {
-          try {
-            await deletePayment(paymentId);
-            // Recargar los datos después de eliminar
-            await cargarDatos();
-          } catch (error) {
-            console.error("Error al eliminar el pago:", error);
-            alert("Error al eliminar el pago. Por favor, intente nuevamente.");
-          }
+    if (!actionButton || !modal) return;
+
+    const action = actionButton.getAttribute("data-action");
+    const monthDate = actionButton.closest("[data-month]")?.getAttribute("data-month");
+    const paymentId = actionButton.closest("[data-payment-id]")?.getAttribute("data-payment-id");
+
+    const registrarPago = document.querySelector("astro-island[component-url*='RegistrarPago']");
+    
+    if (!registrarPago) return;
+
+    if (action === "registrar" && monthDate) {
+      registrarPago.setAttribute("propertyId", "{id}");
+      registrarPago.setAttribute("date", `${monthDate}-01`);
+      registrarPago.removeAttribute("paymentId");
+      modal.classList.remove("hidden");
+
+    } else if (action === "editar" && paymentId) {
+      registrarPago.setAttribute("propertyId", "{id}");
+      registrarPago.setAttribute("paymentId", paymentId);
+      modal.classList.remove("hidden");
+
+    } else if (action === "eliminar" && paymentId) {
+      if (confirm("¿Está seguro de que desea eliminar este pago? Esta acción no se puede deshacer.")) {
+        try {
+          await deletePayment(paymentId);
+          await cargarDatos();
+        } catch (error) {
+          console.error("Error al eliminar el pago:", error);
+          alert("Error al eliminar el pago. Por favor, intente nuevamente.");
         }
       }
     }

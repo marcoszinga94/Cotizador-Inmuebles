@@ -2,18 +2,18 @@
 
 import { useState, useEffect } from "react";
 import type { ChangeEvent, FormEvent } from "react";
-import { DatosPropiedad } from "./DatosPropiedad";
-import { DatosTerreno } from "./DatosTerreno";
-import { ResultadosCotizacion } from "./ResultadosCotizacion";
-import { HistorialCotizaciones } from "./HistorialCotizaciones";
-import { Boton } from "./Boton";
-import { useFormValidation } from "../hooks/useFormValidation";
-import { useDolarApi } from "../hooks/useDolarApi";
-import { useCalculations } from "../hooks/useCalculations";
-import { useHistorialCotizaciones } from "../hooks/useHistorialCotizaciones";
-import { useLocalStorage } from "../hooks/useLocalStorage";
-import type { FormData, HistorialItem } from "../types/formTypes";
-import { onAuthStateChange } from "../lib/firebaseUtils";
+import { DatosPropiedad } from "./DatosPropiedad.js";
+import { DatosTerreno } from "./DatosTerreno.js";
+import { ResultadosCotizacion } from "./ResultadosCotizacion.js";
+import { HistorialCotizaciones } from "./HistorialCotizaciones.js";
+import { Boton } from "./Boton.js";
+import { useFormValidation } from "../hooks/useFormValidation.js";
+import { useDolarApi } from "../hooks/useDolarApi.js";
+import { useCalculations } from "../hooks/useCalculations.js";
+import { useHistorialCotizaciones } from "../hooks/useHistorialCotizaciones.js";
+import { useLocalStorage } from "../hooks/useLocalStorage.js";
+import type { FormData, HistorialItem } from "../types/formTypes.js";
+import { onAuthStateChange } from "../lib/firebaseUtils.js";
 
 const initialFormData: FormData = {
   propiedad: "",
@@ -39,7 +39,6 @@ export default function TasadorForm() {
     initialFormData
   );
 
-  // Estado para controlar la autenticación y errores
   const [authState, setAuthState] = useState({
     isAuthenticated: false,
     isLoading: true,
@@ -47,7 +46,6 @@ export default function TasadorForm() {
     initError: null as Error | null,
   });
 
-  // Hooks personalizados
   const { errors, validateField, validateAllFields } = useFormValidation();
   const {
     valor: dolarValor,
@@ -59,11 +57,9 @@ export default function TasadorForm() {
   const { historial, guardarCotizacion, cargarCotizacion, eliminarCotizacion } =
     useHistorialCotizaciones();
 
-  // Estado para animaciones
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
 
-  // Efecto para observar cambios en la autenticación
   useEffect(() => {
     let isMounted = true;
     let unsubscribe: (() => void) | undefined;
@@ -83,7 +79,6 @@ export default function TasadorForm() {
             initError: null,
           }));
 
-          // Solo limpiar datos si el usuario no está autenticado y había estado autenticado previamente
           if (!authenticated && authState.isAuthenticated) {
             setFormData(initialFormData);
             localStorage.removeItem("historial_cotizaciones");
@@ -119,9 +114,8 @@ export default function TasadorForm() {
         }
       }
     };
-  }, []); // Solo se ejecuta una vez al montar el componente
+  }, []);
 
-  // Componente de error
   const ErrorDisplay = ({ error }: { error: string }) => (
     <div
       className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 my-4"
@@ -138,7 +132,6 @@ export default function TasadorForm() {
     </div>
   );
 
-  // Mostrar estado de carga inicial con un retraso mínimo para evitar parpadeos
   if (authState.isLoading) {
     return (
       <div className="min-h-[200px] flex items-center justify-center opacity-0 animate-fadeIn">
@@ -147,7 +140,6 @@ export default function TasadorForm() {
     );
   }
 
-  // Mostrar error si existe
   if (authState.error || authState.initError) {
     return (
       <ErrorDisplay
@@ -164,7 +156,6 @@ export default function TasadorForm() {
     const { name, value } = e.target;
     let parsedValue: string | number = value;
 
-    // Convertir a número si es necesario
     if (
       name !== "propiedad" &&
       name !== "terreno" &&
@@ -178,7 +169,6 @@ export default function TasadorForm() {
       [name]: parsedValue,
     });
 
-    // Validar el campo
     validateField(name as keyof FormData, parsedValue);
   };
 
@@ -189,15 +179,12 @@ export default function TasadorForm() {
     if (isValid) {
       setIsSubmitting(true);
 
-      // Simular un tiempo de procesamiento
       setTimeout(() => {
         setIsSubmitting(false);
         setShowSuccess(true);
 
-        // Ocultar el mensaje de éxito después de 2 segundos
         setTimeout(() => setShowSuccess(false), 2000);
 
-        // Guardar la cotización en el historial
         guardarCotizacion(formData, resultados);
       }, 500);
     }

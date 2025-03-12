@@ -147,7 +147,8 @@ export default function ListaPropiedadesAlquiler() {
               <div className="flex justify-between items-start">
                 <div className="flex-1">
                   <h3 className="font-semibold text-rosaOscuro">
-                    {propiedad.propietario}
+                    Propiedad de{" "}
+                    <span className="font-bold">{propiedad.propietario}</span>
                   </h3>
                   <p className="text-xs text-gray-500">
                     {propiedad.inquilino

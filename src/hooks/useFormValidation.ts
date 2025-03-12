@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { FormData } from "../types/formTypes";
+import type { FormData } from "../types/formTypes.js";
 
 interface ValidationResult {
   errors: Partial<Record<keyof FormData, string>>;

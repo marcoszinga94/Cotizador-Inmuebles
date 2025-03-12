@@ -4,9 +4,9 @@ import {
   obtenerPropiedadesAlquiler,
   actualizarPropiedadAlquiler,
   eliminarPropiedadAlquiler,
-} from "../lib/propiedadesFirestore";
-import type { PropiedadAlquiler } from "../types/propiedadesTypes";
-import { onAuthStateChange } from "../lib/firebaseUtils";
+} from "../lib/propiedadesFirestore.js";
+import type { PropiedadAlquiler } from "../types/propiedadesTypes.js";
+import { onAuthStateChange } from "../lib/firebaseUtils.js";
 
 export function usePropiedadesAlquiler() {
   const [propiedades, setPropiedades] = useState<PropiedadAlquiler[]>([]);

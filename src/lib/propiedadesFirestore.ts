@@ -12,8 +12,8 @@ import {
   serverTimestamp,
   Timestamp,
 } from "firebase/firestore";
-import { db, auth } from "./firebase";
-import type { PropiedadAlquiler } from "../types/propiedadesTypes";
+import { db, auth } from "./firebase.js";
+import type { PropiedadAlquiler } from "../types/propiedadesTypes.js";
 
 // Función para obtener el ID del usuario actual
 const getCurrentUserId = () => {

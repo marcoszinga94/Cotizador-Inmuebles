@@ -1,4 +1,3 @@
-// Tabla completa de Ross-Heidecke (100 filas x 9 columnas)
 export const tablaRossHeidecke = [
   [0, 0.032, 2.52, 8.09, 18.1, 33.2, 52.6, 75.2, 100],
   [0.505, 0.537, 3.01, 8.55, 18.51, 33.54, 52.84, 75.32, 100],

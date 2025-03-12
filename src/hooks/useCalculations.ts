@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import type { FormData, CalculationResults } from "../types/formTypes";
-import { obtenerCoeficienteRossHeidecke } from "../utils/rossHeideckeData";
+import type { FormData, CalculationResults } from "../types/formTypes.js";
+import { obtenerCoeficienteRossHeidecke } from "../utils/rossHeideckeData.js";
 
 export const useCalculations = (formData: FormData): CalculationResults => {
   const [valorActual, setValorActual] = useState<number>(0);

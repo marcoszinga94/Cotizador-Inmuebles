@@ -85,8 +85,8 @@ import Layout from "../layouts/Layout.astro";
           .PUBLIC_FIREBASE_MEASUREMENT_ID
           ? "✅ Definido"
           : "❌ No definido",
-        PROD: import.meta.env.PROD ? "✅ Producción" : "❌ Desarrollo",
-        DEV: import.meta.env.DEV ? "✅ Desarrollo" : "❌ Producción",
+        PROD: import.meta.env.PROD ? "✅" : "❌",
+        DEV: import.meta.env.DEV ? "✅" : "❌",
       };
 
       let html = '<ul class="list-disc pl-5">';

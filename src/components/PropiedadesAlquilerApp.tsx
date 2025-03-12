@@ -5,6 +5,7 @@ import PropiedadAlquilerForm from "./PropiedadAlquilerForm";
 import ListaPropiedadesAlquiler from "./ListaPropiedadesAlquiler";
 import { usePropiedadesAlquiler } from "../hooks/usePropiedadesAlquiler";
 import { onAuthStateChange } from "../lib/firebaseUtils";
+import type { PropiedadAlquiler } from "../types/propiedadesTypes";
 
 export default function PropiedadesAlquilerApp() {
   const {
@@ -18,6 +19,8 @@ export default function PropiedadesAlquilerApp() {
   } = usePropiedadesAlquiler();
 
   const [mostrarApp, setMostrarApp] = useState(false);
+  const [propiedadEditando, setPropiedadEditando] =
+    useState<PropiedadAlquiler | null>(null);
 
   // Escuchar cambios en la autenticación
   useEffect(() => {
@@ -27,6 +30,37 @@ export default function PropiedadesAlquilerApp() {
 
     return () => unsubscribe();
   }, []);
+
+  // Función para manejar la edición de una propiedad
+  const handleEditar = (propiedad: PropiedadAlquiler) => {
+    setPropiedadEditando(propiedad);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  // Función para guardar los cambios de la edición
+  const handleGuardarEdicion = async (
+    propiedadActualizada: PropiedadAlquiler
+  ) => {
+    if (!propiedadEditando?.id) return false;
+
+    const resultado = await actualizarPropiedad(
+      propiedadEditando.id,
+      propiedadActualizada
+    );
+
+    if (resultado) {
+      setTimeout(() => {
+        setPropiedadEditando(null);
+      }, 2000); // Cerrar el formulario después de 2 segundos
+    }
+
+    return resultado;
+  };
+
+  // Función para cancelar la edición
+  const handleCancelarEdicion = () => {
+    setPropiedadEditando(null);
+  };
 
   return (
     <div className="p-6">
@@ -43,14 +77,42 @@ export default function PropiedadesAlquilerApp() {
           )}
 
           <div className="bg-white p-6 rounded-lg shadow-md">
-            <PropiedadAlquilerForm onSubmit={agregarPropiedad} />
+            {propiedadEditando ? (
+              <div>
+                <div className="flex justify-between items-center mb-4">
+                  <h2 className="text-xl font-bold text-rosaOscuro">
+                    Editar Propiedad
+                  </h2>
+                  <button
+                    onClick={handleCancelarEdicion}
+                    className="bg-gray-300 hover:bg-gray-400 text-rosaOscuro px-4 py-2 rounded-md"
+                  >
+                    Cancelar Edición
+                  </button>
+                </div>
+                <PropiedadAlquilerForm
+                  onSubmit={handleGuardarEdicion}
+                  propiedadInicial={propiedadEditando}
+                  isEditing={true}
+                />
+              </div>
+            ) : (
+              <PropiedadAlquilerForm onSubmit={agregarPropiedad} />
+            )}
           </div>
 
           <div className="bg-white p-6 rounded-lg shadow-md">
             <ListaPropiedadesAlquiler
               propiedades={propiedades}
               isLoading={isLoading}
-              onActualizar={actualizarPropiedad}
+              onActualizar={(id, propiedad) => {
+                // Buscar la propiedad completa para editar
+                const propiedadCompleta = propiedades.find((p) => p.id === id);
+                if (propiedadCompleta) {
+                  handleEditar(propiedadCompleta);
+                }
+                return Promise.resolve(true);
+              }}
               onEliminar={eliminarPropiedad}
             />
           </div>

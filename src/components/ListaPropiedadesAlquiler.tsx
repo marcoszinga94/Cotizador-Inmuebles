@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { Boton } from "./Boton";
 import type { PropiedadAlquiler } from "../types/propiedadesTypes";
-import PropiedadAlquilerForm from "./PropiedadAlquilerForm";
 
 interface ListaPropiedadesAlquilerProps {
   propiedades: PropiedadAlquiler[];
@@ -21,10 +20,6 @@ export default function ListaPropiedadesAlquiler({
   onEliminar,
   isLoading,
 }: ListaPropiedadesAlquilerProps) {
-  const [propiedadEditando, setPropiedadEditando] =
-    useState<PropiedadAlquiler | null>(null);
-  const [mostrarFormularioEdicion, setMostrarFormularioEdicion] =
-    useState(false);
   const [confirmandoEliminacion, setConfirmandoEliminacion] = useState<
     string | null
   >(null);
@@ -67,40 +62,6 @@ export default function ListaPropiedadesAlquiler({
     }
   };
 
-  // Función para editar una propiedad
-  const handleEditar = (propiedad: PropiedadAlquiler) => {
-    setPropiedadEditando(propiedad);
-    setMostrarFormularioEdicion(true);
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
-  // Función para guardar los cambios de la edición
-  const handleGuardarEdicion = async (
-    propiedadActualizada: PropiedadAlquiler
-  ) => {
-    if (!propiedadEditando?.id) return false;
-
-    const resultado = await onActualizar(
-      propiedadEditando.id,
-      propiedadActualizada
-    );
-
-    if (resultado) {
-      setTimeout(() => {
-        setPropiedadEditando(null);
-        setMostrarFormularioEdicion(false);
-      }, 2000); // Cerrar el formulario después de 2 segundos
-    }
-
-    return resultado;
-  };
-
-  // Función para cancelar la edición
-  const handleCancelarEdicion = () => {
-    setPropiedadEditando(null);
-    setMostrarFormularioEdicion(false);
-  };
-
   // Función para confirmar eliminación
   const handleConfirmarEliminacion = (propiedadId: string) => {
     setConfirmandoEliminacion(propiedadId);
@@ -128,27 +89,6 @@ export default function ListaPropiedadesAlquiler({
 
   return (
     <div className="space-y-6">
-      {mostrarFormularioEdicion && propiedadEditando && (
-        <div className="mb-8 bg-white p-6 rounded-lg shadow-md">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-bold text-rosaOscuro">
-              Editar Propiedad
-            </h2>
-            <Boton
-              onClick={handleCancelarEdicion}
-              className="bg-gray-300 hover:bg-gray-400 text-rosaOscuro"
-            >
-              Cancelar Edición
-            </Boton>
-          </div>
-          <PropiedadAlquilerForm
-            onSubmit={handleGuardarEdicion}
-            propiedadInicial={propiedadEditando}
-            isEditing={true}
-          />
-        </div>
-      )}
-
       <h2 className="text-2xl font-bold mb-4 text-rosaOscuro">
         Propiedades en Alquiler
       </h2>
@@ -178,7 +118,7 @@ export default function ListaPropiedadesAlquiler({
                   </div>
                   <div className="flex space-x-2">
                     <Boton
-                      onClick={() => handleEditar(propiedad)}
+                      onClick={() => onActualizar(propiedad.id!, propiedad)}
                       className="bg-primary hover:bg-rosaOscuro text-white"
                     >
                       Editar

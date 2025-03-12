@@ -2,30 +2,27 @@
 
 import { useState } from "react";
 import { Boton } from "./Boton.tsx";
+import { usePropiedades } from "../context/PropiedadesContext.js";
+import PropiedadAlquilerForm from "./PropiedadAlquilerForm.tsx";
 import type { PropiedadAlquiler } from "../types/propiedadesTypes.js";
 
-interface ListaPropiedadesAlquilerProps {
-  propiedades: PropiedadAlquiler[];
-  onActualizar: (
-    propiedadId: string,
-    propiedad: Partial<PropiedadAlquiler>
-  ) => Promise<boolean>;
-  onEliminar: (propiedadId: string) => Promise<boolean>;
-  isLoading: boolean;
-}
-
-export default function ListaPropiedadesAlquiler({
-  propiedades,
-  onActualizar,
-  onEliminar,
-  isLoading,
-}: ListaPropiedadesAlquilerProps) {
+export default function ListaPropiedadesAlquiler() {
+  const {
+    propiedades,
+    isLoading,
+    agregarNuevaPropiedad,
+    actualizarPropiedadExistente,
+    eliminarPropiedadExistente,
+  } = usePropiedades();
   const [confirmandoEliminacion, setConfirmandoEliminacion] = useState<
     string | null
   >(null);
   const [propiedadesExpandidas, setPropiedadesExpandidas] = useState<string[]>(
     []
   );
+  const [propiedadEditando, setPropiedadEditando] =
+    useState<PropiedadAlquiler | null>(null);
+  const [mostrarFormulario, setMostrarFormulario] = useState(false);
 
   const toggleExpansion = (propiedadId: string) => {
     setPropiedadesExpandidas((prev) =>
@@ -80,13 +77,23 @@ export default function ListaPropiedadesAlquiler({
   };
 
   const handleEliminar = async (propiedadId: string) => {
-    const resultado = await onEliminar(propiedadId);
+    const resultado = await eliminarPropiedadExistente(propiedadId);
     setConfirmandoEliminacion(null);
     return resultado;
   };
 
   const handleCancelarEliminacion = () => {
     setConfirmandoEliminacion(null);
+  };
+
+  const handleEditar = (propiedad: PropiedadAlquiler) => {
+    setPropiedadEditando(propiedad);
+    setMostrarFormulario(true);
+  };
+
+  const handleCancelarEdicion = () => {
+    setPropiedadEditando(null);
+    setMostrarFormulario(false);
   };
 
   if (isLoading) {
@@ -99,9 +106,45 @@ export default function ListaPropiedadesAlquiler({
 
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold mb-4 text-rosaOscuro">
-        Propiedades en Alquiler
-      </h2>
+      <div className="flex justify-between items-center">
+        <h2 className="text-2xl font-bold text-rosaOscuro">
+          Propiedades en Alquiler
+        </h2>
+        <Boton
+          onClick={() => setMostrarFormulario(true)}
+          className="bg-primary hover:bg-rosaOscuro text-white"
+        >
+          Agregar Propiedad
+        </Boton>
+      </div>
+
+      {mostrarFormulario && (
+        <div className="bg-white p-6 rounded-lg shadow-md">
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="text-xl font-bold text-rosaOscuro">
+              {propiedadEditando
+                ? "Editar Propiedad"
+                : "Agregar Nueva Propiedad"}
+            </h3>
+            <Boton
+              onClick={handleCancelarEdicion}
+              className="bg-gray-300 hover:bg-gray-400 text-gray-800"
+            >
+              Cancelar
+            </Boton>
+          </div>
+          <PropiedadAlquilerForm
+            propiedadInicial={propiedadEditando}
+            onSubmit={
+              propiedadEditando
+                ? actualizarPropiedadExistente.bind(null, propiedadEditando.id!)
+                : agregarNuevaPropiedad
+            }
+            isEditing={!!propiedadEditando}
+            onCancel={handleCancelarEdicion}
+          />
+        </div>
+      )}
 
       {propiedades.length === 0 ? (
         <div className="bg-gray-50 p-8 text-center rounded-lg border border-gray-200">
@@ -165,7 +208,7 @@ export default function ListaPropiedadesAlquiler({
                     onClick={(e) => e.stopPropagation()}
                   >
                     <Boton
-                      onClick={() => onActualizar(propiedad.id!, propiedad)}
+                      onClick={() => handleEditar(propiedad)}
                       className="bg-primary hover:bg-rosaOscuro text-white"
                     >
                       Editar
@@ -274,9 +317,14 @@ export default function ListaPropiedadesAlquiler({
 
                     <div>
                       <h4 className="font-semibold text-rosaOscuro mb-2">
-                        Descripción
+                        Datos de la Propiedad
                       </h4>
-                      <p className="text-gray-600">
+                      <p>
+                        <span className="font-medium">Dirección:</span>{" "}
+                        {propiedad.direccion}
+                      </p>
+                      <p>
+                        <span className="font-medium">Descripción:</span>{" "}
                         {propiedad.descripcion || "Sin descripción"}
                       </p>
                     </div>

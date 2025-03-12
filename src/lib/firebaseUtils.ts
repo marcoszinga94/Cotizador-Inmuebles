@@ -6,10 +6,14 @@ import {
   getDoc,
   query,
   where,
+  updateDoc,
+  deleteDoc,
 } from "firebase/firestore";
-import { db, auth } from "./firebase";
+import { db } from "./firebase.js";
+import { auth } from "./firebase.js";
 import { signOut } from "firebase/auth";
 import type { User } from "firebase/auth";
+import type { PropiedadAlquiler } from "../types/propiedadesTypes.js";
 
 // Función para obtener el ID del usuario actual
 const getCurrentUserId = () => {
@@ -190,3 +194,63 @@ export async function getTasacionById(tasacionId: string) {
     throw e;
   }
 }
+
+const COLECCION_PROPIEDADES = "propiedades";
+
+export const agregarPropiedad = async (
+  propiedad: PropiedadAlquiler
+): Promise<string> => {
+  try {
+    const docRef = await addDoc(
+      collection(db!, COLECCION_PROPIEDADES),
+      propiedad
+    );
+    return docRef.id;
+  } catch (error) {
+    console.error("Error al agregar propiedad:", error);
+    throw error;
+  }
+};
+
+export const actualizarPropiedad = async (
+  propiedadId: string,
+  propiedad: Partial<PropiedadAlquiler>
+): Promise<boolean> => {
+  try {
+    const docRef = doc(db!, COLECCION_PROPIEDADES, propiedadId);
+    await updateDoc(docRef, propiedad);
+    return true;
+  } catch (error) {
+    console.error("Error al actualizar propiedad:", error);
+    return false;
+  }
+};
+
+export const eliminarPropiedad = async (
+  propiedadId: string
+): Promise<boolean> => {
+  try {
+    const docRef = doc(db!, COLECCION_PROPIEDADES, propiedadId);
+    await deleteDoc(docRef);
+    return true;
+  } catch (error) {
+    console.error("Error al eliminar propiedad:", error);
+    return false;
+  }
+};
+
+export const obtenerPropiedades = async (): Promise<PropiedadAlquiler[]> => {
+  try {
+    const querySnapshot = await getDocs(collection(db!, COLECCION_PROPIEDADES));
+    return querySnapshot.docs.map(
+      (doc) =>
+        ({
+          id: doc.id,
+          ...doc.data(),
+        } as PropiedadAlquiler)
+    );
+  } catch (error) {
+    console.error("Error al obtener propiedades:", error);
+    return [];
+  }
+};

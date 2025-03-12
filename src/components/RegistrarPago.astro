@@ -1,0 +1,234 @@
+---
+interface Props {
+  propertyId: string;
+  date: string;
+  paymentId?: string; // ID del pago si estamos editando
+  montoDefault?: number; // Monto por defecto del alquiler
+}
+
+const { propertyId, date, paymentId, montoDefault = 0 } = Astro.props;
+---
+
+<div
+  id="modalRegistrarPago"
+  class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
+>
+  <div class="bg-white rounded-lg p-6 w-full max-w-md">
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-2xl font-bold">
+        {paymentId ? "Editar Pago" : "Registrar Pago"}
+      </h2>
+      <button id="btnCerrarModal" class="text-gray-500 hover:text-gray-700">
+        <svg
+          class="w-6 h-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+    </div>
+    <form id="formRegistrarPago" class="space-y-4">
+      <input type="hidden" name="propertyId" value={propertyId} />
+      <input type="hidden" name="paymentId" value={paymentId} />
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Fecha</label>
+        <input
+          type="date"
+          name="fecha"
+          value={date}
+          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+        />
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Monto</label>
+        <input
+          type="number"
+          name="monto"
+          step="0.01"
+          required
+          value={montoDefault}
+          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+        />
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700"
+          >Observaciones</label
+        >
+        <textarea
+          name="observaciones"
+          rows="3"
+          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+        ></textarea>
+      </div>
+      <div class="flex justify-end space-x-3">
+        <button
+          type="button"
+          id="btnCancelar"
+          class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+        >
+          Cancelar
+        </button>
+        {
+          paymentId && (
+            <button
+              type="button"
+              id="btnEliminar"
+              class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
+            >
+              Eliminar
+            </button>
+          )
+        }
+        <button
+          type="submit"
+          class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+        >
+          {paymentId ? "Actualizar" : "Guardar"}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  import {
+    createPayment,
+    updatePayment,
+    deletePayment,
+    getPaymentById,
+  } from "../lib/payments.js";
+  import type { PaymentFormData } from "../types/payment.js";
+
+  const modal = document.getElementById("modalRegistrarPago");
+  const btnCerrarModal = document.getElementById("btnCerrarModal");
+  const btnCancelar = document.getElementById("btnCancelar");
+  const btnEliminar = document.getElementById("btnEliminar");
+  const form = document.getElementById("formRegistrarPago") as HTMLFormElement;
+
+  function cerrarModal() {
+    if (modal) {
+      modal.classList.add("hidden");
+    }
+  }
+
+  // Cargar datos del pago si estamos editando
+  async function cargarDatosPago() {
+    const paymentId = form
+      .querySelector('input[name="paymentId"]')
+      ?.getAttribute("value");
+    if (paymentId) {
+      const pago = await getPaymentById(paymentId);
+      if (pago) {
+        const montoInput = form.querySelector(
+          'input[name="monto"]'
+        ) as HTMLInputElement;
+        const observacionesInput = form.querySelector(
+          'textarea[name="observaciones"]'
+        ) as HTMLTextAreaElement;
+        const fechaInput = form.querySelector(
+          'input[name="fecha"]'
+        ) as HTMLInputElement;
+
+        if (montoInput) montoInput.value = pago.amount.toString();
+        if (observacionesInput)
+          observacionesInput.value = pago.observations || "";
+        if (fechaInput) fechaInput.value = pago.date;
+
+        // Mostrar el botón de eliminar
+        if (btnEliminar) {
+          btnEliminar.classList.remove("hidden");
+        }
+      }
+    }
+  }
+
+  // Cargar datos si estamos editando
+  if (form.querySelector('input[name="paymentId"]')?.getAttribute("value")) {
+    cargarDatosPago();
+  }
+
+  // Event Listeners
+  if (btnCerrarModal) {
+    btnCerrarModal.addEventListener("click", cerrarModal);
+  }
+
+  if (btnCancelar) {
+    btnCancelar.addEventListener("click", cerrarModal);
+  }
+
+  if (btnEliminar) {
+    btnEliminar.addEventListener("click", async () => {
+      if (
+        confirm(
+          "¿Está seguro de que desea eliminar este pago? Esta acción no se puede deshacer y se perderá permanentemente el registro del pago."
+        )
+      ) {
+        const paymentId = form
+          .querySelector('input[name="paymentId"]')
+          ?.getAttribute("value");
+        if (paymentId) {
+          try {
+            // Agregar clase de animación al modal
+            if (modal) {
+              modal.classList.add(
+                "opacity-0",
+                "transition-opacity",
+                "duration-300"
+              );
+            }
+
+            // Esperar a que termine la animación antes de eliminar
+            setTimeout(async () => {
+              await deletePayment(paymentId);
+              cerrarModal();
+              window.location.reload();
+            }, 300);
+          } catch (error) {
+            console.error("Error al eliminar el pago:", error);
+            alert("Error al eliminar el pago. Por favor, intente nuevamente.");
+          }
+        }
+      }
+    });
+  }
+
+  if (form) {
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const formData = new FormData(form);
+      const data: PaymentFormData = {
+        propertyId: formData.get("propertyId") as string,
+        date: formData.get("fecha") as string,
+        amount: parseFloat(formData.get("monto") as string),
+        observations: formData.get("observaciones") as string,
+      };
+
+      try {
+        const paymentId = formData.get("paymentId") as string;
+        if (paymentId) {
+          // Actualizar pago existente
+          await updatePayment(paymentId, data);
+        } else {
+          // Crear nuevo pago
+          await createPayment(data);
+        }
+
+        // Cerrar el modal
+        cerrarModal();
+
+        // Recargar la página para actualizar los datos
+        window.location.reload();
+      } catch (error) {
+        console.error("Error al registrar el pago:", error);
+        alert("Error al registrar el pago. Por favor, intente nuevamente.");
+      }
+    });
+  }
+</script>

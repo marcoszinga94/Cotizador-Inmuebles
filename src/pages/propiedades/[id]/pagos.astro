@@ -1,0 +1,252 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import { formatCurrency } from "../../../lib/payments.js";
+import RegistrarPago from "../../../components/RegistrarPago.astro";
+import type { PropiedadAlquiler } from "../../../types/propiedadesTypes.js";
+import { obtenerPropiedadesAlquiler } from "../../../lib/propiedadesFirestore.js";
+
+export async function getStaticPaths() {
+  const propiedades = await obtenerPropiedadesAlquiler();
+  return propiedades.map(propiedad => ({
+    params: { id: propiedad.id || "" },
+    props: { propiedad }
+  }));
+}
+
+const { id } = Astro.params;
+const { propiedad } = Astro.props;
+const currentDate = new Date();
+const currentYear = currentDate.getFullYear();
+
+const monthNames = [
+  "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+  "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+];
+
+// Definir la propiedadopiedad;
+---
+
+<Layout title="Pagos de Propiedad">
+  <div class="container mx-auto px-4 py-8">
+    <div class="flex justify-between items-center mb-6">
+      <div>
+        <h1 class="text-3xl font-bold" id="propietarioNombre">Cargando...</h1>
+        <p class="text-gray-600 mt-1">Monto del alquiler: <span class="font-medium text-green-600" id="montoAlquiler">$0</span></p>
+      </div>
+      <a
+        href="/propiedades-alquiler"
+        class="text-blue-500 hover:text-blue-600 flex items-center gap-2"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z"
+            clip-rule="evenodd"></path>
+        </svg>
+        Volver a Propiedades
+      </a>
+    </div>
+
+    <div class="bg-white rounded-lg shadow-lg p-6">
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-semibold">{currentYear}</h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {
+          Array.from({ length: 12 }).map((_, monthIndex) => {
+            const monthDate = `${currentYear}-${String(monthIndex + 1).padStart(2, "0")}`;
+            return (
+              <div 
+                class="border rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition-colors" 
+                data-month={monthDate}
+                id={`mes-${monthDate}`}
+              >
+                <div class="flex justify-between items-start mb-4">
+                  <h3 class="text-lg font-semibold">{monthNames[monthIndex]}</h3>
+                  <button 
+                    class="text-blue-500 hover:text-blue-600 p-1"
+                    data-action="registrar"
+                    data-month={monthDate}
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+                    </svg>
+                  </button>
+                </div>
+                <div class="text-sm text-gray-600 mb-4">
+                  <div>Total pagado: <span class="font-medium text-green-600" id={`total-${monthDate}`}>$0</span></div>
+                </div>
+                <div class="space-y-2" id={`pagos-${monthDate}`}>
+                  <!-- Los pagos se cargarán dinámicamente aquí -->
+                </div>
+              </div>
+            );
+          })
+        }
+      </div>
+    </div>
+  </div>
+
+  <div id="modalRegistrarPago" class="hidden">
+    <RegistrarPago
+      propertyId={id || ""}
+      date={`${currentYear}-${String(currentDate.getMonth() + 1).padStart(2, "0")}-${String(currentDate.getDate()).padStart(2, "0")}`}
+    />
+  </div>
+</Layout>
+
+<script define:vars={{ propiedadData: propiedad }}>
+  import { getPaymentsByMonth, formatCurrency, deletePayment } from "../../../lib/payments.js";
+  import { auth } from "../../../lib/firebase.js";
+
+  // Obtener el ID de la propiedad del parámetro de la URL
+  const propiedadId = document.querySelector('astro-island[component-url*="RegistrarPago"]')?.getAttribute('propertyId');
+
+  // Cargar los datos de la propiedad y los pagos
+  async function cargarDatos() {
+    try {
+      if (!propiedadId || !propiedadData) {
+        throw new Error("No se encontró el ID de la propiedad o los datos");
+      }
+
+      // Esperar a que Firebase Auth esté inicializado
+      await new Promise((resolve) => {
+        const unsubscribe = auth.onAuthStateChanged((user) => {
+          unsubscribe();
+          resolve(user);
+        });
+      });
+
+      // Actualizar el título y monto del alquiler con los datos de la propiedad
+      const titulo = document.getElementById("propietarioNombre");
+      const montoAlquiler = document.getElementById("montoAlquiler");
+      if (titulo) {
+        titulo.textContent = `Pagos de ${propiedadData.propietario}`;
+      }
+      if (montoAlquiler) {
+        montoAlquiler.textContent = formatCurrency(propiedadData.precioAlquiler);
+      }
+
+      // Actualizar el monto por defecto en el componente RegistrarPago
+      const registrarPago = document.querySelector("astro-island[component-url*='RegistrarPago']");
+      if (registrarPago) {
+        registrarPago.setAttribute("montoDefault", propiedadData.precioAlquiler.toString());
+      }
+
+      // Cargar pagos del año
+      const currentYear = new Date().getFullYear();
+      for (let month = 0; month < 12; month++) {
+        const monthDate = `${currentYear}-${String(month + 1).padStart(2, "0")}`;
+        const pagos = await getPaymentsByMonth(propiedadId, currentYear, month);
+        
+        // Calcular total del mes
+        const total = pagos.reduce((sum, pago) => sum + pago.amount, 0);
+        const totalElement = document.getElementById(`total-${monthDate}`);
+        if (totalElement) {
+          totalElement.textContent = formatCurrency(total);
+        }
+
+        // Mostrar lista de pagos
+        const pagosContainer = document.getElementById(`pagos-${monthDate}`);
+        if (pagosContainer) {
+          pagosContainer.innerHTML = pagos.map(pago => `
+            <div class="flex justify-between items-center p-2 bg-gray-50 rounded hover:bg-gray-100 cursor-pointer" data-payment-id="${pago.id}">
+              <div>
+                <div class="font-medium">${formatCurrency(pago.amount)}</div>
+                <div class="text-xs text-gray-500">${new Date(pago.date).toLocaleDateString()}</div>
+              </div>
+              <div class="flex gap-2">
+                <button class="text-blue-500 hover:text-blue-600" data-action="editar" data-payment-id="${pago.id}">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                  </svg>
+                </button>
+                <button class="text-red-500 hover:text-red-600" data-action="eliminar" data-payment-id="${pago.id}">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          `).join('');
+        }
+      }
+    } catch (error) {
+      console.error("Error al cargar los datos:", error);
+      const titulo = document.getElementById("propietarioNombre");
+      if (titulo) {
+        titulo.textContent = "Error al cargar los datos";
+      }
+    }
+  }
+
+  // Manejar eventos de clic
+  document.addEventListener("click", async (e) => {
+    const target = e.target;
+    if (!(target instanceof Element)) return;
+    
+    const actionButton = target.closest("[data-action]");
+    if (!actionButton) return;
+    
+    const action = actionButton.getAttribute("data-action");
+    const modal = document.getElementById("modalRegistrarPago");
+
+    if (!modal) return;
+
+    if (action === "registrar") {
+      const monthDate = target.closest("[data-month]")?.getAttribute("data-month");
+      if (monthDate) {
+        const registrarPago = document.querySelector("astro-island[component-url*='RegistrarPago']");
+        if (registrarPago) {
+          registrarPago.setAttribute("propertyId", propiedadId || "");
+          registrarPago.setAttribute("date", `${monthDate}-01`);
+          registrarPago.removeAttribute("paymentId");
+        }
+        modal.classList.remove("hidden");
+      }
+    } else if (action === "editar") {
+      const paymentId = target.closest("[data-payment-id]")?.getAttribute("data-payment-id");
+      if (paymentId) {
+        const registrarPago = document.querySelector("astro-island[component-url*='RegistrarPago']");
+        if (registrarPago) {
+          registrarPago.setAttribute("propertyId", propiedadId || "");
+          registrarPago.setAttribute("date", new Date().toISOString().split('T')[0]);
+          registrarPago.setAttribute("paymentId", paymentId);
+          
+          // Actualizar el campo oculto paymentId en el formulario
+          const form = document.getElementById("formRegistrarPago");
+          if (form) {
+            const paymentIdInput = form.querySelector('input[name="paymentId"]');
+            if (paymentIdInput) {
+              paymentIdInput.setAttribute("value", paymentId);
+            }
+          }
+        }
+        modal.classList.remove("hidden");
+      }
+    } else if (action === "eliminar") {
+      const paymentId = target.closest("[data-payment-id]")?.getAttribute("data-payment-id");
+      if (paymentId) {
+        if (confirm("¿Está seguro de que desea eliminar este pago? Esta acción no se puede deshacer.")) {
+          try {
+            await deletePayment(paymentId);
+            // Recargar los datos después de eliminar
+            await cargarDatos();
+          } catch (error) {
+            console.error("Error al eliminar el pago:", error);
+            alert("Error al eliminar el pago. Por favor, intente nuevamente.");
+          }
+        }
+      }
+    }
+  });
+
+  // Cargar los datos cuando el DOM esté listo
+  document.addEventListener("DOMContentLoaded", cargarDatos);
+</script>

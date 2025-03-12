@@ -86,6 +86,12 @@ export async function obtenerPropiedadesAlquiler(): Promise<
         intervaloAumento: data.intervaloAumento,
         direccion: data.direccion,
         descripcion: data.descripcion,
+        montoAlquiler: data.montoAlquiler,
+        fechaInicio: data.fechaInicio,
+        fechaFin: data.fechaFin,
+        estado: data.estado,
+        createdAt: data.createdAt,
+        updatedAt: data.updatedAt,
         fechaCreacion:
           data.fechaCreacion instanceof Timestamp
             ? data.fechaCreacion.toDate().toISOString()
@@ -104,9 +110,6 @@ export async function obtenerPropiedadesAlquiler(): Promise<
   }
 }
 
-/**
- * Obtiene una propiedad de alquiler por su ID
- */
 export async function obtenerPropiedadAlquilerPorId(
   propiedadId: string
 ): Promise<PropiedadAlquiler | null> {
@@ -130,6 +133,12 @@ export async function obtenerPropiedadAlquilerPorId(
         intervaloAumento: data.intervaloAumento,
         direccion: data.direccion,
         descripcion: data.descripcion,
+        montoAlquiler: data.montoAlquiler,
+        fechaInicio: data.fechaInicio,
+        fechaFin: data.fechaFin,
+        estado: data.estado,
+        createdAt: data.createdAt,
+        updatedAt: data.updatedAt,
         fechaCreacion:
           data.fechaCreacion instanceof Timestamp
             ? data.fechaCreacion.toDate().toISOString()

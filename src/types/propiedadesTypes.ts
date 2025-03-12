@@ -12,6 +12,12 @@ export interface PropiedadAlquiler {
   descripcion: string;
   fechaCreacion?: string;
   fechaActualizacion?: string;
+  montoAlquiler: number;
+  fechaInicio: string;
+  fechaFin: string;
+  estado: "activo" | "inactivo";
+  createdAt: string;
+  updatedAt: string;
 }
 
 export type PropiedadAlquilerErrors = Partial<

@@ -144,7 +144,7 @@ export default function ListaPropiedadesAlquiler() {
           <div className="relative flex-1">
             <input
               type="text"
-              placeholder="Buscar por propietario, inquilino o dirección..."
+              placeholder="Buscar"
               value={busqueda}
               onChange={(e) => setBusqueda(e.target.value)}
               className="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-rosaOscuro text-sm sm:text-base"
@@ -228,6 +228,30 @@ export default function ListaPropiedadesAlquiler() {
                 </div>
 
                 <div className="flex space-x-2">
+                  <Boton
+                    onClick={() =>
+                      (window.location.href = `/propiedades/${propiedad.id}/pagos`)
+                    }
+                    variant="primary"
+                    className="p-1"
+                    aria-label="Ver pagos"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="size-5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                  </Boton>
+
                   <Boton
                     onClick={() => handleEditar(propiedad)}
                     variant="primary"

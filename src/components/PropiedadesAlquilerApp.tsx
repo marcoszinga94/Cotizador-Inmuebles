@@ -18,7 +18,7 @@ export default function PropiedadesAlquilerApp() {
 
   return (
     <PropiedadesProvider>
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-2 py-4">
         {!mostrarApp ? (
           <div className="bg-yellow-50 border border-yellow-400 text-yellow-700 p-4 rounded-md text-center">
             <p>Por favor, inicia sesión para ver las propiedades.</p>

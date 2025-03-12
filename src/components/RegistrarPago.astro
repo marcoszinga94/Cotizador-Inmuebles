@@ -2,8 +2,8 @@
 interface Props {
   propertyId: string;
   date: string;
-  paymentId?: string; // ID del pago si estamos editando
-  montoDefault?: number; // Monto por defecto del alquiler
+  paymentId?: string;
+  montoDefault?: number;
 }
 
 const { propertyId, date, paymentId, montoDefault = 0 } = Astro.props;
@@ -117,7 +117,6 @@ const { propertyId, date, paymentId, montoDefault = 0 } = Astro.props;
     }
   }
 
-  // Cargar datos del pago si estamos editando
   async function cargarDatosPago() {
     const paymentId = form
       .querySelector('input[name="paymentId"]')
@@ -140,7 +139,6 @@ const { propertyId, date, paymentId, montoDefault = 0 } = Astro.props;
           observacionesInput.value = pago.observations || "";
         if (fechaInput) fechaInput.value = pago.date;
 
-        // Mostrar el botón de eliminar
         if (btnEliminar) {
           btnEliminar.classList.remove("hidden");
         }
@@ -148,12 +146,10 @@ const { propertyId, date, paymentId, montoDefault = 0 } = Astro.props;
     }
   }
 
-  // Cargar datos si estamos editando
   if (form.querySelector('input[name="paymentId"]')?.getAttribute("value")) {
     cargarDatosPago();
   }
 
-  // Event Listeners
   if (btnCerrarModal) {
     btnCerrarModal.addEventListener("click", cerrarModal);
   }
@@ -174,7 +170,6 @@ const { propertyId, date, paymentId, montoDefault = 0 } = Astro.props;
           ?.getAttribute("value");
         if (paymentId) {
           try {
-            // Agregar clase de animación al modal
             if (modal) {
               modal.classList.add(
                 "opacity-0",
@@ -183,7 +178,6 @@ const { propertyId, date, paymentId, montoDefault = 0 } = Astro.props;
               );
             }
 
-            // Esperar a que termine la animación antes de eliminar
             setTimeout(async () => {
               await deletePayment(paymentId);
               cerrarModal();
@@ -213,17 +207,12 @@ const { propertyId, date, paymentId, montoDefault = 0 } = Astro.props;
       try {
         const paymentId = formData.get("paymentId") as string;
         if (paymentId) {
-          // Actualizar pago existente
           await updatePayment(paymentId, data);
         } else {
-          // Crear nuevo pago
           await createPayment(data);
         }
 
-        // Cerrar el modal
         cerrarModal();
-
-        // Recargar la página para actualizar los datos
         window.location.reload();
       } catch (error) {
         console.error("Error al registrar el pago:", error);

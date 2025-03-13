@@ -1,4 +1,4 @@
-import type { Payment, PaymentFormData } from "../types/payment.js";
+import type { Payment, PaymentFormData } from "../types/paymentTypes.ts";
 
 // Función para obtener los pagos de una propiedad en un mes específico
 export async function getPaymentsByMonth(

@@ -13,9 +13,8 @@ import {
   Timestamp,
 } from "firebase/firestore";
 import { db, auth } from "./firebase.js";
-import type { PropiedadAlquiler } from "../types/propiedadesTypes.js";
+import type { PropiedadAlquiler } from "../types/propiedadesTypes.ts";
 
-// Función para obtener el ID del usuario actual
 const getCurrentUserId = () => {
   if (!auth?.currentUser) {
     throw new Error("No hay usuario autenticado");
@@ -23,9 +22,6 @@ const getCurrentUserId = () => {
   return auth.currentUser.uid;
 };
 
-/**
- * Agrega una nueva propiedad de alquiler a Firestore
- */
 export async function agregarPropiedadAlquiler(
   propiedad: PropiedadAlquiler
 ): Promise<string> {
@@ -53,9 +49,6 @@ export async function agregarPropiedadAlquiler(
   }
 }
 
-/**
- * Obtiene todas las propiedades de alquiler del usuario actual
- */
 export async function obtenerPropiedadesAlquiler(): Promise<
   PropiedadAlquiler[]
 > {
@@ -161,9 +154,6 @@ export async function obtenerPropiedadAlquilerPorId(
   }
 }
 
-/**
- * Actualiza una propiedad de alquiler existente
- */
 export async function actualizarPropiedadAlquiler(
   propiedadId: string,
   propiedad: Partial<PropiedadAlquiler>
@@ -196,9 +186,6 @@ export async function actualizarPropiedadAlquiler(
   }
 }
 
-/**
- * Elimina una propiedad de alquiler
- */
 export async function eliminarPropiedadAlquiler(
   propiedadId: string
 ): Promise<void> {

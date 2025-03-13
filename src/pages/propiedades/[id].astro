@@ -1,0 +1,20 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import PagosPropiedad from "../../components/pagos.jsx";
+import { obtenerPropiedadesAlquiler } from "../../lib/propiedadesFirestore.ts";
+
+export async function getStaticPaths() {
+  const propiedades = await obtenerPropiedadesAlquiler();
+  return propiedades.map((propiedad) => ({
+    params: { id: propiedad.id },
+  }));
+}
+
+const { id } = Astro.params;
+---
+
+<Layout title={`Pagos de ${id}`}>
+  <PagosPropiedad propertyId={id} client:load />
+</Layout>
+
+<!-- NO ESTA PASANDO EL ID A LA PAGINA DE PAGOS -->

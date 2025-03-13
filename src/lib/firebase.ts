@@ -15,7 +15,6 @@ const firebaseConfig = {
   measurementId: import.meta.env.PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
-// Función para registrar el estado de las variables de entorno
 function logEnvironmentStatus() {
   const envStatus = {
     hasApiKey: !!import.meta.env.PUBLIC_FIREBASE_API_KEY,
@@ -28,7 +27,6 @@ function logEnvironmentStatus() {
     isProduction: import.meta.env.PROD,
   };
 
-  console.log("Environment Status:", envStatus);
   return envStatus;
 }
 

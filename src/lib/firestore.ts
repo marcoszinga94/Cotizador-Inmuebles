@@ -19,12 +19,8 @@ export interface UserData {
   photoURL?: string;
   createdAt: Date;
   lastLogin: Date;
-  // Agrega aquí más campos según necesites
 }
 
-/**
- * Crea o actualiza un documento de usuario en Firestore
- */
 export async function saveUserData(userData: UserData): Promise<void> {
   if (!db) throw new Error("Firestore no está inicializado");
 
@@ -46,9 +42,6 @@ export async function saveUserData(userData: UserData): Promise<void> {
   }
 }
 
-/**
- * Obtiene los datos de un usuario por su ID
- */
 export async function getUserData(uid: string): Promise<UserData | null> {
   if (!db) throw new Error("Firestore no está inicializado");
 
@@ -73,9 +66,6 @@ export async function getUserData(uid: string): Promise<UserData | null> {
   }
 }
 
-/**
- * Actualiza los datos de un usuario
- */
 export async function updateUserData(
   uid: string,
   data: Partial<UserData>
@@ -95,9 +85,6 @@ export async function updateUserData(
   }
 }
 
-/**
- * Elimina un usuario de Firestore
- */
 export async function deleteUserData(uid: string): Promise<void> {
   if (!db) throw new Error("Firestore no está inicializado");
 
@@ -111,9 +98,6 @@ export async function deleteUserData(uid: string): Promise<void> {
   }
 }
 
-/**
- * Busca usuarios por email
- */
 export async function findUserByEmail(email: string): Promise<UserData | null> {
   if (!db) throw new Error("Firestore no está inicializado");
 

@@ -230,7 +230,7 @@ export default function ListaPropiedadesAlquiler() {
                 <div className="flex space-x-2">
                   <Boton
                     onClick={() =>
-                      (window.location.href = `/propiedades/${propiedad.id}/pagos`)
+                      (window.location.href = `/propiedades/${propiedad.id}`)
                     }
                     variant="primary"
                     className="p-1"

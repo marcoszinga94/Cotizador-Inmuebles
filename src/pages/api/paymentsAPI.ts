@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import { createPayment } from "../../lib/payments.js";
+import { createPayment } from "../../lib/payments.ts";
 
 export const post: APIRoute = async ({ request }) => {
   try {

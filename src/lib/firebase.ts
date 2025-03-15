@@ -1,35 +1,43 @@
 import { initializeApp, type FirebaseApp } from "firebase/app";
+import { getAnalytics, type Analytics } from "firebase/analytics";
 import { getAuth, GoogleAuthProvider, type Auth } from "firebase/auth";
 import { getFirestore, type Firestore } from "firebase/firestore";
 
-// Detectar entorno
-const isBrowser = typeof window !== "undefined";
-
 type FirebaseConfigKeys = keyof typeof firebaseConfig;
 
-// Usar variables de entorno de manera segura en ambos entornos
-const getEnvVar = (key: string): string => {
-  if (isBrowser) {
-    if (typeof import.meta !== "undefined" && import.meta.env) {
-      return import.meta.env[key] || "";
-    }
-    return (window as any).__ENV__?.[key] || "";
-  } else {
-    return process.env[key] || "";
-  }
+const firebaseConfig = {
+  apiKey: import.meta.env.PUBLIC_FIREBASE_API_KEY,
+  authDomain: import.meta.env.PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.PUBLIC_FIREBASE_APP_ID,
+  measurementId: import.meta.env.PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
-const firebaseConfig = {
-  apiKey: getEnvVar("PUBLIC_FIREBASE_API_KEY"),
-  authDomain: getEnvVar("PUBLIC_FIREBASE_AUTH_DOMAIN"),
-  projectId: getEnvVar("PUBLIC_FIREBASE_PROJECT_ID"),
-  storageBucket: getEnvVar("PUBLIC_FIREBASE_STORAGE_BUCKET"),
-  messagingSenderId: getEnvVar("PUBLIC_FIREBASE_MESSAGING_SENDER_ID"),
-  appId: getEnvVar("PUBLIC_FIREBASE_APP_ID"),
-  measurementId: getEnvVar("PUBLIC_FIREBASE_MEASUREMENT_ID"),
-};
+function logEnvironmentStatus() {
+  const envStatus = {
+    hasApiKey: !!import.meta.env.PUBLIC_FIREBASE_API_KEY,
+    hasAuthDomain: !!import.meta.env.PUBLIC_FIREBASE_AUTH_DOMAIN,
+    hasProjectId: !!import.meta.env.PUBLIC_FIREBASE_PROJECT_ID,
+    hasStorageBucket: !!import.meta.env.PUBLIC_FIREBASE_STORAGE_BUCKET,
+    hasMessagingSenderId: !!import.meta.env.PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+    hasAppId: !!import.meta.env.PUBLIC_FIREBASE_APP_ID,
+    hasMeasurementId: !!import.meta.env.PUBLIC_FIREBASE_MEASUREMENT_ID,
+    isProduction: import.meta.env.PROD,
+  };
+
+  return envStatus;
+}
+
+let app: FirebaseApp | null = null;
+let analytics: Analytics | null = null;
+let auth: Auth | null = null;
+let db: Firestore | null = null;
+let googleProvider: GoogleAuthProvider | null = null;
 
 function validateConfig() {
+  const envStatus = logEnvironmentStatus();
   const requiredKeys: FirebaseConfigKeys[] = [
     "apiKey",
     "authDomain",
@@ -51,56 +59,45 @@ function validateConfig() {
   }
 }
 
-let app: FirebaseApp | null = null;
-let auth: Auth | null = null;
-let db: Firestore | null = null;
-let googleProvider: GoogleAuthProvider | null = null;
-let analytics: any = null;
-
-// Inicialización de Firebase
 try {
   console.log("Iniciando proceso de inicialización de Firebase...");
   validateConfig();
 
-  console.log("Creando nueva instancia de Firebase...");
-  app = initializeApp(firebaseConfig);
+  if (!app) {
+    console.log("Creando nueva instancia de Firebase...");
+    app = initializeApp(firebaseConfig);
 
-  console.log("Inicializando servicios de Firebase...");
-  try {
-    auth = getAuth(app);
-    console.log("Auth inicializado correctamente");
-  } catch (authError) {
-    console.error("Error al inicializar Auth:", authError);
-  }
+    console.log("Inicializando servicios de Firebase...");
+    try {
+      auth = getAuth(app);
+      console.log("Auth inicializado correctamente");
+    } catch (authError) {
+      console.error("Error al inicializar Auth:", authError);
+    }
 
-  try {
-    db = getFirestore(app);
-    console.log("Firestore inicializado correctamente");
-  } catch (dbError) {
-    console.error("Error al inicializar Firestore:", dbError);
-  }
+    try {
+      db = getFirestore(app);
+      console.log("Firestore inicializado correctamente");
+    } catch (dbError) {
+      console.error("Error al inicializar Firestore:", dbError);
+    }
 
-  try {
-    googleProvider = new GoogleAuthProvider();
-    googleProvider.setCustomParameters({ prompt: "select_account" });
-    console.log("GoogleProvider configurado correctamente");
-  } catch (providerError) {
-    console.error("Error al configurar GoogleProvider:", providerError);
-  }
+    try {
+      googleProvider = new GoogleAuthProvider();
+      googleProvider.setCustomParameters({ prompt: "select_account" });
+      console.log("GoogleProvider configurado correctamente");
+    } catch (providerError) {
+      console.error("Error al configurar GoogleProvider:", providerError);
+    }
 
-  // Analytics solo en el cliente
-  if (isBrowser && firebaseConfig.measurementId) {
-    const initAnalytics = async () => {
+    if (firebaseConfig.measurementId) {
       try {
-        const { getAnalytics } = await import("firebase/analytics");
-        analytics = getAnalytics(app as FirebaseApp);
+        analytics = getAnalytics(app);
         console.log("Analytics inicializado correctamente");
       } catch (analyticsError) {
         console.error("Error al inicializar Analytics:", analyticsError);
       }
-    };
-
-    initAnalytics();
+    }
   }
 } catch (error) {
   console.error("Error crítico al inicializar Firebase:", error);
@@ -112,5 +109,4 @@ try {
   }
 }
 
-// Exportación de los servicios
-export { app, auth, db, googleProvider, analytics };
+export { app, analytics, auth, db, googleProvider };

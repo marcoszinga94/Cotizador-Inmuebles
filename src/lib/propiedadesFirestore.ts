@@ -87,10 +87,7 @@ export async function agregarPropiedadAlquiler(
       fechaActualizacion: serverTimestamp(),
     };
 
-    const docRef = await addDoc(
-      collection(db!, "propiedadesAlquiler"),
-      propiedadData
-    );
+    const docRef = await addDoc(collection(db!, "propiedades"), propiedadData);
     console.log("Propiedad de alquiler agregada con ID:", docRef.id);
     return docRef.id;
   } catch (error) {
@@ -107,7 +104,7 @@ export async function obtenerPropiedadesAlquiler(): Promise<
   try {
     const userId = getCurrentUserId();
     const propiedadesQuery = query(
-      collection(db!, "propiedadesAlquiler"),
+      collection(db!, "propiedades"),
       where("userId", "==", userId),
       orderBy("fechaCreacion", "desc")
     );
@@ -133,7 +130,7 @@ export async function obtenerPropiedadAlquilerPorId(
   checkFirestore();
 
   try {
-    const docRef = doc(db!, "propiedadesAlquiler", propiedadId);
+    const docRef = doc(db!, "propiedades", propiedadId);
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
@@ -159,7 +156,7 @@ export async function actualizarPropiedadAlquiler(
   checkFirestore();
 
   try {
-    const docRef = doc(db!, "propiedadesAlquiler", propiedadId);
+    const docRef = doc(db!, "propiedades", propiedadId);
 
     // Verificar que la propiedad pertenece al usuario actual
     const docSnap = await getDoc(docRef);
@@ -190,7 +187,7 @@ export async function eliminarPropiedadAlquiler(
   checkFirestore();
 
   try {
-    const docRef = doc(db!, "propiedadesAlquiler", propiedadId);
+    const docRef = doc(db!, "propiedades", propiedadId);
 
     // Verificar que la propiedad pertenece al usuario actual
     const docSnap = await getDoc(docRef);

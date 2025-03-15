@@ -16,23 +16,3 @@ const { id } = Astro.params;
     <PagosPropiedad propertyId={id} client:load />
   </div>
 </Layout>
-
-<script>
-  import { propiedadesCliente } from "../../lib/propiedades-cliente.ts";
-
-  document.addEventListener("DOMContentLoaded", async () => {
-    const container = document.getElementById("property-container");
-    const propertyId = container?.dataset.propertyId;
-
-    try {
-      const property = await propiedadesCliente.obtenerPorId(
-        propertyId as string
-      );
-      if (property) {
-        document.title = `Propiedad ${property.propietario} - Pagos`;
-      }
-    } catch (error) {
-      console.error("Error al cargar propiedad:", error);
-    }
-  });
-</script>

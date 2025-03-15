@@ -29,24 +29,6 @@ const firebaseConfig = {
   measurementId: getEnvVar("PUBLIC_FIREBASE_MEASUREMENT_ID"),
 };
 
-function logEnvironmentStatus() {
-  return {
-    hasApiKey: !!firebaseConfig.apiKey,
-    hasAuthDomain: !!firebaseConfig.authDomain,
-    hasProjectId: !!firebaseConfig.projectId,
-    hasStorageBucket: !!firebaseConfig.storageBucket,
-    hasMessagingSenderId: !!firebaseConfig.messagingSenderId,
-    hasAppId: !!firebaseConfig.appId,
-    hasMeasurementId: !!firebaseConfig.measurementId,
-    isProduction: isBrowser
-      ? typeof import.meta !== "undefined"
-        ? import.meta.env?.PROD
-        : true
-      : process.env.NODE_ENV === "production",
-    isBrowser,
-  };
-}
-
 function validateConfig() {
   const requiredKeys: FirebaseConfigKeys[] = [
     "apiKey",

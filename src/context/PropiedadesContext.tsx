@@ -55,7 +55,7 @@ export function PropiedadesProvider({
   ): Promise<string> => {
     try {
       const id = await agregarPropiedad(propiedad);
-      await cargarPropiedades(); // Recargar la lista después de agregar
+      await cargarPropiedades();
       return id;
     } catch (err) {
       setError("Error al agregar la propiedad");
@@ -70,7 +70,7 @@ export function PropiedadesProvider({
     try {
       const resultado = await actualizarPropiedad(propiedadId, propiedad);
       if (resultado) {
-        await cargarPropiedades(); // Recargar la lista después de actualizar
+        await cargarPropiedades();
       }
       return resultado;
     } catch (err) {
@@ -85,7 +85,7 @@ export function PropiedadesProvider({
     try {
       const resultado = await eliminarPropiedad(propiedadId);
       if (resultado) {
-        await cargarPropiedades(); // Recargar la lista después de eliminar
+        await cargarPropiedades();
       }
       return resultado;
     } catch (err) {

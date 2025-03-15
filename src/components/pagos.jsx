@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { isUserAuthenticated } from "../lib/firebaseUtils.ts";
 import {
   getPaymentsByMonth,
   formatCurrency,
@@ -27,6 +28,8 @@ const PagosPropiedad = ({ propertyId }) => {
   const [propiedad, setPropiedad] = useState(null);
   const [pagosPorMes, setPagosPorMes] = useState([]);
   const [modalData, setModalData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const currentYear = new Date().getFullYear();
 
   useEffect(() => {
@@ -36,6 +39,15 @@ const PagosPropiedad = ({ propertyId }) => {
 
   const cargarDatos = async () => {
     try {
+      setLoading(true);
+
+      // Verificar autenticación
+      if (!isUserAuthenticated()) {
+        setError("Necesitas iniciar sesión para ver esta información");
+        setLoading(false);
+        return;
+      }
+
       const propiedadData = await obtenerPropiedadAlquilerPorId(propertyId);
       if (propiedadData) {
         setPropiedad(propiedadData);
@@ -56,10 +68,13 @@ const PagosPropiedad = ({ propertyId }) => {
         );
         setPagosPorMes(pagosMes);
       } else {
-        console.log(`Propiedad con ID ${propertyId} no encontrada`);
+        setError(`Propiedad con ID ${propertyId} no encontrada`);
       }
     } catch (error) {
       console.error("Error al cargar datos:", error);
+      setError("Error al cargar los datos de la propiedad");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -92,6 +107,9 @@ const PagosPropiedad = ({ propertyId }) => {
     await deletePayment(paymentId);
     cargarDatos();
   };
+
+  if (loading) return <div className="p-8 text-center">Cargando datos...</div>;
+  if (error) return <div className="p-8 text-center text-red-500">{error}</div>;
 
   return (
     <div className="container mx-auto px-4 py-8">

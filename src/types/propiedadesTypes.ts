@@ -1,5 +1,5 @@
 export interface PropiedadAlquiler {
-  id?: string;
+  id: string;
   propietario: string;
   contactoPropietario: string;
   inquilino: string;

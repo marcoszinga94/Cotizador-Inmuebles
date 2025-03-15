@@ -1,20 +1,39 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import PagosPropiedad from "../../components/pagos.jsx";
-import { obtenerPropiedadesAlquiler } from "../../lib/propiedadesFirestore.ts";
 
-export async function getStaticPaths() {
-  const propiedades = await obtenerPropiedadesAlquiler();
-  return propiedades.map((propiedad) => ({
-    params: { id: propiedad.id },
-  }));
+export function getStaticPaths() {
+  return [{ params: { id: "placeholder" } }];
 }
+
+export const prerender = true;
 
 const { id } = Astro.params;
 ---
 
-<Layout title={`Pagos de ${id}`}>
-  <PagosPropiedad propertyId={id} client:load />
-</Layout>
+<Layout title="Propiedad - Pagos">
+  <div id="property-container" data-property-id={id}>
+    <PagosPropiedad propertyId={id} client:load />
+  </div>
 
-<!-- NO ESTA PASANDO EL ID A LA PAGINA DE PAGOS -->
+  <script>
+    // Script client-side para cargar los datos
+    import { propiedadesCliente } from "../../lib/propiedades-cliente.ts";
+
+    document.addEventListener("DOMContentLoaded", async () => {
+      const container = document.getElementById("property-container");
+      const propertyId = container?.dataset.propertyId;
+
+      try {
+        const property = await propiedadesCliente.obtenerPorId(
+          propertyId as string
+        );
+        if (property) {
+          document.title = `Propiedad ${property.propietario} - Pagos`;
+        }
+      } catch (error) {
+        console.error("Error al cargar propiedad:", error);
+      }
+    });
+  </script>
+</Layout>

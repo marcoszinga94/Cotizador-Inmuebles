@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   getPaymentsByMonth,
   formatCurrency,
@@ -29,27 +29,35 @@ const PagosPropiedad = ({ propertyId }) => {
   const [modalData, setModalData] = useState(null);
   const currentYear = new Date().getFullYear();
 
+  useEffect(() => {
+    console.log("Property ID received:", propertyId);
+    cargarDatos();
+  }, [propertyId]);
+
   const cargarDatos = async () => {
     try {
       const propiedadData = await obtenerPropiedadAlquilerPorId(propertyId);
-      if (!propiedadData) throw new Error("No se encontró la propiedad");
-      setPropiedad(propiedadData);
+      if (propiedadData) {
+        setPropiedad(propiedadData);
 
-      const pagosMes = await Promise.all(
-        Array.from({ length: 12 }).map(async (_, month) => {
-          const pagos = await getPaymentsByMonth(
-            propertyId,
-            currentYear,
-            month
-          );
-          return {
-            month,
-            pagos,
-            total: pagos.reduce((sum, pago) => sum + pago.amount, 0),
-          };
-        })
-      );
-      setPagosPorMes(pagosMes);
+        const pagosMes = await Promise.all(
+          Array.from({ length: 12 }).map(async (_, month) => {
+            const pagos = await getPaymentsByMonth(
+              propertyId,
+              currentYear,
+              month
+            );
+            return {
+              month,
+              pagos,
+              total: pagos.reduce((sum, pago) => sum + pago.amount, 0),
+            };
+          })
+        );
+        setPagosPorMes(pagosMes);
+      } else {
+        console.log(`Propiedad con ID ${propertyId} no encontrada`);
+      }
     } catch (error) {
       console.error("Error al cargar datos:", error);
     }
@@ -90,7 +98,9 @@ const PagosPropiedad = ({ propertyId }) => {
       <div className="flex justify-between items-center mb-6">
         <div>
           <h1 className="text-3xl font-bold">
-            {propiedad ? `Pagos de ${propiedad.propietario}` : "Cargando..."}
+            {propiedad
+              ? `Pagos de ${propiedad.propietario}`
+              : "Propiedad no encontrada"}
           </h1>
           <p className="text-gray-600 mt-1">
             Monto del alquiler:{" "}

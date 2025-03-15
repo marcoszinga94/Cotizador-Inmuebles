@@ -11,10 +11,12 @@ import {
   orderBy,
   serverTimestamp,
   Timestamp,
+  type DocumentData,
 } from "firebase/firestore";
-import { db, auth } from "./firebase.js";
+import { db, auth } from "./firebase.ts";
 import type { PropiedadAlquiler } from "../types/propiedadesTypes.ts";
 
+// Función segura para obtener el ID del usuario actual
 const getCurrentUserId = () => {
   if (!auth?.currentUser) {
     throw new Error("No hay usuario autenticado");
@@ -22,10 +24,58 @@ const getCurrentUserId = () => {
   return auth.currentUser.uid;
 };
 
+// Función para manejar datos de Timestamp de Firestore
+const processTimestamp = (timestamp: any): string | null => {
+  if (!timestamp) return null;
+  if (timestamp instanceof Timestamp) {
+    return timestamp.toDate().toISOString();
+  }
+  return timestamp;
+};
+
+// Función para procesar los datos de una propiedad desde Firestore
+const processPropiedadData = (
+  id: string,
+  data: DocumentData
+): PropiedadAlquiler => {
+  return {
+    id,
+    propietario: data.propietario,
+    contactoPropietario: data.contactoPropietario,
+    inquilino: data.inquilino,
+    contactoInquilino: data.contactoInquilino,
+    fechaInicioContrato: data.fechaInicioContrato,
+    duracionContrato: data.duracionContrato,
+    precioAlquiler: data.precioAlquiler,
+    intervaloAumento: data.intervaloAumento,
+    direccion: data.direccion,
+    descripcion: data.descripcion,
+    montoAlquiler: data.montoAlquiler,
+    fechaInicio: data.fechaInicio,
+    fechaFin: data.fechaFin,
+    estado: data.estado,
+    createdAt: data.createdAt,
+    updatedAt: data.updatedAt,
+    fechaCreacion:
+      data.fechaCreacion instanceof Timestamp
+        ? data.fechaCreacion.toDate().toISOString()
+        : data.fechaCreacion,
+    fechaActualizacion:
+      data.fechaActualizacion instanceof Timestamp
+        ? data.fechaActualizacion.toDate().toISOString()
+        : data.fechaActualizacion,
+  };
+};
+
+// Verificar disponibilidad de Firestore
+const checkFirestore = () => {
+  if (!db) throw new Error("Firestore no está inicializado");
+};
+
 export async function agregarPropiedadAlquiler(
   propiedad: PropiedadAlquiler
 ): Promise<string> {
-  if (!db) throw new Error("Firestore no está inicializado");
+  checkFirestore();
 
   try {
     const userId = getCurrentUserId();
@@ -38,7 +88,7 @@ export async function agregarPropiedadAlquiler(
     };
 
     const docRef = await addDoc(
-      collection(db, "propiedadesAlquiler"),
+      collection(db!, "propiedadesAlquiler"),
       propiedadData
     );
     console.log("Propiedad de alquiler agregada con ID:", docRef.id);
@@ -52,12 +102,12 @@ export async function agregarPropiedadAlquiler(
 export async function obtenerPropiedadesAlquiler(): Promise<
   PropiedadAlquiler[]
 > {
-  if (!db) throw new Error("Firestore no está inicializado");
+  checkFirestore();
 
   try {
     const userId = getCurrentUserId();
     const propiedadesQuery = query(
-      collection(db, "propiedadesAlquiler"),
+      collection(db!, "propiedadesAlquiler"),
       where("userId", "==", userId),
       orderBy("fechaCreacion", "desc")
     );
@@ -67,33 +117,7 @@ export async function obtenerPropiedadesAlquiler(): Promise<
 
     querySnapshot.forEach((doc) => {
       const data = doc.data();
-      propiedades.push({
-        id: doc.id,
-        propietario: data.propietario,
-        contactoPropietario: data.contactoPropietario,
-        inquilino: data.inquilino,
-        contactoInquilino: data.contactoInquilino,
-        fechaInicioContrato: data.fechaInicioContrato,
-        duracionContrato: data.duracionContrato,
-        precioAlquiler: data.precioAlquiler,
-        intervaloAumento: data.intervaloAumento,
-        direccion: data.direccion,
-        descripcion: data.descripcion,
-        montoAlquiler: data.montoAlquiler,
-        fechaInicio: data.fechaInicio,
-        fechaFin: data.fechaFin,
-        estado: data.estado,
-        createdAt: data.createdAt,
-        updatedAt: data.updatedAt,
-        fechaCreacion:
-          data.fechaCreacion instanceof Timestamp
-            ? data.fechaCreacion.toDate().toISOString()
-            : data.fechaCreacion,
-        fechaActualizacion:
-          data.fechaActualizacion instanceof Timestamp
-            ? data.fechaActualizacion.toDate().toISOString()
-            : data.fechaActualizacion,
-      });
+      propiedades.push(processPropiedadData(doc.id, data));
     });
 
     return propiedades;
@@ -106,43 +130,17 @@ export async function obtenerPropiedadesAlquiler(): Promise<
 export async function obtenerPropiedadAlquilerPorId(
   propiedadId: string
 ): Promise<PropiedadAlquiler | null> {
-  if (!db) throw new Error("Firestore no está inicializado");
+  checkFirestore();
 
   try {
-    const docRef = doc(db, "propiedadesAlquiler", propiedadId);
+    const docRef = doc(db!, "propiedadesAlquiler", propiedadId);
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
       const data = docSnap.data();
-      return {
-        id: docSnap.id,
-        propietario: data.propietario,
-        contactoPropietario: data.contactoPropietario,
-        inquilino: data.inquilino,
-        contactoInquilino: data.contactoInquilino,
-        fechaInicioContrato: data.fechaInicioContrato,
-        duracionContrato: data.duracionContrato,
-        precioAlquiler: data.precioAlquiler,
-        intervaloAumento: data.intervaloAumento,
-        direccion: data.direccion,
-        descripcion: data.descripcion,
-        montoAlquiler: data.montoAlquiler,
-        fechaInicio: data.fechaInicio,
-        fechaFin: data.fechaFin,
-        estado: data.estado,
-        createdAt: data.createdAt,
-        updatedAt: data.updatedAt,
-        fechaCreacion:
-          data.fechaCreacion instanceof Timestamp
-            ? data.fechaCreacion.toDate().toISOString()
-            : data.fechaCreacion,
-        fechaActualizacion:
-          data.fechaActualizacion instanceof Timestamp
-            ? data.fechaActualizacion.toDate().toISOString()
-            : data.fechaActualizacion,
-      };
+      return processPropiedadData(docSnap.id, data);
     } else {
-      console.log(
+      console.error(
         "No se encontró la propiedad de alquiler con ID:",
         propiedadId
       );
@@ -158,10 +156,10 @@ export async function actualizarPropiedadAlquiler(
   propiedadId: string,
   propiedad: Partial<PropiedadAlquiler>
 ): Promise<void> {
-  if (!db) throw new Error("Firestore no está inicializado");
+  checkFirestore();
 
   try {
-    const docRef = doc(db, "propiedadesAlquiler", propiedadId);
+    const docRef = doc(db!, "propiedadesAlquiler", propiedadId);
 
     // Verificar que la propiedad pertenece al usuario actual
     const docSnap = await getDoc(docRef);
@@ -189,10 +187,10 @@ export async function actualizarPropiedadAlquiler(
 export async function eliminarPropiedadAlquiler(
   propiedadId: string
 ): Promise<void> {
-  if (!db) throw new Error("Firestore no está inicializado");
+  checkFirestore();
 
   try {
-    const docRef = doc(db, "propiedadesAlquiler", propiedadId);
+    const docRef = doc(db!, "propiedadesAlquiler", propiedadId);
 
     // Verificar que la propiedad pertenece al usuario actual
     const docSnap = await getDoc(docRef);

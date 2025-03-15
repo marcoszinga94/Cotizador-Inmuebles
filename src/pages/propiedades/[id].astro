@@ -6,8 +6,6 @@ export function getStaticPaths() {
   return [{ params: { id: "placeholder" } }];
 }
 
-export const prerender = true;
-
 const { id } = Astro.params;
 ---
 

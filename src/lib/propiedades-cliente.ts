@@ -34,7 +34,7 @@ export const propiedadesCliente = {
 
     const userId = auth.currentUser.uid;
     const propiedadesQuery = query(
-      collection(db as Firestore, "propiedadesAlquiler"),
+      collection(db as Firestore, "propiedades"),
       where("userId", "==", userId),
       orderBy("fechaCreacion", "desc")
     );
@@ -50,7 +50,7 @@ export const propiedadesCliente = {
 
   async obtenerPorId(id: string) {
     const { db } = getFirebaseClient();
-    const docRef = doc(db as Firestore, "propiedadesAlquiler", id);
+    const docRef = doc(db as Firestore, "propiedades", id);
     const docSnap = await getDoc(docRef);
 
     if (!docSnap.exists()) return null;

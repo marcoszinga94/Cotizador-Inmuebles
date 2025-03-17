@@ -1,7 +1,7 @@
 import { obtenerPropiedadesAlquiler } from "../../lib/propiedadesFirestore.ts";
 
 
-const calculateNewRent = async (amount, date, months, rate = 'ipc') => {
+const peticionApiIpc = async (amount, date, months, rate = 'ipc') => {
   const url = 'https://arquilerapi1.p.rapidapi.com/calculate';
   const options = {
     method: 'POST',
@@ -28,25 +28,32 @@ const calculateNewRent = async (amount, date, months, rate = 'ipc') => {
   }
 };
 
-const calcularNuevosMontos = async () => {
-  try {
-    const propiedades = await obtenerPropiedadesAlquiler();
+export default async function handler(req, res) {
+  if (req.method === 'POST') {
+    try {
+      const propiedades = await obtenerPropiedadesAlquiler();
+      const nuevosMontos = [];
 
-    for (const propiedad of propiedades) {
-      try {
-        const resultado = await calculateNewRent(
-          propiedad.montoAlquiler,
-          propiedad.fechaInicioContrato,
-          propiedad.duracionContrato
-        );
-        console.log(`Nuevo monto para la propiedad ${propiedad.id}:`, resultado);
-      } catch (error) {
-        console.error(`Error al calcular el nuevo monto para la propiedad ${propiedad.id}:`, error);
+      for (const propiedad of propiedades) {
+        try {
+          const resultado = await peticionApiIpc(
+            propiedad.montoAlquiler,
+            propiedad.fechaInicioContrato,
+            propiedad.duracionContrato
+          );
+          nuevosMontos.push({ propiedadId: propiedad.id, resultado });
+        } catch (error) {
+          console.error(`Error al calcular el nuevo monto para la propiedad ${propiedad.id}:`, error);
+          nuevosMontos.push({ propiedadId: propiedad.id, error: error.message });
+        }
       }
-    }
-  } catch (error) {
-    console.error("Error al obtener las propiedades:", error);
-  }
-};
 
-calcularNuevosMontos();
+      res.status(200).json(nuevosMontos);
+    } catch (error) {
+      console.error("Error al obtener las propiedades:", error);
+      res.status(500).json({ error: "Error al obtener las propiedades" });
+    }
+  } else {
+    res.status(405).json({ error: 'Método no permitido' });
+  }
+}

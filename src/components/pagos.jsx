@@ -8,6 +8,7 @@ import {
 } from "../lib/payments.ts";
 import { obtenerPropiedadAlquilerPorId } from "../lib/propiedadesFirestore.ts";
 import ModalRegistrarPago from "./ModalRegistrarPago.jsx";
+import { CalculadorAlquileres } from "./actualizadorAlquiler.jsx";
 
 const monthNames = [
   "Enero",
@@ -119,6 +120,9 @@ const PagosPropiedad = ({ propertyId }) => {
               {propiedad ? formatCurrency(propiedad.precioAlquiler) : "$0"}
             </span>
           </p>
+          <div>
+            <CalculadorAlquileres />
+          </div>
         </div>
         <a href="/propiedades" className="text-primary hover:text-rosaOscuro">
           Volver

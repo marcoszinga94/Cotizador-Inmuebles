@@ -24,13 +24,14 @@
     "astro": "^5.4.1",
     "firebase": "^11.4.0",
     "jspdf": "^1.4.0",
-    "parse": "^2.6.0",
+    "parse": "^6.1.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-firebase-hooks": "^5.1.1",
     "react-router-dom": "^7.3.0",
     "tailwindcss": "^3.4.1",
-    "uuid": "^11.1.0"
+    "uuid": "^11.1.0",
+    "zwitch": "^2.0.4"
   },
   "devDependencies": {
     "@firebase/app-types": "^0.9.3",

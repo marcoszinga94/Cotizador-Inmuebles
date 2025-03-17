@@ -8,7 +8,7 @@ import {
 } from "../lib/payments.ts";
 import { obtenerPropiedadAlquilerPorId } from "../lib/propiedadesFirestore.ts";
 import ModalRegistrarPago from "./ModalRegistrarPago.jsx";
-import { CalculadorAlquileres } from "./actualizadorAlquiler.jsx";
+import CalculadorAlquileres from "./actualizadorAlquiler.jsx";
 
 const monthNames = [
   "Enero",

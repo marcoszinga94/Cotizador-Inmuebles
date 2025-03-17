@@ -8,7 +8,6 @@ import {
 } from "../lib/payments.ts";
 import { obtenerPropiedadAlquilerPorId } from "../lib/propiedadesFirestore.ts";
 import ModalRegistrarPago from "./ModalRegistrarPago.jsx";
-import CalculadorAlquileres from "./actualizadorAlquiler.jsx";
 
 const monthNames = [
   "Enero",
@@ -125,8 +124,6 @@ const PagosPropiedad = ({ propertyId }) => {
           Volver
         </a>
       </div>
-
-      <CalculadorAlquileres />
 
       <div className="bg-white rounded-lg shadow-lg p-6">
         <h2 className="text-2xl font-semibold mb-6">{currentYear}</h2>

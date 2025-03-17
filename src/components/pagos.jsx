@@ -120,14 +120,13 @@ const PagosPropiedad = ({ propertyId }) => {
               {propiedad ? formatCurrency(propiedad.precioAlquiler) : "$0"}
             </span>
           </p>
-          <div>
-            <CalculadorAlquileres />
-          </div>
         </div>
         <a href="/propiedades" className="text-primary hover:text-rosaOscuro">
           Volver
         </a>
       </div>
+
+      <CalculadorAlquileres />
 
       <div className="bg-white rounded-lg shadow-lg p-6">
         <h2 className="text-2xl font-semibold mb-6">{currentYear}</h2>

@@ -3,18 +3,33 @@ import Layout from "../../layouts/Layout.astro";
 import PagosPropiedad from "../../components/pagos.jsx";
 import { obtenerPropiedades } from "../../lib/firebaseUtils.ts";
 
-export const prerender = true;
-
-const { id } = Astro.params;
-
 export async function getStaticPaths() {
-  const propiedades = await obtenerPropiedades();
-  return propiedades.map((propiedad) => ({
-    params: { id: propiedad.id },
-  }));
+  try {
+    const propiedades = await obtenerPropiedades();
+    console.log("Propiedades obtenidas:", propiedades);
+
+    if (!propiedades || propiedades.length === 0) {
+      console.warn(
+        "No se encontraron propiedades, usando datos estáticos fallback"
+      );
+      // Proporcionar al menos una ruta de fallback
+      return [{ params: { id: "fallback" } }];
+    }
+
+    return propiedades.map((propiedad) => ({
+      params: { id: propiedad.id },
+    }));
+  } catch (error) {
+    console.error("Error en getStaticPaths:", error);
+    // Proporcionar al menos una ruta de fallback
+    return [{ params: { id: "error" } }];
+  }
 }
+
+// Obtener el id y la propiedad de los parámetros y props
+const { id } = Astro.params;
 ---
 
 <Layout title={`Propiedad ${id} - Pagos`}>
-  <PagosPropiedad propertyId={id} client:load />
+  <PagosPropiedad client:load propertyId={id} />
 </Layout>

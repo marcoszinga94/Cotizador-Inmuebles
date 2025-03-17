@@ -10,7 +10,7 @@ import {
   getDocs,
   type DocumentData,
 } from "firebase/firestore";
-import { db } from "./firebase.js";
+import { db } from "./firebase.ts";
 
 export interface UserData {
   uid: string;

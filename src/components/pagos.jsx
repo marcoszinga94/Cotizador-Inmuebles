@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { isUserAuthenticated } from "../lib/firebaseUtils.ts";
 import {
   getPaymentsByMonth,
   formatCurrency,
@@ -41,13 +40,6 @@ const PagosPropiedad = ({ propertyId }) => {
     try {
       setLoading(true);
 
-      // Verificar autenticación
-      if (!isUserAuthenticated()) {
-        setError("Necesitas iniciar sesión para ver esta información");
-        setLoading(false);
-        return;
-      }
-
       const propiedadData = await obtenerPropiedadAlquilerPorId(propertyId);
       if (propiedadData) {
         setPropiedad(propiedadData);
@@ -88,7 +80,7 @@ const PagosPropiedad = ({ propertyId }) => {
 
   const cerrarModal = () => setModalData(null);
 
-  const handleGuardarPago = async (data) => {
+  const guardarPago = async (data) => {
     try {
       if (data.paymentId) {
         await updatePayment(data.paymentId, data);
@@ -102,7 +94,7 @@ const PagosPropiedad = ({ propertyId }) => {
     }
   };
 
-  const handleEliminarPago = async (paymentId) => {
+  const eliminarPago = async (paymentId) => {
     if (!window.confirm("¿Eliminar este pago?")) return;
     await deletePayment(paymentId);
     cargarDatos();
@@ -178,7 +170,7 @@ const PagosPropiedad = ({ propertyId }) => {
                         🖊
                       </button>
                       <button
-                        onClick={() => handleEliminarPago(pago.id)}
+                        onClick={() => eliminarPago(pago.id)}
                         className="text-red-500 hover:text-red-600"
                       >
                         ❌
@@ -196,7 +188,7 @@ const PagosPropiedad = ({ propertyId }) => {
         <ModalRegistrarPago
           data={modalData}
           onClose={cerrarModal}
-          onSave={handleGuardarPago}
+          onSave={guardarPago}
         />
       )}
     </div>

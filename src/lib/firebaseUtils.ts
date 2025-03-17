@@ -9,11 +9,10 @@ import {
   updateDoc,
   deleteDoc,
 } from "firebase/firestore";
-import { db } from "./firebase.js";
-import { auth } from "./firebase.js";
+import { db, auth } from "./firebase.ts";
 import { signOut } from "firebase/auth";
 import type { User } from "firebase/auth";
-import type { PropiedadAlquiler } from "../types/propiedadesTypes.js";
+import type { PropiedadAlquiler } from "../types/propiedadesTypes.ts";
 
 // Función para obtener el ID del usuario actual
 const getCurrentUserId = () => {

@@ -7,6 +7,7 @@ import {
   deletePayment,
 } from "../lib/payments.ts";
 import { obtenerPropiedadAlquilerPorId } from "../lib/propiedadesFirestore.ts";
+import ModalRegistrarPago from "./ModalRegistrarPago.jsx";
 
 const monthNames = [
   "Enero",

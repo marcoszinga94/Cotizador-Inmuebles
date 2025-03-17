@@ -1,0 +1,3 @@
+{
+  "installCommand": "npm install && npm install zwitch@latest hast-util-raw@latest --no-save"
+}

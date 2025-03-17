@@ -3,6 +3,8 @@ import Layout from "../../layouts/Layout.astro";
 import PagosPropiedad from "../../components/pagos.jsx";
 import { obtenerPropiedades } from "../../lib/firebaseUtils.ts";
 
+export const prerender = true;
+
 export async function getStaticPaths() {
   try {
     const propiedades = await obtenerPropiedades();

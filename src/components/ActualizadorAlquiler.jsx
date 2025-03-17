@@ -11,7 +11,7 @@ const CalculadorAlquileres = () => {
       const data = await response.json();
       setResultados(data);
     } catch (error) {
-      console.error("Error al calcular los nuevos montos:", error);
+      console.error("Error al calcular el nuevo monto:", error);
     } finally {
       setCargando(false);
     }

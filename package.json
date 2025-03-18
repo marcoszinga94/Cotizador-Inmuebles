@@ -36,6 +36,7 @@
     "@firebase/app-types": "^0.9.3",
     "@firebase/auth-types": "^0.13.0",
     "@types/firebase": "^2.4.32",
-    "@types/parse": "^3.0.9"
+    "@types/parse": "^3.0.9",
+    "rollup": "^4.36.0"
   }
 }

@@ -192,7 +192,14 @@ export default function ListaPropiedadesAlquiler() {
             propiedadInicial={propiedadEditando}
             onSubmit={
               propiedadEditando
-                ? actualizarPropiedadExistente.bind(null, propiedadEditando.id!)
+                ? async (propiedad: PropiedadAlquiler) => {
+                    await actualizarPropiedadExistente(
+                      propiedad.id!,
+                      propiedad
+                    );
+                    handleCancelarEdicion();
+                    return true;
+                  }
                 : agregarNuevaPropiedad
             }
             isEditing={!!propiedadEditando}

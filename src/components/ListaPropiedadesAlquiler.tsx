@@ -212,7 +212,7 @@ export default function ListaPropiedadesAlquiler() {
           propiedadesOrdenadas.map((propiedad) => (
             <div
               key={propiedad.id}
-              className="bg-white p-3 rounded-md shadow-sm transition-all duration-300 hover:shadow-md"
+              className="grid grid-cols-2 bg-white p-3 rounded-md shadow-sm transition-all duration-300 hover:shadow-md"
             >
               <div className="flex justify-between items-start">
                 <div className="flex-1">

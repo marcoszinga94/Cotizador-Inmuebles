@@ -27,10 +27,10 @@ const { title } = Astro.props;
     <title>{title}</title>
   </head>
   <body
-    class="font-primary min-h-screen bg-rosaClaro transition-colors duration-300"
+    class="font-primary h-screen bg-rosaClaro transition-colors duration-300] grid grid-rows-[auto_1fr_auto] grid-areas-[header_main_footer]"
   >
     <Header />
-    <main>
+    <main id="main">
       <slot />
     </main>
     <Footer />

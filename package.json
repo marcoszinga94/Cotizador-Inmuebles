@@ -23,6 +23,7 @@
     "@vercel/kv": "^1.0.1",
     "astro": "^5.4.1",
     "firebase": "^11.4.0",
+    "hast-util-raw": "^9.1.0",
     "jspdf": "^3.0.0",
     "parse": "^6.1.0",
     "react": "^19.0.0",

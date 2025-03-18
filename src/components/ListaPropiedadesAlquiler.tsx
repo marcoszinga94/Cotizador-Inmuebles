@@ -201,7 +201,7 @@ export default function ListaPropiedadesAlquiler() {
         </div>
       )}
 
-      <div className="grid grid-cols-2 gap-4 max-h-[calc(100vh-300px)] overflow-y-hidden">
+      <div className="flex flex-col gap-2 max-h-[calc(100vh-300px)] overflow-y-scroll">
         {propiedadesOrdenadas.length === 0 ? (
           <div className="bg-white p-4 text-center rounded-md shadow-sm">
             <p className="text-gray-500">
@@ -227,7 +227,7 @@ export default function ListaPropiedadesAlquiler() {
                   </p>
                 </div>
 
-                <div className="flex space-x-2">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
                   <Boton
                     onClick={() =>
                       (window.location.href = `/propiedades/${propiedad.id}`)

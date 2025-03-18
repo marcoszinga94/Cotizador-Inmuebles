@@ -201,7 +201,7 @@ export default function ListaPropiedadesAlquiler() {
         </div>
       )}
 
-      <div className="grid grid-cols-2 space-y-3 max-h-[calc(100vh-300px)] overflow-y-auto pr-2">
+      <div className="grid grid-cols-2 gap-4 max-h-[calc(100vh-300px)] overflow-y-hidden">
         {propiedadesOrdenadas.length === 0 ? (
           <div className="bg-white p-4 text-center rounded-md shadow-sm">
             <p className="text-gray-500">

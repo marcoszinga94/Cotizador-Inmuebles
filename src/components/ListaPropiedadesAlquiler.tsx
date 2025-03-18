@@ -201,7 +201,7 @@ export default function ListaPropiedadesAlquiler() {
         </div>
       )}
 
-      <div className="space-y-3 max-h-[calc(100vh-300px)] overflow-y-auto pr-2">
+      <div className="grid grid-cols-2 space-y-3 max-h-[calc(100vh-300px)] overflow-y-auto pr-2">
         {propiedadesOrdenadas.length === 0 ? (
           <div className="bg-white p-4 text-center rounded-md shadow-sm">
             <p className="text-gray-500">
@@ -212,7 +212,7 @@ export default function ListaPropiedadesAlquiler() {
           propiedadesOrdenadas.map((propiedad) => (
             <div
               key={propiedad.id}
-              className="grid grid-cols-2 bg-white p-3 rounded-md shadow-sm transition-all duration-300 hover:shadow-md"
+              className="bg-white p-3 rounded-md shadow-sm transition-all duration-300 hover:shadow-md"
             >
               <div className="flex justify-between items-start">
                 <div className="flex-1">

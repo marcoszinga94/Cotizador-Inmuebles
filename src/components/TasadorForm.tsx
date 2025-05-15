@@ -2,18 +2,24 @@
 
 import { useState, useEffect } from "react";
 import type { ChangeEvent, FormEvent } from "react";
-import { DatosPropiedad } from "./DatosPropiedad.js";
-import { DatosTerreno } from "./DatosTerreno.js";
-import { ResultadosCotizacion } from "./ResultadosCotizacion.js";
-import { HistorialCotizaciones } from "./HistorialCotizaciones.js";
-import { Boton } from "./Boton.js";
+
+// Componentes
+import { DatosPropiedad } from "./DatosPropiedad.tsx";
+import { DatosTerreno } from "./DatosTerreno.tsx";
+import { ResultadosCotizacion } from "./ResultadosCotizacion.tsx";
+import { HistorialCotizaciones } from "./HistorialCotizaciones.tsx";
+import { Boton } from "./Boton.tsx";
+
+// Hooks
 import { useFormValidation } from "../hooks/useFormValidation.js";
-import { useDolarApi } from "../hooks/useDolarApi.js";
-import { useCalculations } from "../hooks/useCalculations.js";
-import { useHistorialCotizaciones } from "../hooks/useHistorialCotizaciones.js";
-import { useLocalStorage } from "../hooks/useLocalStorage.js";
-import type { FormData, HistorialItem } from "../types/formTypes.js";
-import { onAuthStateChange } from "../lib/firebaseUtils.js";
+import { useDolarApi } from "../hooks/useDolarApi.ts";
+import { useCalculations } from "../hooks/useCalculations.ts";
+import { useHistorialCotizaciones } from "../hooks/useHistorialCotizaciones.ts";
+import { useLocalStorage } from "../hooks/useLocalStorage.ts";
+import type { FormData, HistorialItem } from "../types/formTypes.ts";
+
+// Libs
+import { onAuthStateChange } from "../lib/firebaseUtils.ts";
 
 const initialFormData: FormData = {
   propiedad: "",

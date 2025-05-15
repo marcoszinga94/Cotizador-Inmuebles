@@ -40,6 +40,7 @@ const PagosPropiedad = ({ propertyId }) => {
   const cargarDatos = async () => {
     try {
       setLoading(true);
+      setError(null);
 
       const propiedadData = await obtenerPropiedadAlquilerPorId(propertyId);
       if (propiedadData) {
@@ -76,6 +77,7 @@ const PagosPropiedad = ({ propertyId }) => {
       month: monthIndex,
       payment,
       defaultAmount: propiedad?.precioAlquiler || "",
+      propertyId: propiedad.propertyId,
     });
   };
 
@@ -83,22 +85,101 @@ const PagosPropiedad = ({ propertyId }) => {
 
   const guardarPago = async (data) => {
     try {
+      setLoading(true);
+
+      // Validar datos antes de guardar
+      if (!data.amount || data.amount <= 0) {
+        throw new Error("El monto del pago debe ser mayor a cero");
+      }
+
+      if (!data.date) {
+        throw new Error("Debe seleccionar una fecha válida");
+      }
+
       if (data.paymentId) {
         await updatePayment(data.paymentId, data);
       } else {
         await createPayment(data);
       }
+
+      // Actualizar el estado local primero
+      setPagosPorMes((prev) => {
+        const newPagos = [...prev];
+        const monthIndex = data.month;
+        const updatedPagos = data.paymentId
+          ? newPagos[monthIndex].pagos.map((p) =>
+              p.id === data.paymentId ? { ...p, ...data } : p
+            )
+          : [...newPagos[monthIndex].pagos, data];
+
+        newPagos[monthIndex] = {
+          ...newPagos[monthIndex],
+          pagos: updatedPagos,
+          total: updatedPagos.reduce((sum, p) => sum + p.amount, 0),
+        };
+        return newPagos;
+      });
+
       cerrarModal();
-      cargarDatos();
+      // Recargar datos para sincronizar con la base de datos
+      await cargarDatos();
+
+      // Feedback visual
+      const toast = document.createElement("div");
+      toast.className =
+        "fixed bottom-4 right-4 bg-green-500 text-white px-4 py-2 rounded-md shadow-lg";
+      toast.textContent = "Pago guardado exitosamente";
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 3000);
     } catch (error) {
       console.error("Error al guardar pago:", error);
+      const toast = document.createElement("div");
+      toast.className =
+        "fixed bottom-4 right-4 bg-red-500 text-white px-4 py-2 rounded-md shadow-lg";
+      toast.textContent = error.message || "Error al guardar el pago";
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 3000);
+    } finally {
+      setLoading(false);
     }
   };
 
   const eliminarPago = async (paymentId) => {
     if (!window.confirm("¿Eliminar este pago?")) return;
-    await deletePayment(paymentId);
-    cargarDatos();
+    try {
+      await deletePayment(paymentId);
+      setPagosPorMes((prev) => {
+        const newPagos = [...prev];
+        const monthIndex = newPagos.findIndex((month) =>
+          month.pagos.some((p) => p.id === paymentId)
+        );
+        if (monthIndex !== -1) {
+          newPagos[monthIndex] = {
+            ...newPagos[monthIndex],
+            pagos: newPagos[monthIndex].pagos.filter((p) => p.id !== paymentId),
+            total: newPagos[monthIndex].pagos
+              .filter((p) => p.id !== paymentId)
+              .reduce((sum, p) => sum + p.amount, 0),
+          };
+        }
+        return newPagos;
+      });
+
+      const toast = document.createElement("div");
+      toast.className =
+        "fixed bottom-4 right-4 bg-green-500 text-white px-4 py-2 rounded-md shadow-lg";
+      toast.textContent = "Pago eliminado correctamente";
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 3000);
+    } catch (error) {
+      console.error("Error al eliminar pago:", error);
+      const toast = document.createElement("div");
+      toast.className =
+        "fixed bottom-4 right-4 bg-red-500 text-white px-4 py-2 rounded-md shadow-lg";
+      toast.textContent = "Error al eliminar el pago";
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 3000);
+    }
   };
 
   if (loading) return <div className="p-8 text-center">Cargando datos...</div>;
@@ -134,17 +215,17 @@ const PagosPropiedad = ({ propertyId }) => {
               key={month}
               className="border rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition-colors"
             >
-              <div className="flex justify-between items-start mb-4">
+              <div className="flex justify-between items-start mb-2">
                 <h3 className="text-lg font-semibold">{monthNames[month]}</h3>
                 <button
                   onClick={() => abrirModal(month)}
-                  className="text-primary hover:text-rosaOscuro"
+                  className="text-primary hover:text-rosaOscuro text-3xl"
                 >
-                  ➕
+                  +
                 </button>
               </div>
               <p className="text-sm text-gray-600">
-                Total pagado:{" "}
+                Total pagado:{""}
                 <span className="font-medium text-green-600">
                   {formatCurrency(total)}
                 </span>

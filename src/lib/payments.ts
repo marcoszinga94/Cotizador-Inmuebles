@@ -1,3 +1,12 @@
+import {
+  getFirestore,
+  collection,
+  doc,
+  setDoc,
+  updateDoc,
+  getDoc,
+  deleteDoc,
+} from "@firebase/firestore";
 import type { Payment, PaymentFormData } from "../types/paymentTypes.ts";
 
 // Función para obtener los pagos de una propiedad en un mes específico
@@ -51,28 +60,41 @@ export async function createPayment(
   paymentData: PaymentFormData
 ): Promise<Payment> {
   try {
-    // Obtener los pagos existentes
-    const pagosStr = localStorage.getItem("pagos");
-    const pagos: Payment[] = pagosStr ? JSON.parse(pagosStr) : [];
+    if (!paymentData?.propertyId) {
+      throw new Error(
+        "Se requiere el ID de la propiedad (propertyId) para registrar un pago"
+      );
+    }
 
-    // Crear el nuevo pago
+    const db = getFirestore();
+    if (!db) throw new Error("Firestore no está inicializado");
+
+    const paymentsRef = collection(db, "payments");
     const nuevoPago: Payment = {
-      id: crypto.randomUUID(),
+      id: doc(paymentsRef).id,
       ...paymentData,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
 
-    // Agregar el nuevo pago al array
-    pagos.push(nuevoPago);
+    const docRef = doc(paymentsRef, nuevoPago.id);
+    console.log("Intentando guardar documento en:", docRef.path);
 
-    // Guardar en localStorage
-    localStorage.setItem("pagos", JSON.stringify(pagos));
-
+    await setDoc(docRef, nuevoPago);
+    console.log("Documento guardado exitosamente");
     return nuevoPago;
   } catch (error) {
-    console.error("Error al crear el pago:", error);
-    throw error;
+    const errorMessage =
+      error instanceof Error
+        ? error.message
+        : "Error desconocido al crear el pago";
+    console.error("Error al crear el pago:", {
+      message: errorMessage,
+      stack: error instanceof Error ? error.stack : undefined,
+      paymentData,
+      timestamp: new Date().toISOString(),
+    });
+    throw new Error(`No se pudo crear el pago: ${errorMessage}`);
   }
 }
 
@@ -82,50 +104,56 @@ export async function updatePayment(
   paymentData: PaymentFormData
 ): Promise<Payment> {
   try {
-    const pagosStr = localStorage.getItem("pagos");
-    if (!pagosStr) throw new Error("No hay pagos registrados");
+    if (!paymentData?.propertyId) {
+      throw new Error(
+        "Se requiere el ID de la propiedad (propertyId) para actualizar un pago"
+      );
+    }
 
-    const pagos: Payment[] = JSON.parse(pagosStr);
-    const index = pagos.findIndex((pago) => pago.id === id);
+    const db = getFirestore();
+    if (!db) throw new Error("Firestore no está inicializado");
+    const paymentRef = doc(db, "payments", id);
 
-    if (index === -1) throw new Error("Pago no encontrado");
-
-    // Actualizar el pago
-    pagos[index] = {
-      ...pagos[index],
+    await updateDoc(paymentRef, {
       ...paymentData,
       updatedAt: new Date().toISOString(),
-    };
+    });
 
-    // Guardar en localStorage
-    localStorage.setItem("pagos", JSON.stringify(pagos));
-
-    return pagos[index];
+    const updatedPayment = (await getDoc(paymentRef)).data() as Payment;
+    return updatedPayment;
   } catch (error) {
-    console.error("Error al actualizar el pago:", error);
-    throw error;
+    const errorMessage =
+      error instanceof Error
+        ? error.message
+        : "Error desconocido al actualizar el pago";
+    console.error("Error al actualizar el pago:", {
+      message: errorMessage,
+      stack: error instanceof Error ? error.stack : undefined,
+      paymentId: id,
+      timestamp: new Date().toISOString(),
+    });
+    throw new Error(`No se pudo actualizar el pago: ${errorMessage}`);
   }
 }
 
 // Función para eliminar un pago
 export async function deletePayment(id: string): Promise<void> {
   try {
-    const pagosStr = localStorage.getItem("pagos");
-    if (!pagosStr) throw new Error("No hay pagos registrados");
-
-    const pagos: Payment[] = JSON.parse(pagosStr);
-    const index = pagos.findIndex((pago) => pago.id === id);
-
-    if (index === -1) throw new Error("Pago no encontrado");
-
-    // Eliminar el pago
-    pagos.splice(index, 1);
-
-    // Guardar en localStorage
-    localStorage.setItem("pagos", JSON.stringify(pagos));
+    const db = getFirestore();
+    const paymentRef = doc(db, "payments", id);
+    await deleteDoc(paymentRef);
   } catch (error) {
-    console.error("Error al eliminar el pago:", error);
-    throw error;
+    const errorMessage =
+      error instanceof Error
+        ? error.message
+        : "Error desconocido al eliminar el pago";
+    console.error("Error al eliminar el pago:", {
+      message: errorMessage,
+      stack: error instanceof Error ? error.stack : undefined,
+      paymentId: id,
+      timestamp: new Date().toISOString(),
+    });
+    throw new Error(`No se pudo eliminar el pago: ${errorMessage}`);
   }
 }
 

@@ -13,6 +13,7 @@
     "moduleResolution": "node16",
     "module": "Node16",
     "allowSyntheticDefaultImports": true,
+    "allowImportingTsExtensions": true,
     "useUnknownInCatchVariables": false,
     "types": [
       "node",

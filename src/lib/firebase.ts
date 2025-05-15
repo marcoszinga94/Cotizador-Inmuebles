@@ -92,8 +92,14 @@ try {
 
     if (firebaseConfig.measurementId) {
       try {
-        analytics = getAnalytics(app);
-        console.log("Analytics inicializado correctamente");
+        if (typeof window !== "undefined" && window.document) {
+          analytics = getAnalytics(app);
+          console.log("Analytics inicializado correctamente");
+        } else {
+          console.warn(
+            "Analytics no se inicializará: Entorno no soportado (sin window/document)"
+          );
+        }
       } catch (analyticsError) {
         console.error("Error al inicializar Analytics:", analyticsError);
       }

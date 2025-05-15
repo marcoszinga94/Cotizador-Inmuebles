@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { formatCurrency } from "../lib/payments.ts";
 
 const ModalRegistrarPago = ({ data, onClose, onSave }) => {
-  const { month, payment, defaultAmount } = data;
+  const { month, payment, defaultAmount, propertyId } = data;
   const [formData, setFormData] = useState({
     amount: payment ? payment.amount : defaultAmount || 0,
     date: payment
@@ -10,6 +10,7 @@ const ModalRegistrarPago = ({ data, onClose, onSave }) => {
       : new Date().toISOString().split("T")[0],
     notes: payment?.notes || "",
     paymentId: payment?.id || null,
+    propertyId: propertyId || null,
   });
 
   useEffect(() => {

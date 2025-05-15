@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import { Boton } from "./Boton.tsx";
-import { usePropiedades } from "../context/PropiedadesContext.js";
+import { usePropiedades } from "../context/PropiedadesContext.tsx";
 import PropiedadAlquilerForm from "./PropiedadAlquilerForm.tsx";
-import type { PropiedadAlquiler } from "../types/propiedadesTypes.js";
+import type { PropiedadAlquiler } from "../types/propiedadesTypes.ts";
 
 type Ordenamiento = "propietario" | "inquilino" | "precio" | "fechaInicio";
 

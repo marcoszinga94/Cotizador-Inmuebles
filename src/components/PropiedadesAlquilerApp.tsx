@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { onAuthStateChange } from "../lib/firebaseUtils.js";
+import { onAuthStateChange } from "../lib/firebaseUtils.ts";
 import ListaPropiedadesAlquiler from "./ListaPropiedadesAlquiler.tsx";
-import { PropiedadesProvider } from "../context/PropiedadesContext.js";
+import { PropiedadesProvider } from "../context/PropiedadesContext.tsx";
 
 export default function PropiedadesAlquilerApp() {
   const [mostrarApp, setMostrarApp] = useState(false);

@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-import { useLocalStorage } from "./useLocalStorage.js";
+import { useLocalStorage } from "./useLocalStorage.ts";
 import type {
   FormData,
   CalculationResults,
   HistorialItem,
-} from "../types/formTypes.js";
+} from "../types/formTypes.ts";
 
 interface HistorialHookResult {
   historial: HistorialItem[];

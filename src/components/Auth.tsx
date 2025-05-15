@@ -7,8 +7,8 @@ import {
   AuthErrorCodes,
 } from "firebase/auth";
 import { FirebaseError } from "firebase/app";
-import { auth, googleProvider } from "../lib/firebase.js";
-import { saveUserData, updateUserData } from "../lib/firestore.js";
+import { auth, googleProvider } from "../lib/firebase.ts";
+import { saveUserData, updateUserData } from "../lib/firestore.ts";
 
 export default function Auth() {
   const [user, setUser] = useState<User | null>(null);

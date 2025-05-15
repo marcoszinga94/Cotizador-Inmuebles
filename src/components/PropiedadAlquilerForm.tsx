@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import type { PropiedadAlquiler } from "../types/propiedadesTypes.js";
-import { Boton } from "./Boton.jsx";
+import type { PropiedadAlquiler } from "../types/propiedadesTypes.ts";
+import { Boton } from "./Boton.tsx";
 
 interface PropiedadAlquilerFormProps {
   propiedadInicial?: PropiedadAlquiler | null;

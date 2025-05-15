@@ -77,7 +77,7 @@ const PagosPropiedad = ({ propertyId }) => {
       month: monthIndex,
       payment,
       defaultAmount: propiedad?.precioAlquiler || "",
-      propertyId: propiedad.propertyId,
+      propertyId: propertyId, // Usar el propertyId de las props del componente
     });
   };
 
@@ -96,21 +96,29 @@ const PagosPropiedad = ({ propertyId }) => {
         throw new Error("Debe seleccionar una fecha válida");
       }
 
+      let nuevoId;
       if (data.paymentId) {
         await updatePayment(data.paymentId, data);
+        nuevoId = data.paymentId;
       } else {
-        await createPayment(data);
+        nuevoId = await createPayment(data);
       }
 
-      // Actualizar el estado local primero
+      // Obtener el pago actualizado de la base de datos
+      const pagoActualizado = {
+        ...data,
+        id: nuevoId,
+      };
+
+      // Actualizar el estado local con el pago actualizado
       setPagosPorMes((prev) => {
         const newPagos = [...prev];
         const monthIndex = data.month;
         const updatedPagos = data.paymentId
           ? newPagos[monthIndex].pagos.map((p) =>
-              p.id === data.paymentId ? { ...p, ...data } : p
+              p.id === data.paymentId ? pagoActualizado : p
             )
-          : [...newPagos[monthIndex].pagos, data];
+          : [...newPagos[monthIndex].pagos, pagoActualizado];
 
         newPagos[monthIndex] = {
           ...newPagos[monthIndex],
@@ -121,8 +129,6 @@ const PagosPropiedad = ({ propertyId }) => {
       });
 
       cerrarModal();
-      // Recargar datos para sincronizar con la base de datos
-      await cargarDatos();
 
       // Feedback visual
       const toast = document.createElement("div");
@@ -186,55 +192,59 @@ const PagosPropiedad = ({ propertyId }) => {
   if (error) return <div className="p-8 text-center text-red-500">{error}</div>;
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8 text-primary">
       <div className="flex justify-between items-center mb-6">
         <div>
-          <h1 className="text-3xl font-bold">
+          <h1 className="text-3xl font-bold text-center text-rosaOscuro relative">
             {propiedad
               ? `Pagos de ${propiedad.propietario}`
               : "Propiedad no encontrada"}
           </h1>
-          <p className="text-gray-600 mt-1">
+          <p className="mt-1">
             Monto del alquiler:{" "}
-            <span className="font-medium text-green-600">
+            <span className="font-medium text-verdeDolar">
               {propiedad ? formatCurrency(propiedad.precioAlquiler) : "$0"}
             </span>
           </p>
         </div>
-        <a href="/propiedades" className="text-primary hover:text-rosaOscuro">
+        <a href="/propiedades" className="hover:text-rosaOscuro">
           Volver
         </a>
       </div>
 
-      <div className="bg-white rounded-lg shadow-lg p-6">
-        <h2 className="text-2xl font-semibold mb-6">{currentYear}</h2>
+      <div className="bg-white rounded-lg shadow-lg p-6 text-primary">
+        <h2 className="text-3xl font-semibold mb-6 border-b-2 border-primary">
+          {currentYear}
+        </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {pagosPorMes.map(({ month, pagos, total }) => (
             <div
               key={month}
-              className="border rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition-colors"
+              className="flex flex-col border rounded-lg p-4 cursor-pointer hover:bg-rosaClaro transition-colors gap-2"
             >
-              <div className="flex justify-between items-start mb-2">
-                <h3 className="text-lg font-semibold">{monthNames[month]}</h3>
-                <button
-                  onClick={() => abrirModal(month)}
-                  className="text-primary hover:text-rosaOscuro text-3xl"
-                >
-                  +
-                </button>
+              <div className="flex flex-col">
+                <div className="flex justify-between items-center">
+                  <h3 className="text-lg font-semibold">{monthNames[month]}</h3>
+                  <button
+                    onClick={() => abrirModal(month)}
+                    className="hover:text-rosaOscuro text-3xl items-center"
+                  >
+                    +
+                  </button>
+                </div>
+                <p className="text-sm text-rosaOscuro">
+                  Total pagado:{" "}
+                  <span className="font-medium text-verdeDolar">
+                    {formatCurrency(total)}
+                  </span>
+                </p>
               </div>
-              <p className="text-sm text-gray-600">
-                Total pagado:{""}
-                <span className="font-medium text-green-600">
-                  {formatCurrency(total)}
-                </span>
-              </p>
               <div className="space-y-2">
                 {pagos.map((pago) => (
                   <div
                     key={pago.id}
-                    className="flex justify-between items-center p-2 bg-gray-50 rounded"
+                    className="flex justify-between items-center p-2 bg-grisClaro rounded"
                   >
                     <div>
                       <div className="font-medium">
@@ -244,18 +254,18 @@ const PagosPropiedad = ({ propertyId }) => {
                         {new Date(pago.date).toLocaleDateString()}
                       </div>
                     </div>
-                    <div className="flex gap-2">
+                    <div className="flex text-sm gap-2">
                       <button
                         onClick={() => abrirModal(month, pago)}
-                        className="text-blue-500 hover:text-blue-600"
+                        className="text-blue-500"
                       >
-                        🖊
+                        Editar
                       </button>
                       <button
                         onClick={() => eliminarPago(pago.id)}
-                        className="text-red-500 hover:text-red-600"
+                        className="text-red-500"
                       >
-                        ❌
+                        Eliminar
                       </button>
                     </div>
                   </div>

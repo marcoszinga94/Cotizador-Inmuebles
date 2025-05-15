@@ -24,7 +24,7 @@ export const useDolarApi = (): DolarData => {
         );
       }
 
-      const data = await response.json();
+      const data = await response.tson();
       setValor(Number(data.venta));
     } catch (err) {
       setError(

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import type { HistorialItem } from "../types/formTypes.js";
+import type { HistorialItem } from "../types/formTypes.ts";
 import { Boton } from "./Boton.tsx";
 
 interface HistorialCotizacionesProps {

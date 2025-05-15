@@ -11,7 +11,7 @@ import { HistorialCotizaciones } from "./HistorialCotizaciones.tsx";
 import { Boton } from "./Boton.tsx";
 
 // Hooks
-import { useFormValidation } from "../hooks/useFormValidation.js";
+import { useFormValidation } from "../hooks/useFormValidation.ts";
 import { useDolarApi } from "../hooks/useDolarApi.ts";
 import { useCalculations } from "../hooks/useCalculations.ts";
 import { useHistorialCotizaciones } from "../hooks/useHistorialCotizaciones.ts";
@@ -35,7 +35,7 @@ const initialFormData: FormData = {
 
 const valorDolar = async () => {
   const response = await fetch("https://dolarapi.com/v1/dolares/blue");
-  const data = await response.json();
+  const data = await response.tson();
   return data.blue.toFixed(2);
 };
 

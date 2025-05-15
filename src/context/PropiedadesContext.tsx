@@ -1,11 +1,11 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import type { PropiedadAlquiler } from "../types/propiedadesTypes.js";
+import type { PropiedadAlquiler } from "../types/propiedadesTypes.ts";
 import {
   agregarPropiedad,
   actualizarPropiedad,
   eliminarPropiedad,
   obtenerPropiedades,
-} from "../lib/firebaseUtils.js";
+} from "../lib/firebaseUtils.ts";
 
 interface PropiedadesContextType {
   propiedades: PropiedadAlquiler[];

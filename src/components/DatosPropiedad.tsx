@@ -1,7 +1,7 @@
 import React from "react";
 import type { ChangeEvent } from "react";
-import type { FormData } from "../types/formTypes.js";
-import { estadosPropiedad } from "../utils/rossHeideckeData.js";
+import type { FormData } from "../types/formTypes.ts";
+import { estadosPropiedad } from "../utils/rossHeideckeData.ts";
 
 interface DatosPropiedadProps {
   formData: FormData;

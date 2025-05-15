@@ -22,32 +22,51 @@ const pathname = new URL(Astro.request.url).pathname;
           Propiedades
         </a>
       </li>
+
+      <li>
+        <a
+          href="https://visualizadorcatastral.cba.gov.ar/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-base lg:text-lg font-medium hover:text-white transition-colors"
+          >Catastro</a
+        >
+      </li>
+      <li>
+        <a
+          href="https://www.rentascordoba.gob.ar/emision/ver-y-pagar/inmobiliario"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-base lg:text-lg font-medium hover:text-white transition-colors"
+          >Rentas</a
+        >
+      </li>
     </ul>
   </div>
-
-  <!-- Botón menú móvil -->
-  <div class="md:hidden">
-    <button
-      id="menu-toggle"
-      class="text-secondary focus:outline-none p-1.5 rounded-md hover:bg-primary-dark transition-colors"
-      aria-label="Abrir menú"
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        class="size-6"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M4 6h16M4 12h16M4 18h16"></path>
-      </svg>
-    </button>
-  </div>
 </nav>
+
+<!-- Botón menú móvil -->
+<div class="md:hidden">
+  <button
+    id="menu-toggle"
+    class="text-secondary focus:outline-none p-1.5 rounded-md hover:bg-primary-dark transition-colors"
+    aria-label="Abrir menú"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="size-6"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M4 6h16M4 12h16M4 18h16"></path>
+    </svg>
+  </button>
+</div>
 
 <!-- Menú móvil -->
 <div
@@ -99,6 +118,24 @@ const pathname = new URL(Astro.request.url).pathname;
           >
             Propiedades
           </a>
+        </li>
+        <li>
+          <a
+            href="https://visualizadorcatastral.cba.gov.ar/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-base lg:text-lg font-medium hover:text-white transition-colors"
+            >Catastro</a
+          >
+        </li>
+        <li>
+          <a
+            href="https://www.rentascordoba.gob.ar/emision/ver-y-pagar/inmobiliario"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-base lg:text-lg font-medium hover:text-white transition-colors"
+            }>Rentas</a
+          >
         </li>
       </ul>
     </div>

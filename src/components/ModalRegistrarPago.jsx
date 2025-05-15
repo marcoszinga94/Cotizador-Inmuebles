@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { formatCurrency } from "../lib/payments.ts";
 
 const ModalRegistrarPago = ({ data, onClose, onSave }) => {
   const { month, payment, defaultAmount, propertyId } = data;
@@ -8,7 +7,7 @@ const ModalRegistrarPago = ({ data, onClose, onSave }) => {
     date: payment
       ? new Date(payment.date).toISOString().split("T")[0]
       : new Date().toISOString().split("T")[0],
-    notes: payment?.notes || "",
+    observations: payment?.observations || "", // Changed from notes to observations
     paymentId: payment?.id || null,
     propertyId: propertyId || null,
   });
@@ -48,7 +47,7 @@ const ModalRegistrarPago = ({ data, onClose, onSave }) => {
     ];
 
     onSave({
-      ...formData,
+      ...formData, // formData will now contain 'observations'
       propertyId: data.propertyId,
       month,
       monthName: monthNames[month],
@@ -116,15 +115,15 @@ const ModalRegistrarPago = ({ data, onClose, onSave }) => {
 
           <div className="mb-6">
             <label
-              htmlFor="modal-notes"
+              htmlFor="modal-observations" // Changed from modal-notes
               className="block text-sm font-medium text-gray-700 mb-1"
             >
               Notas (opcional)
             </label>
             <textarea
-              id="modal-notes"
-              name="notes"
-              value={formData.notes}
+              id="modal-observations" // Changed from modal-notes
+              name="observations" // Changed from notes
+              value={formData.observations} // Changed from formData.notes
               onChange={handleChange}
               rows={3}
               className="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"

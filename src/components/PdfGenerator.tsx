@@ -466,7 +466,7 @@ export default function PdfGenerator(props: PdfGeneratorProps) {
   const [isClient, setIsClient] = useState(false);
 
   // Asegurarse de que el componente se renderice solo en el cliente
-  // para evitar errores de hidratación con Next.js
+  // para evitar errores de hidratación con Next.ts
   useEffect(() => {
     setIsClient(true);
   }, []);

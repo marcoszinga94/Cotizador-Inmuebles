@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import type {
   PropiedadAlquiler,
   PropiedadAlquilerErrors,
-} from "../types/propiedadesTypes.js";
+} from "../types/propiedadesTypes.ts";
 
 export function usePropiedadAlquilerValidation(formData: PropiedadAlquiler) {
   const [errors, setErrors] = useState<PropiedadAlquilerErrors>({});

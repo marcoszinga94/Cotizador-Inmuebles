@@ -112,7 +112,7 @@ const { propertyId, date, paymentId, montoDefault } = Astro.props;
     updatePayment,
     deletePayment,
     getPaymentById,
-  } from "../lib/payments.js";
+  } from "../lib/payments.ts";
   import type { PaymentFormData } from "../types/paymentTypes.ts";
 
   const modal = document.getElementById("modalRegistrarPago");

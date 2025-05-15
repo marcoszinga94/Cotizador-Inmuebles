@@ -1,3 +1,0 @@
-{
-  "installCommand": "npm install && npm cache clean --force && rm -rf node_modules && npm install && npm install zwitch@latest hast-util-raw@latest --no-save"
-}

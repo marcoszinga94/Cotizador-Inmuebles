@@ -304,6 +304,7 @@ export default function ListaPropiedadesAlquiler() {
                           />
                         </svg>
                       </Boton>
+
                       <Boton
                         onClick={() => handleEliminar(propiedad.id!)}
                         variant="danger"

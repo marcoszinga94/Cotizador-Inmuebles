@@ -21,24 +21,6 @@ import type { FormData, HistorialItem } from "../types/formTypes.ts";
 // Libs
 import { onAuthStateChange } from "../lib/firebaseUtils.ts";
 
-// Componentes
-import { DatosPropiedad } from "./DatosPropiedad.tsx";
-import { DatosTerreno } from "./DatosTerreno.tsx";
-import { ResultadosCotizacion } from "./ResultadosCotizacion.tsx";
-import { HistorialCotizaciones } from "./HistorialCotizaciones.tsx";
-import { Boton } from "./Boton.tsx";
-
-// Hooks
-import { useFormValidation } from "../hooks/useFormValidation.js";
-import { useDolarApi } from "../hooks/useDolarApi.ts";
-import { useCalculations } from "../hooks/useCalculations.ts";
-import { useHistorialCotizaciones } from "../hooks/useHistorialCotizaciones.ts";
-import { useLocalStorage } from "../hooks/useLocalStorage.ts";
-import type { FormData, HistorialItem } from "../types/formTypes.ts";
-
-// Libs
-import { onAuthStateChange } from "../lib/firebaseUtils.ts";
-
 const initialFormData: FormData = {
   propiedad: "",
   terreno: "",
@@ -53,7 +35,7 @@ const initialFormData: FormData = {
 
 const valorDolar = async () => {
   const response = await fetch("https://dolarapi.com/v1/dolares/blue");
-  const data = await response.tson();
+  const data = await response.json();
   return data.blue.toFixed(2);
 };
 

@@ -1,57 +1,8 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import PagosPropiedad from "../../components/pagos.jsx";
-import { obtenerPropiedades } from "../../lib/firebaseUtils.ts";
 
-export async function getStaticPaths() {
-  try {
-    const propiedades = await obtenerPropiedades();
-
-    // Validación exhaustiva de los datos
-    if (!Array.isArray(propiedades)) {
-      console.error("Las propiedades no son un array válido");
-      return [{ params: { id: "fallback" }, props: { error: true } }];
-    }
-
-    // Verificar que haya propiedades y que todas tengan IDs válidos
-    if (propiedades.length === 0) {
-      console.warn("No se encontraron propiedades en la base de datos");
-      return [
-        { params: { id: "fallback" }, props: { error: false } },
-        { params: { id: "demo" }, props: { error: false } },
-      ];
-    }
-
-    // Filtrar y mapear solo propiedades con datos completos
-    const propiedadesValidas = propiedades.filter((propiedad) => {
-      return (
-        propiedad &&
-        typeof propiedad === "object" &&
-        propiedad.id &&
-        typeof propiedad.id === "string"
-      );
-    });
-
-    if (propiedadesValidas.length === 0) {
-      console.warn("No se encontraron propiedades con datos válidos");
-      return [
-        { params: { id: "fallback" }, props: { error: false } },
-        { params: { id: "demo" }, props: { error: false } },
-      ];
-    }
-
-    return propiedadesValidas.map((propiedad) => ({
-      params: { id: propiedad.id, propietario: propiedad.propietario },
-      props: { error: false },
-    }));
-  } catch (error) {
-    console.error("Error en getStaticPaths:", error);
-    return [
-      { params: { id: "error" }, props: { error: true } },
-      { params: { id: "fallback" }, props: { error: true } },
-    ];
-  }
-}
+export const prerender = false;
 
 // Obtener el id y la propiedad de los parámetros y props
 const { id } = Astro.params;
